@@ -1,0 +1,11 @@
+body {
+    font-size: 0.95rem;
+    font-family: Roboto, sans-serif;
+}
+
+.required:after {
+	content: "*";
+	color: red;
+}
+
+
