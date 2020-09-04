@@ -15,18 +15,18 @@ class UserDAL extends BaseDAL
         $apiResult = new ApiResult();
 
         $apiResult->users = User::select('id',
-                                        'username',
-                                        'email',
-                                        'last_name',
-                                        'first_name',
-                                        'mobile_phone',
-                                        'telephone',
-                                        'grade_id',
-                                        'school_id',
-                                        'updated_at')
-                                    ->with('roles:id')
-                                    ->orderBy('updated_at', 'desc')
-                                    ->get();
+            'username',
+            'email',
+            'last_name',
+            'first_name',
+            'mobile_phone',
+            'telephone',
+            'grade_id',
+            'school_id',
+            'updated_at')
+            ->with('roles:id')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
         return $apiResult;
     }
@@ -79,8 +79,10 @@ class UserDAL extends BaseDAL
         if ($result) {
             $ret->fill('0', 'Success');
             $ret->userId = $userORM->id;
-        } else
+        } else {
             $ret->fill('1', 'Cannot insert, database error.');
+        }
+
         return $ret;
     }
 
@@ -123,7 +125,6 @@ class UserDAL extends BaseDAL
                     $userORM->grade_id = $user['grade_id'];
                 }
 
-
                 if (isset($user['birthdate'])) {
                     $userORM->birthdate = $user['birthdate'];
                 }
@@ -152,12 +153,14 @@ class UserDAL extends BaseDAL
         try {
             $user = User::find($id);
             if (isset($user->id)) {
-                $user = User::find($user->id);
                 $user->deleted_by = Auth::id();
                 $user->deleted_at = date('Y-m-d h:i:s');
                 $result = $user->save();
-
-                $ret->fill('0', 'Success.');
+                if ($result == 1) {
+                    $ret->fill('0', 'Success');
+                } else {
+                    $ret->fill('1', 'Something went wrong');
+                }
                 $ret->affectedRows = $result;
             }
         } catch (\Exception $e) {

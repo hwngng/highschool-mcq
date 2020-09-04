@@ -63,7 +63,7 @@
                 @endphp
                 @isset($questions)
                 @foreach ($questions as $question)
-                <tr id="{{ $question->id }}">
+                <tr id="q-{{ $question->id }}">
                     <td class="order" >{{ $i++ }}</td>
                     <td class="scrollable">{!! htmlspecialchars_decode($question->content) !!}</td>
                     <td>{{ $question->grade_id }}</td>
@@ -89,7 +89,7 @@
                 url: "{{ route('teacher.question.destroy', '') }}" + '/' + questionId,
                 success: function (response) {
                     if (response['return_code'] == 0) {
-                        $('#' + questionId).animate("fast").animate({
+                        $('#q-' + questionId).animate("fast").animate({
                             opacity : "hide"
                         }, "slow", function () {
                             let nextRows = $(this).nextAll();

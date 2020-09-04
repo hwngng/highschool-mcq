@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('header')
-<link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
 <style>
     .col-1 {
         width: 2%;
@@ -45,7 +44,7 @@
 <div class="container">
     <div>
         <div>
-            <a class="btn btn-success float-right mb-1" href="#" target="_blank">
+            <a id="add-user-btn" class="btn btn-success float-right mb-1" href="javascript:void(0)">
                 Thêm <i class="fas fa-plus"></i>
             </a>
         </div>
@@ -80,8 +79,8 @@
                 @endphp
                 @isset($users)
                 @foreach ($users as $user)
-                <tr id=" user-{{ $user->id }}">
-                    <td>
+                <tr id="u-{{ $user->id }}">
+                    <td class="order">
                         {{ $i++ }}
                     </td>
                     <td id="last_name">
@@ -126,7 +125,7 @@
                     </td>
                     <td>
                         <a class="btn btn-primary btn-sm" href="#" target="_blank"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm" href="#"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="deleteUser(event, {{ $user->id }})"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 @endforeach
@@ -137,18 +136,17 @@
 </div>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="create-user-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create new user</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h5 class="modal-title">Tạo người dùng mới</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                {{-- @include('admin.user.create') --}}
+                @include('admin.user.create')
             </div>
             <div class="modal-footer">
             </div>
@@ -160,30 +158,41 @@
 
 @section('end')
 <script>
-
-
+    // remove row
+    const deleteUser = function (e, userId) {
+        e.preventDefault();
+        if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+            $.ajax({
+                type: "get",
+                url: "{{ route('admin.user.destroy', '') }}" + '/' + userId,
+                success: function (response) {
+                    if (response['return_code'] == 0) {
+                        $('#u-' + userId).animate("fast").animate({
+                            opacity : "hide"
+                        }, "slow", function () {
+                            let nextRows = $(this).nextAll();
+                            let order = parseInt($(this).children('td.order').text());
+                            for (let i = 0; i < nextRows.length; ++i) {
+                                $(nextRows[i]).children('td.order').text(order);
+                                ++order;
+                            }
+                        });
+                    } else {
+                        alert("Có lỗi xảy ra, vui lòng ấn Ctrl + F5");
+                    }
+                },
+                error: function () {
+                    alert("Lỗi kết nối tới máy chủ, vui lòng kiểm tra kết nối mạng.");
+                }
+            });
+        }
+    };
 
 
     $(document).ready(function () {
-        // remove row
-        $tableID.on('click', '.table-remove-btn', function () {
-            let selectedRow = $(this).parents()[1];
-            let userId = $(selectedRow).attr('id').split('-')[1];
-            if (confirm("Are you sure you want to delete this user ?")) {
-                // {{--  $.ajax({
-                //     method: "GET",
-                //     url: "{{ route('admin.user.destroy', '') }}" + '/' + userId,
-
-                //     success: () => {
-                //         notify('Deleted !', 'success');
-                //         $(this).parents('tr').detach();
-                //     },
-                //     failure: () => {
-                //         notify('Error ! Can not delete !', 'error');
-                //     }
-                // }); --}} 
-            }
-        });
+        $('#add-user-btn').on('click', function () {
+            $('#create-user-modal').modal('show');
+        })
 
 
 
@@ -221,6 +230,4 @@
 
 
 </script>
-<script src="{{ asset('js/avatar-upload.js') }}"></script>
-<script src="{{ asset('js/user-create-form.js') }}"></script>
 @endsection

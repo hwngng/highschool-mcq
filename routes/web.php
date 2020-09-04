@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Auth::routes([
     'confirm' => false,
-    'reset' => false
+    'reset' => false,
 ]);
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -57,12 +57,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('index')->get('/', 'AdminController@index');
             Route::name('user.')->prefix('user')->group(function () {
                 Route::name('list')->get('/', 'UserController@index');
-            //     Route::name('create')->post('/create', 'UserController@createUser')->middleware('authorize:admin');
-            //     Route::name('destroy')->get('/destroy/{id}', 'UserController@destroy')->middleware('authorize:admin');
-            //     Route::name('update')->post('/update/{id}', 'UserController@update')->middleware('authorize:admin');
+                Route::name('create')->post('/create', 'UserController@createUser')->middleware('authorize:admin');
+                Route::name('destroy')->get('/destroy/{id}', 'UserController@destroy')->middleware('authorize:admin');
+                //     Route::name('update')->post('/update/{id}', 'UserController@update')->middleware('authorize:admin');
             });
         });
-
 
     // Route::name('student.')
     //     ->prefix('student')
@@ -76,7 +75,6 @@ Route::group(['middleware' => ['auth']], function () {
     //             Route::name('update')->post('/update/{id}', 'WorkHistoryController@updateTestResult')->middleware('authorize:student');
     //             Route::name('finish')->post('/finish', 'WorkHistoryController@completeTest')->middleware('authorize:student');
     //         });
-
 
     //         Route::name('result.')->prefix('result')->group(function () {
     //             Route::name('detail')->get('/{userId}/{testId}', 'WorkHistoryController@getResultByTestIdAnduserId')->middleware('authorize:student');

@@ -13,6 +13,7 @@ cp .env.example .env
 php artisan key:generate
 nano .env
 ```
+Create a database named: `online_math_exam`
 Edit these fields with your database credentials
 ```
 DB_USERNAME=<username>
