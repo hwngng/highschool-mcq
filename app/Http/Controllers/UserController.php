@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Business\UserBus;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -50,9 +50,10 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $userForm)
     {
-
+        $apiResult = $this->getUserBus()->insert($userForm);
+        return response()->json($apiResult->report());
     }
 
     /**
