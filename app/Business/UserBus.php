@@ -2,10 +2,11 @@
 
 namespace App\Business;
 
-use App\DAL\UserDAL;
 use App\Business\BaseBus;
 use App\Business\GradeBus;
 use App\Business\SchoolBus;
+use App\DAL\UserDAL;
+use Illuminate\Support\Facades\Hash;
 
 class UserBus extends BaseBus
 {
@@ -24,7 +25,6 @@ class UserBus extends BaseBus
         return $this->userDAL;
     }
 
-
     public function getAllForAdmin()
     {
         $apiResult = $this->getUserDAL()->getAllForAdmin();
@@ -34,8 +34,6 @@ class UserBus extends BaseBus
 
         return $apiResult;
     }
-
-
 
     public function getById($id)
     {
@@ -49,7 +47,9 @@ class UserBus extends BaseBus
 
     public function insert($user)
     {
+        $user['password'] = Hash::make($user['password']);
         $apiResult = $this->getUserDAL()->insert($user);
+
         return $apiResult;
     }
 

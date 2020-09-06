@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
 <div class="container-fluid">
-    <form class="needs-validation" novalidate action="{{ route('admin.user.create', [], false) }}" id="newUserForm" method="POST">
+    <form class="needs-validation" novalidate action="{{ route('admin.user.store', [], false) }}" id="newUserForm" method="POST">
         @csrf
         <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
@@ -13,7 +13,7 @@
                     <div class="upload-button">
                         <i class="fa fa-arrow-circle-up avatar-hover"></i>
                     </div>
-                    <label for="avatar"> &lt; 2MB</label>
+                    <label for="avatar">&lt; 2MB</label>
                     <input class="file-upload" type="file" accept="image/*" id="avatar" />
                 </div>
             </div>
@@ -194,39 +194,62 @@
                         @enderror
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="parent-name">Tên phụ huynh:</label>
+                        <input type="text" class="form-control @error('parent_name') is-invalid @enderror" id="parent-name"
+                            name="parent_name" placeholder="Vũ Văn Lực" value="{{ old('parent_name') }}">
+                        @error('parent_name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="parent-phone">SĐT phụ huynh:</label>
+                        <input type="text" class="form-control @error('parent_phone') is-invalid @enderror" id="parent-phone"
+                            name="parent_phone" placeholder="0123456789" value="{{ old('parent_phone') }}">
+                        @error('parent_phone')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
 
 
                 <hr class="mb-4">
 
 
-                <button class="btn btn-primary btn-lg btn-block save-button" type="submit"
-                    name="submit-btn">Tiếp tục</button>
+                <button class="btn btn-primary btn-lg btn-block save-button" type="submit">Tạo tài khoản</button>
     </form>
 </div>
-
+@push('end')
 <script src="{{ asset('js/avatar-upload.js') }}"></script>
-<script src="{{ asset('js/user-create-form.js') }}"></script>
-
 <script>
     $('#newUserForm').submit(function (e) {
         e.preventDefault();
 
+        let form_url = $(this).attr("action");
+        let form_method = $(this).attr("method");
         let form_data = $(this).serialize();
+        if (form_data['roles'] == '1') {
+            if (!confirm('Bạn có chắc chắn muốn tạo tài khoản này với quyền Quản trị viên?'))
+                return;
+        }
         $.ajax({
             type: form_method,
             url: form_url,
             data: form_data,
             success: function (response) {
                 if (response['return_code'] == '0') {
-                    if (!confirm("Thêm tài khoản thành công!")) {
-                        close();
-                    } else {
-                        window.location.reload();
-                    }
+                    alert('Thêm tài khoản thành công')
+                    window.location.reload();
                 } else {
-                    alert("Thêm tài khoản thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại tài khoản")
+                    alert('Thêm tài khoản thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại tài khoản')
                 }
             }
         });
     })
 </script>
+@endpush

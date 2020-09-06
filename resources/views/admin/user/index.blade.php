@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('header')
+@section('title', '- Quản lý người dùng')
+
+@push('head')
 <style>
     .col-1 {
         width: 2%;
@@ -15,16 +17,16 @@
         width: 13%;
     }
     .col-5 {
-        width: 15%;
+        width: 11%;
     }
     .col-6 {
-        width: 8%;
+        width: 7%;
     }
     .col-7 {
-        width: 20%;
+        width: 24%;
     }
     .col-8 {
-        width: 11%;
+        width: 12%;
     }
     .col-9 {
         width: 11%;
@@ -38,7 +40,7 @@
         vertical-align: middle;
     }
 </style>
-@endsection
+@endpush
 
 @section('content')
 <div class="container">
@@ -83,44 +85,25 @@
                     <td class="order">
                         {{ $i++ }}
                     </td>
-                    <td id="last_name">
+                    <td>
                         {{ $user->last_name }}
                     </td>
-                    <td id="first_name">
+                    <td>
                         {{ $user->first_name }}
                     </td>
-                    <td id="username">
+                    <td>
                         {{ $user->username }}
                     </td>
                     <td>
-                        <select class=" custom-select d-block w-100" id="role" required>
-                            @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ $user->roles[0]->id == $role->id ? 'selected' : '' }}>
-                                {{ $role->name }} </option>
-                            @endforeach
-                        </select>
+                        {{ $user->roles[0]->name }}
                     </td>
                     <td>
-                        <select class=" custom-select d-block w-100" id="grade_id" required>
-                            <option {{ !isset($user->grade_id) ? 'selected value="-1"' : '' }}>....</option>
-                            @foreach ($grades as $grade)
-                            <option value="{{ $grade->id }}" {{ $user->grade_id == $grade->id ? 'selected' : '' }}>
-                                {{ $grade->id }}
-                            </option>
-                            @endforeach
-                        </select>
+                        {{ $user->grade_id }}
                     </td>
                     <td>
-                        <select class=" custom-select d-block w-100" id="school_id" required>
-                            <option {{ !isset($user->school_id) ? ' selected value="-1" ' : '' }}>....</option>
-                            @foreach ($schools as $school)
-                            <option value="{{ $school->id }}"
-                                {{ $user->school_id == $school->id ? 'selected' : '' }}> {{ $school->name }}
-                            </option>
-                            @endforeach
-                        </select>
+                        {{ $user->school->name ?? '' }}
                     </td>
-                    <td id="phone">
+                    <td>
                         {{ $user->mobile_phone ?? $user->telephone ?? 'Chưa cập nhật' }}
                     </td>
                     <td>
@@ -156,7 +139,7 @@
 @endsection
 
 
-@section('end')
+@push('end')
 <script>
     // remove row
     const deleteUser = function (e, userId) {
@@ -230,4 +213,4 @@
 
 
 </script>
-@endsection
+@endpush

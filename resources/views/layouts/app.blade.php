@@ -8,11 +8,11 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title')</title>
+        <title>Trắc Nghiệm Toán @yield('title')</title>
 
         <link href="{{ asset("css/app.css") }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-        @yield('header')
+        @stack('head')
     </head>
 
     <body class="pt-5">
@@ -119,6 +119,6 @@
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.js') }}"></script>
-    @yield('end')
+    @stack('end')
 
 </html>

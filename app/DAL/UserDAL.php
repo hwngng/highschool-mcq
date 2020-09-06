@@ -24,7 +24,8 @@ class UserDAL extends BaseDAL
             'grade_id',
             'school_id',
             'updated_at')
-            ->with('roles:id')
+            ->with('roles:id,name')
+            ->with('school:id,name')
             ->orderBy('updated_at', 'desc')
             ->get();
 
@@ -59,22 +60,22 @@ class UserDAL extends BaseDAL
         $ret = new ApiResult();
 
         $userORM = new User();
-        $userORM->first_name = $user->first_name;
-        $userORM->last_name = $user->last_name;
-        $userORM->username = $user->username;
-
-        $userORM->password = $user->password;
-
-        $userORM->grade_id = $user->grade_id;
-        $userORM->school_id = $user->school_id;
-        $userORM->role_ids = $user->role_ids;
-
-        $userORM->email = $user->email;
-        $userORM->birthdate = $user->birthdate;
-        $userORM->telephone = $user->telephone;
-        $userORM->address = $user->address;
+        $userORM->first_name = $user['first_name'];
+        $userORM->last_name = $user['last_name'];
+        $userORM->username = $user['username'];
+        $userORM->password = $user['password'];
+        $userORM->grade_id = $user['grade_id'];
+        $userORM->school_id = $user['school_id'];
+        $userORM->email = $user['email'];
+        $userORM->birthdate = $user['birthdate'];
+        $userORM->mobile_phone = $user['mobile_phone'];
+        $userORM->telephone = $user['telephone'];
+        $userORM->address = $user['address'];
+        $userORM->parent_name = $user['parent_name'];
+        $userORM->parent_phone = $user['parent_phone'];
 
         $result = $userORM->save();
+        $userORM->roles()->sync($user['roles']);
 
         if ($result) {
             $ret->fill('0', 'Success');

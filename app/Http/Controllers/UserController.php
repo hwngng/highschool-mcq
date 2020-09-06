@@ -52,7 +52,10 @@ class UserController extends Controller
      */
     public function store(UserRequest $userForm)
     {
+        $user = $userForm->all();
+        $user['roles'] = [$user['roles']];
         $apiResult = $this->getUserBus()->insert($userForm);
+
         return response()->json($apiResult->report());
     }
 
