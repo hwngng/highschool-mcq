@@ -1,23 +1,50 @@
-let uploadBtn = $('.upload-button');
-let uploadForm = $('.file-upload');
+$(document).ready(function () {
+    $('.file-upload').on('change', function () {
+        if (this.files && this.files[0]) {
+            let $files = $(this).get(0).files;
+            if ($files[0].size > 5 * 1024 * 1024) {
+                alert('Ảnh cần nhỏ hơn 5MB');
+                return false;
+            }
 
+            let apiUrl = 'https://api.imgur.com/3/image';
+            let apiKey = '6eccc15117fbe14';
 
-let readURL = function (input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
+            let settings = {
+                async: false,
+                crossDomain: true,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                url: apiUrl,
+                headers: {
+                Authorization: 'Client-ID ' + apiKey,
+                Accept: 'application/json',
+                },
+            };
 
-        reader.onload = function (e) {
-            $('.profile-pic').attr('src', e.target.result);
+            let formData = new FormData();
+            formData.append('image', $files[0]);
+            settings.data = formData;
+
+            $.ajax(settings).done(function (response) {
+                let imgUrl = response.data.link;
+                for (let i = imgUrl.length-1; i >= 1; --i) {
+                    if (imgUrl[i] == '/') {
+                        imgUrl = imgUrl + 't';
+                    }
+                    if (imgUrl[i] == '.') {
+                        imgUrl = imgUrl.slice(0, i) + 't' + imgUrl.slice(i);
+                        break;
+                    }
+                }
+                $('.profile-pic').attr('src', imgUrl);
+                $('#avatar').val(imgUrl);
+            });
         }
+    });
 
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-uploadForm.on('change', function () {
-    readURL(this);
-});
-
-uploadBtn.on('click', function () {
-    $(".file-upload").click();
+    $('.upload-button').on('click', function () {
+        $(".file-upload").click();
+    });
 });

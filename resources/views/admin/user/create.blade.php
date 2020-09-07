@@ -1,4 +1,7 @@
+@push('head')
 <link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
+@endpush
+
 <div class="container-fluid">
     <form class="needs-validation" novalidate action="{{ route('admin.user.store', [], false) }}" id="newUserForm" method="POST">
         @csrf
@@ -13,8 +16,8 @@
                     <div class="upload-button">
                         <i class="fa fa-arrow-circle-up avatar-hover"></i>
                     </div>
-                    <label for="avatar">&lt; 2MB</label>
-                    <input class="file-upload" type="file" accept="image/*" id="avatar" />
+                    <input class="file-upload" type="file" accept="image/*"/>
+                    <input type="hidden" name="avatar" id="avatar">
                 </div>
             </div>
             <div class="col-md-8 order-md-1">
@@ -147,6 +150,7 @@
                     <div class="col-md-5 mb-3">
                         <label for="grade">Học sinh khối:</label>
                         <select class=" custom-select d-block w-100 @error('password') is-invalid @enderror" id="grade" name="grade_id">
+                            <option>Chọn...</option>
                             @foreach ($grades as $grade)
                             <option value="{{ $grade->id }}">
                                 {{ $grade->id }}
@@ -162,7 +166,7 @@
                     <div class="col-md-7 mb-3">
                         <label for="school">Trường học:</label>
                         <select class=" custom-select d-block w-100 @error('password') is-invalid @enderror" id="school" name="school_id">
-                            <option value="">Chọn...</option>
+                            <option>Chọn...</option>
                             @foreach ($schools as $school)
                             <option value="{{ $school->id }}">{{ $school->name }}</option>
                             @endforeach
@@ -224,6 +228,7 @@
                 <button class="btn btn-primary btn-lg btn-block save-button" type="submit">Tạo tài khoản</button>
     </form>
 </div>
+
 @push('end')
 <script src="{{ asset('js/avatar-upload.js') }}"></script>
 <script>

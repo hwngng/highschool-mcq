@@ -73,6 +73,7 @@ class UserDAL extends BaseDAL
         $userORM->address = $user['address'];
         $userORM->parent_name = $user['parent_name'];
         $userORM->parent_phone = $user['parent_phone'];
+        $userORM->avatar = $user['avatar'];
 
         $result = $userORM->save();
         $userORM->roles()->sync($user['roles']);

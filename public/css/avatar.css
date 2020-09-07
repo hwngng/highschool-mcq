@@ -1,8 +1,11 @@
+.file-upload {
+    display: none;
+}
 .avatar-wrapper {
+    display: flex;
     position: relative;
     height: 150px;
     width: 150px;
-    font-size: 150px;
     margin: 50px auto;
     border-radius: 50%;
     overflow: hidden;
@@ -19,10 +22,11 @@
     opacity: .5;
 }
 
-.avatar-wrapper .profile-pic {
-    height: 100%;
-    width: 100%;
+.profile-pic {
+    max-height: 100%;
+    max-width: 100%;
     transition: all .3s ease;
+    margin: auto;
 }
 
 .avatar-wrapper .profile-pic:after {
@@ -63,16 +67,7 @@
 }
 
 .avatar-hover {
-    font-size: inherit !important;
+    font-size: 150px !important;
     top: 0 !important;
     transform: scale(1.05);
 }
-
-/* input,
-button {
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: 0;
-}
- */
