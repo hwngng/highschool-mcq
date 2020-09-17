@@ -291,7 +291,7 @@
 				if (question_id) {
 					$.ajax({
 						type: "get",
-						url: "{{ route('teacher.question.get', '', false) }}"+`/${question_id}`,
+						url: "{{ route('teacher.question.show', '', false) }}" + '/' + question_id,
 						dataType: "json",
 						success: function (response) {
 							console.log(response);

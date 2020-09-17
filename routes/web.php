@@ -57,9 +57,10 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('index')->get('/', 'AdminController@index');
             Route::name('user.')->prefix('user')->group(function () {
                 Route::name('list')->get('/', 'UserController@index');
-                Route::name('store')->post('/store', 'UserController@store')->middleware('authorize:admin');
-                Route::name('destroy')->get('/destroy/{id}', 'UserController@destroy')->middleware('authorize:admin');
-                //     Route::name('update')->post('/update/{id}', 'UserController@update')->middleware('authorize:admin');
+                Route::name('show')->get('/{id}', 'UserController@show');
+                Route::name('store')->post('/store', 'UserController@store');
+                Route::name('destroy')->get('/destroy/{id}', 'UserController@destroy');
+                Route::name('update')->post('/update', 'UserController@update');
             });
         });
 

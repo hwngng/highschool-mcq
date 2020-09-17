@@ -27,6 +27,8 @@ $(document).ready(function () {
             formData.append('image', $files[0]);
             settings.data = formData;
 
+            let avatarWrapper = $(this).parent();
+
             $.ajax(settings).done(function (response) {
                 let imgUrl = response.data.link;
                 for (let i = imgUrl.length-1; i >= 1; --i) {
@@ -38,13 +40,13 @@ $(document).ready(function () {
                         break;
                     }
                 }
-                $('.profile-pic').attr('src', imgUrl);
-                $('#avatar').val(imgUrl);
+                avatarWrapper.find('.profile-pic').attr('src', imgUrl);
+                avatarWrapper.find('.avatar-url').val(imgUrl);
             });
         }
     });
 
     $('.upload-button').on('click', function () {
-        $(".file-upload").click();
+        $(this).parent().find(".file-upload").click();
     });
 });

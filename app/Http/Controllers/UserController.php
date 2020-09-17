@@ -67,7 +67,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $apiResult = $this->getUserBus()->getById($id);
 
+        return response()->json($apiResult->user);
     }
 
     /**
@@ -87,9 +89,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update(UserRequest $userRequest)
     {
+        $apiResult = $this->getUserBus()->update($userRequest);
 
+        return response()->json($apiResult->report());
     }
 
     /**

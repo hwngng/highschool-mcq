@@ -127,16 +127,20 @@
 				success: function (response) {
 					if (response['return_code'] == '0') {
 						@if ($action == 'create')
-						if (!confirm("Thêm câu hỏi thành công!\nBạn có muốn tiếp tục tạo câu hỏi?")) {
-							close();
-						} else {
-							window.location.reload();
-						}
+							if (!confirm("Thêm câu hỏi thành công!\nBạn có muốn tiếp tục tạo câu hỏi?")) {
+								close();
+							} else {
+								window.location.reload();
+							}
 						@else
 							close();
 						@endif
 					} else {
-						alert("Thêm câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.")
+						@if ($action == 'create')
+							alert("Thêm câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.");
+						@else
+							alert("Cập nhật câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.");
+						@endif
 					}
 				}
 			});

@@ -6,7 +6,6 @@ use App\Common\ApiResult;
 use App\DAL\BaseDAL;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class UserDAL extends BaseDAL
 {
@@ -19,11 +18,10 @@ class UserDAL extends BaseDAL
             'email',
             'last_name',
             'first_name',
-            'mobile_phone',
-            'telephone',
             'grade_id',
             'school_id',
-            'updated_at')
+            'mobile_phone',
+            'telephone')
             ->with('roles:id,name')
             ->with('school:id,name')
             ->orderBy('updated_at', 'desc')
@@ -34,25 +32,24 @@ class UserDAL extends BaseDAL
 
     public function getById($id)
     {
-        $ret = new ApiResult();
-        $user = User::select(
-            DB::raw(
-                'id,
-                username,
-                email,
-                last_name,
-                avatar,
-                first_name,
-                birthdate,
-                telephone,
-                address,
-                role_ids as role_id,
-                grade_id,
-                school_id'
-            )
-        )->where('id', $id)->first();
-        $ret->user = $user;
-        return $ret;
+        $apiResult = new ApiResult();
+        $apiResult->user = User::select('id',
+            'username',
+            'avatar',
+            'email',
+            'last_name',
+            'first_name',
+            'birthdate',
+            'address',
+            'grade_id',
+            'school_id',
+            'mobile_phone',
+            'telephone')
+            ->with('roles:id')
+            ->where('id', $id)
+            ->first();
+
+        return $apiResult;
     }
 
     public function insert($user)
@@ -95,16 +92,16 @@ class UserDAL extends BaseDAL
             if (isset($user['id'])) {
                 $userORM = User::find($user['id']);
 
+                if (isset($user['avatar'])) {
+                    $userORM->avatar = $user['avatar'];
+                }
+
                 if (isset($user['first_name'])) {
                     $userORM->first_name = $user['first_name'];
                 }
 
                 if (isset($user['last_name'])) {
                     $userORM->last_name = $user['last_name'];
-                }
-
-                if (isset($user['username'])) {
-                    $userORM->username = $user['username'];
                 }
 
                 if (isset($user['email'])) {
@@ -119,8 +116,8 @@ class UserDAL extends BaseDAL
                     $userORM->school_id = $user['school_id'];
                 }
 
-                if (isset($user['role_ids'])) {
-                    $userORM->role_ids = $user['role_ids'];
+                if (isset($user['roles'])) {
+                    $userORM->roles()->sync($user['roles']);
                 }
 
                 if (isset($user['grade_id'])) {
@@ -133,6 +130,10 @@ class UserDAL extends BaseDAL
 
                 if (isset($user['telephone'])) {
                     $userORM->telephone = $user['telephone'];
+                }
+
+                if (isset($user['mobile_phone'])) {
+                    $userORM->mobile_phone = $user['mobile_phone'];
                 }
 
                 $result = $userORM->save();

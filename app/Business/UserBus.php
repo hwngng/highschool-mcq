@@ -39,9 +39,6 @@ class UserBus extends BaseBus
     {
         $apiResult = $this->getUserDAL()->getById($id);
 
-        $apiResult->grades = $this->gradeBus->getAllId()->grades;
-        $apiResult->schools = $this->schoolBus->getAll()->schools;
-
         return $apiResult;
     }
 
