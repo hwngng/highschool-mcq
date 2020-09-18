@@ -19,6 +19,12 @@ Auth::routes([
 ]);
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::name('upload.')
+    ->prefix('upload')
+    ->group(function () {
+        Route::name('index')->get('/', 'UploadController@index');
+        Route::name('store')->post('/', 'UploadController@store');
+    });
 
 Route::group(['middleware' => ['auth']], function () {
 
