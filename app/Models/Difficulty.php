@@ -11,7 +11,6 @@ class Difficulty extends Model
     public $timestamps = false;
     protected $guarded = array('id');
     protected $fillable = array('name', 'description');
-
     public function questions ()
     {
         return $this->hasMany('App\Models\Question', 'question_id', 'id');
