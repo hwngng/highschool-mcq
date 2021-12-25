@@ -11,14 +11,14 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'users';
-    public $timestamps = true;
+    protected $table = 'user';
+    public $timestamps = false;
 
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'created_at'];
     protected $guarded = array('id', 'username', 'password', 'remember_token', 'email_verified_at');
-    protected $fillable = array('email', 'first_name', 'last_name', 'avatar', 'birthdate', 'mobile_phone', 'telephone', 'school_id', 'grade_id', 'address', 'district_id', 'parent_name', 'parent_phone', 'description', 'created_by', 'updated_by', 'deleted_by');
+    protected $fillable = array('email', 'first_name', 'last_name', 'avatar', 'birthdate', 'mobile_phone', 'telephone', 'grade_id', 'address', 'description', 'created_by', 'deleted_by');
     protected $hidden = array('password', 'remember_token');
 
     public function getAuthPassword()
@@ -26,9 +26,13 @@ class User extends Authenticatable
       return $this->password;
     }
 
-    public function school ()
+    public static function boot()
     {
-        return $this->belongsTo('App\Models\School', 'school_id', 'id');
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = $model->freshTimestamp();
+        });
     }
 
     public function grade ()
@@ -36,24 +40,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Grade', 'grade_id', 'id');
     }
 
-    public function ward ()
+    public function school ()
     {
-        return $this->belongsTo('App\Models\Ward', 'ward_id', 'id');
-    }
-
-    public function createdBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'created_by', 'id');
-    }
-
-    public function updatedBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'updated_by', 'id');
-    }
-
-    public function deletedBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'deleted_by', 'id');
+        return $this->belongsTo('App\Models\School', 'school_id', 'id');
     }
 
     public function classes ()
@@ -71,7 +60,6 @@ class User extends Authenticatable
      {
         return $this->belongsToMany('App\Models\Role', 'user_role', 'user_id', 'role_id');
     }
-
 
     public function hasARoleIn ($requiredRoles)
     {

@@ -2,7 +2,7 @@
 
 @section('title', '- Đề thi')
 
-@section('header')
+@push('header')
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
 		extensions: ["tex2jax.js"],
@@ -42,7 +42,7 @@
 			width: 10%;
 		}
 	</style>
-@endsection
+@endpush
 
 @section('content')
 	<div class="container">
@@ -80,7 +80,7 @@
 				            <td>{{ $test->no_of_questions }}</td>
 				            <td>{{ $test->duration }}</td>
 				            <td>{{ $test->createdBy->username }}</td>
-				            <td>{{ $test->created_at }}</td>
+				            <td>{{ $test->created_at_diff }}</td>
 				            <td>{{ $test->description }}</td>
 				            <td>
 				                <a class="btn btn-primary btn-sm" href="{{ route('teacher.test.edit', $test->id) }}" target="_blank"><i class="fas fa-edit"></i></a>

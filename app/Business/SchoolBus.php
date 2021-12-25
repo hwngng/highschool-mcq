@@ -7,19 +7,17 @@ class SchoolBus extends BaseBus
 {
 	private $schoolDAL;
 
-	public function __construct()
+	private function getSchoolDAL ()
 	{
-		$this->schoolDAL = new SchoolDAL();
-	}
-
-	public function getSchoolDAL ()
-	{
+		if (!$this->schoolDal) {
+			$this->schoolDAL = new SchoolDAL();
+		}
 		return $this->schoolDAL;
 	}
 
     public function getAll ()
 	{
-		return $this->schoolDAL->getAll();
+		return $this->getSchoolDAL()->getAll();
 	}
 
 

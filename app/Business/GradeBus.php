@@ -7,13 +7,11 @@ class GradeBus extends BaseBus
 {
 	private $gradeDAL;
 
-	public function __construct()
+	private function getGradeDAL ()
 	{
-		$this->gradeDAL = new GradeDAL();
-	}
-
-	public function getGradeDAL ()
-	{
+		if (!$this->gradeDAL) {
+			$this->gradeDAL = new GradeDAL();
+		}
 		return $this->gradeDAL;
 	}
 

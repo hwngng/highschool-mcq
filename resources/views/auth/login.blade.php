@@ -4,11 +4,9 @@
 
 
 
-@section('header')
+@push('header')
 <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-
-
-@endsection
+@endpush
 
 @section('content')
 <div class="container">

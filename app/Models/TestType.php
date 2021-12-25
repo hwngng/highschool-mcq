@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TestType extends Model 
 {
 
-    protected $table = 'test_types';
+    protected $table = 'test_type';
     public $timestamps = false;
     protected $guarded = array('id');
     protected $fillable = array('name', 'description');
@@ -16,4 +16,6 @@ class TestType extends Model
     {
         return $this->hasMany('App\Models\Test', 'test_type_id', 'id');
     }
+
+    public static $TESTTYPE = ['private' => '0', 'public' => '1'];
 }

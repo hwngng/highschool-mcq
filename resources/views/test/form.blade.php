@@ -1,4 +1,4 @@
-@section('header')
+@push('header')
 	<script type="text/x-mathjax-config">
 		MathJax.Hub.Config({
 			extensions: ["tex2jax.js"],
@@ -47,7 +47,7 @@
 			font-weight: normal;
 		}
 	</style>
-@endsection
+@endpush
 
 <form method="post" action="{{ $action == 'create' ? route('teacher.test.store', [], false) : route('teacher.test.update', [], false) }}" id="test">
 	@csrf
@@ -230,7 +230,7 @@
 
 
 
-@section('end')
+@push('end')
 <script>
 	$(document).ready(function () {
 		let quantity = $('#quantity');
@@ -291,7 +291,7 @@
 				if (question_id) {
 					$.ajax({
 						type: "get",
-						url: "{{ route('teacher.question.show', '', false) }}" + '/' + question_id,
+						url: "{{ route('teacher.question.get', '', false) }}" + '/' + question_id,
 						dataType: "json",
 						success: function (response) {
 							console.log(response);
@@ -368,4 +368,4 @@
 	});
 
 </script>
-@endsection
+@endpush

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Choice extends Model 
 {
 
-    protected $table = 'choices';
+    protected $table = 'choice';
     public $timestamps = false;
     protected $guarded = array('id');
     protected $fillable = array('question_id', 'content', 'is_solution');

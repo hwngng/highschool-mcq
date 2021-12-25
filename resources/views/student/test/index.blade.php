@@ -2,7 +2,7 @@
 
 @section('title', 'Danh sách bài thi')
 
-@section('header')
+@push('header')
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
 		extensions: ["tex2jax.js"],
@@ -12,7 +12,7 @@
 <script type="text/javascript" src="{{ asset('js/mathjax/tex-chtml.js') }}"></script>
 {{-- <script type="text/javascript" async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script> --}}
-@endsection
+@endpush
 
 @section('content')
 <div class="container">
@@ -46,7 +46,7 @@
                         <td>{{ $test->no_of_questions }}</td>
                         <td>{{ $test->duration }}</td>
                         <td>{{ $test->createdBy->first_name }}</td>
-                        <td>{{ $test->created_at }}</td>
+                        <td>{{ $test->created_at_diff }}</td>
                         <td>{{ $test->description }}</td>
                         <td>
                             <a class="btn btn-primary btn-sm" href=" {{ route('student.test.start',$test->id) }}"><i

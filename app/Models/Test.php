@@ -13,43 +13,23 @@ class Test extends Model
 
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
-    protected $guarded = array('id', 'code');
-    protected $fillable = array('origin', 'test_matrix_id', 'grade_id', 'name', 'description', 'no_of_questions', 'created_by', 'updated_by', 'deleted_by');
-
-    public function origin ()
-    {
-        return $this->belongsTo('App\Models\Test', 'origin', 'id');
-    }
-
-    public function testMatrix ()
-    {
-        return $this->belongsTo('App\Models\TestMatrix', 'test_matrix_id', 'id');
-    }
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $guarded = array('id');
+    protected $fillable = array('test_code', 'grade_id', 'subject_id', 'name', 'description', 'no_of_questions', 'test_type_id', 'created_by', 'updated_by', 'deleted_by');
 
     public function grade ()
     {
         return $this->belongsTo('App\Models\Grade', 'grade_id', 'id');
     }
 
+    public function subject ()
+    {
+        return $this->belongsTo('App\Models\Subject', 'subject_id', 'id');
+    }
+
     public function testType ()
     {
         return $this->belongsTo('App\Models\TestType', 'test_type_id', 'id');
-    }
-
-    public function createdBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'created_by', 'id');
-    }
-
-    public function updatedBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'updated_by', 'id');
-    }
-
-    public function deletedBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'deleted_by', 'id');
     }
 
     public function questions ()
@@ -58,13 +38,19 @@ class Test extends Model
                     ->withPivot('question_order', 'answer_order');
     }
 
-    public function classTests ()
+    public function classes ()
     {
-        return $this->hasMany('App\Models\ClassTest', 'test_id', 'id');
+        return $this->belongsToMany('App\Models\Class', 'class_test', 'test_id', 'class_id')
+                    ->withPivot('start_at', 'created_at', 'created_by');
     }
 
     public function workHistories ()
     {
         return $this->hasMany('App\Models\WorkHistory', 'test_id', 'id');
+    }
+
+    public function createdBy ()
+    {
+        return $this->belongsTo('App\Models\User', 'created_by', 'id');
     }
 }

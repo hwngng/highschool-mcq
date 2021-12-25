@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Grade extends Model 
 {
 
-    protected $table = 'grades';
+    protected $table = 'grade';
     public $timestamps = false;
     protected $guarded = array('id');
-
-    public function subjects ()
-    {
-        return $this->hasMany('App\Models\Subject', 'grade_id', 'id');
-    }
+    protected $fillable = array('description');
 
     public function tests ()
     {
         return $this->hasMany('App\Models\Test', 'grade_id', 'id');
+    }
+
+    public function questions ()
+    {
+        return $this->hasMany('App\Models\Question', 'grade_id', 'id');
     }
 
     public function classes ()

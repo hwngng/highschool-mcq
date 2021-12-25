@@ -15,7 +15,6 @@ class SchoolDAL extends BaseDAL
         $apiResult = new ApiResult();
 
         $apiResult->schools = School::select('id', 'name', 'address')->get();
-        
         return $apiResult;
     }
 }

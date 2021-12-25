@@ -1,86 +1,89 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Common\ApiResult;
+use App\Business\GradeBus;
+use App\Business\QuestionBus;
+use App\Http\Requests\QuestionRequest;
 
-class QuestionController extends Controller 
+class QuestionController extends Controller
 {
+    private $questionBus;
+    private $gradeBus;
+    private function getQuestionBus ()
+    {
+        if ($this->questionBus == null)
+        {
+            $this->questionBus = new QuestionBus();
+        }
+        return $this->questionBus;
+    }
+    private function getGradeBus ()
+    {
+        if ($this->gradeBus == null)
+        {
+            $this->gradeBus = new GradeBus();
+        }
+        return $this->gradeBus;
+    }
 
-  /**
-   * Display a listing of the resource.
-   *
-   * @return Response
-   */
-  public function index()
-  {
-    
-  }
+    public function index ()
+    {
+        $apiResult = $this->getQuestionBus()->getAll();
+        $viewData = [
+            'questions' => $apiResult->questions
+        ];
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return Response
-   */
-  public function create()
-  {
-    
-  }
+        return view('question.index', $viewData);
+    }
 
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @return Response
-   */
-  public function store(Request $request)
-  {
-    
-  }
+    public function getById ($id)
+    {
+        $apiResult = $this->getQuestionBus()->getById($id);
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return Response
-   */
-  public function show($id)
-  {
-    
-  }
+        return response()->json($apiResult->report('question'));
+    }
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return Response
-   */
-  public function edit($id)
-  {
-    
-  }
+    public function create ()
+    {
+        $apiResult = $this->getGradeBus()->getAllId();
+        $viewData = [
+            'grades' => $apiResult->grades
+        ];
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  int  $id
-   * @return Response
-   */
-  public function update($id)
-  {
-    
-  }
+        return view('question.create', $viewData);
+    }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return Response
-   */
-  public function destroy($id)
-  {
-    
-  }
-  
+    public function store (QuestionRequest $questionRequest)
+    {
+        $apiResult = $this->getQuestionBus()->insert($questionRequest);
+        
+        return response()->json($apiResult->report());
+    }
+
+    public function edit ($questionId)
+    {
+        $apiResultQuestion = $this->getQuestionBus()->getById($questionId);
+        $apiResultGrade = $this->getGradeBus()->getAllId();
+        $viewData = [
+            'question' => $apiResultQuestion->question,
+            'grades' => $apiResultGrade->grades
+        ];
+
+        return view('question.edit', $viewData);
+    }
+
+    public function update (QuestionRequest $questionRequest)
+    {
+        $apiResult = $this->getQuestionBus()->update($questionRequest);
+
+        return response()->json($apiResult->report());
+    }
+
+    public function destroy ($questionId)
+    {
+        $apiResult = $this->getQuestionBus()->destroy($questionId);
+        return response()->json($apiResult->report());
+    }
 }
-
-?>

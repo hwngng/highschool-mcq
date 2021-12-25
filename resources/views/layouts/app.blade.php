@@ -11,8 +11,9 @@
         <title>Trắc Nghiệm Toán @yield('title')</title>
 
         <link href="{{ asset("css/app.css") }}" rel="stylesheet">
+        <link href="{{ asset("css/common.css") }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-        @stack('head')
+        @stack('header')
     </head>
 
     <body class="pt-5">
@@ -55,7 +56,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">Quản Trị Viên</a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{{  route('admin.user.list') }}">Danh sách thành viên</a>
+                                {{-- <a class="dropdown-item" href="{{  route('admin.user.list') }}">Danh sách thành viên</a> --}}
                             </div>
 
                         </li>
@@ -65,9 +66,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">Giáo Viên</a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                {{-- <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Quản Lý Đề Thi</a>
+                                <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Quản Lý Đề Thi</a>
                                 <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Quản Lý Câu Hỏi</a>
-                                <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Kết quả</a> --}}
+                                <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Kết quả</a>
                                 @yield('dropdown-teacher')
                             </div>
                         </li>
@@ -77,9 +78,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown">Học sinh</a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                {{-- <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
+                                <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
                                 <a class="dropdown-item" href="{{ route('student.result.list',Auth::user()->id) }}">Bảng điểm</a>
-                                <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ sơ cá nhân</a> --}}
+                                <a class="dropdown-item" href="{{ route('student.about',Auth::user()->id) }}">Hồ sơ cá nhân</a>
                                 @yield('dropdown-student')
                             </div>
                         </li>                            

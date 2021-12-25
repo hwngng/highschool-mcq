@@ -1,9 +1,10 @@
-@section('header')
+@push('header')
 <style>
 .solution {
 	margin-left: 20em;
 }
 </style>
+@endpush
 
 <form method="POST" action="{{ $action == 'create' ? route('teacher.question.store', [], false) : route('teacher.question.update', [], false) }}" id="form">
     @csrf
@@ -66,7 +67,7 @@
 	</div>
 </form>
 
-@section('end')
+@push('end')
 <script src="https://cdn.ckeditor.com/4.12.0/standard-all/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('content', {
@@ -147,4 +148,4 @@
 		})
     });
 </script>
-@endsection
+@endpush
