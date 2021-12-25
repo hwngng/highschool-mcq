@@ -6,7 +6,7 @@
 
 @endsection
 
-@section('header')
+@push('header')
 
 <style>
 
@@ -31,7 +31,7 @@
     }
 </style>
 
-@endsection
+@endpush
 
 @section('content')
 <div class="container">

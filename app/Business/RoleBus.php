@@ -12,7 +12,7 @@ class RoleBus extends BaseBus
 		$this->roleDAL = new RoleDAL();
 	}
 
-	public function getRoleDAL ()
+	private function getRoleDAL ()
 	{
 		return $this->roleDAL;
 	}

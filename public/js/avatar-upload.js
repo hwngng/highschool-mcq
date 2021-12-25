@@ -7,41 +7,33 @@ $(document).ready(function () {
                 return false;
             }
 
-            let apiUrl = 'https://api.imgur.com/3/image';
-            let apiKey = '6eccc15117fbe14';
-
-            let settings = {
-                async: false,
-                crossDomain: true,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                url: apiUrl,
-                headers: {
-                Authorization: 'Client-ID ' + apiKey,
-                Accept: 'application/json',
-                },
-            };
+            let apiUrl = 'https://api.imgbb.com/1/upload';
+            let apiKey = '2abbdd342509eceb81fddd96b6bc9e83';
 
             let formData = new FormData();
             formData.append('image', $files[0]);
-            settings.data = formData;
 
             let avatarWrapper = $(this).parent();
 
-            $.ajax(settings).done(function (response) {
-                let imgUrl = response.data.link;
-                for (let i = imgUrl.length-1; i >= 1; --i) {
-                    if (imgUrl[i] == '/') {
-                        imgUrl = imgUrl + 't';
+            $.ajax({
+                method: 'post',
+                url: apiUrl + '?key=' + apiKey,
+                contentType: false,
+                dataType: 'json',
+                data: formData,
+                processData: false,
+
+                success: function (response) {
+                    if (response.success == true) {
+                        let imgUrl = response.data.thumb.url;
+                        
+                        avatarWrapper.find('.profile-pic').attr('src', imgUrl);
+                        avatarWrapper.find('.avatar-url').val(imgUrl);
                     }
-                    if (imgUrl[i] == '.') {
-                        imgUrl = imgUrl.slice(0, i) + 't' + imgUrl.slice(i);
-                        break;
-                    }
+                },
+                error: function (response) {
+                    console.log(response);
                 }
-                avatarWrapper.find('.profile-pic').attr('src', imgUrl);
-                avatarWrapper.find('.avatar-url').val(imgUrl);
             });
         }
     });

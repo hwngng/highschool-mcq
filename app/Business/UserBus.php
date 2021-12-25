@@ -6,31 +6,54 @@ use App\Business\BaseBus;
 use App\Business\GradeBus;
 use App\Business\SchoolBus;
 use App\DAL\UserDAL;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserBus extends BaseBus
 {
     private $userDAL;
+    private $gradeBus;
+    private $schoolBus;
+    private $roleBus;
 
-    public function __construct()
+    private function getUserDAL()
     {
-        $this->userDAL = new UserDAL();
-        $this->gradeBus = new GradeBus();
-        $this->schoolBus = new SchoolBus();
-        $this->roleBus = new RoleBus();
+        if (!$this->userDAL) {
+            $this->userDAL = new UserDAL();
+        }
+        return $this->userDAL;
     }
 
-    public function getUserDAL()
+    private function getGradeBus()
     {
-        return $this->userDAL;
+        if (!$this->gradeBus) {
+            $this->gradeBus = new GradeBus();
+        }
+        return $this->gradeBus;
+    }
+
+    private function getSchoolBus()
+    {
+        if (!$this->schoolBus) {
+            $this->schoolBus = new SchoolBus();
+        }
+        return $this->schoolBus;
+    }
+
+    private function getRoleBus()
+    {
+        if (!$this->roleBus) {
+            $this->roleBus = new RoleBus();
+        }
+        return $this->roleBus;
     }
 
     public function getAllForAdmin()
     {
         $apiResult = $this->getUserDAL()->getAllForAdmin();
-        $apiResult->grades = $this->gradeBus->getAllId()->grades;
-        $apiResult->schools = $this->schoolBus->getAll()->schools;
-        $apiResult->roles = $this->roleBus->getAll()->roles;
+        $apiResult->grades = $this->getGradeBus()->getAllId()->grades;
+        $apiResult->schools = $this->getSchoolBus()->getAll()->schools;
+        $apiResult->roles = $this->getRoleBus()->getAll()->roles;
 
         return $apiResult;
     }
@@ -42,6 +65,13 @@ class UserBus extends BaseBus
         return $apiResult;
     }
 
+        
+    /**
+     * insert
+     *
+     * @param  array $user
+     * @return \App\Common\ApiResult
+     */
     public function insert($user)
     {
         $user['password'] = Hash::make($user['password']);

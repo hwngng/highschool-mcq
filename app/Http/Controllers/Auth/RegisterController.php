@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Business\UserBus;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -30,6 +32,7 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    private $userBus;
 
     /**
      * Create a new controller instance.
@@ -39,6 +42,14 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    private function getUserBus()
+    {
+        if ($this->userBus == null) {
+            $this->userBus = new UserBus();
+        }
+        return $this->userBus;
     }
 
     /**
@@ -52,7 +63,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
-            'username' => ['required', 'string', 'max:50', 'unique:users'],
+            'username' => ['required', 'string', 'max:50', 'unique:user'],
             'password' => ['required', 'string', 'min:6', 'max:32', 'confirmed'],
         ]);
     }
@@ -65,13 +76,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = new User();
-        $user->first_name = $data['first_name'];
-        $user->last_name = $data['last_name'];
-        $user->username = $data['username'];
-        $user->password = Hash::make($data['password']);
-        $user->save();
-        $user->roles()->sync([3]);
-        return $user;
+        // student by default
+        $data['roles'] = [Role::$ROLE['student']];
+        $apiResult = $this->getUserBus()->insert($data);
+        if (isset($apiResult->user)) {
+            return $apiResult->user;
+        } else {
+            return $apiResult->report();
+        }
     }
 }

@@ -8,38 +8,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Question extends Model 
 {
 
-    protected $table = 'questions';
-    public $timestamps = true;
+    protected $table = 'question';
+    public $timestamps = false;
 
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at', 'deleted_at'];
     protected $guarded = array('id', 'deleted_at');
-    protected $fillable = array('content', 'topic_id', 'difficulty_id', 'solution', 'created_by', 'updated_by', 'deleted_by');
+    protected $fillable = array('content', 'subject_id', 'grade_id', 'solution', 'created_by', 'updated_by', 'deleted_by');
 
-    public function topic ()
+    public static function boot()
     {
-        return $this->belongsTo('App\Models\Topic', 'topic_id', 'id');
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_at = $model->freshTimestamp();
+        });
     }
 
-    public function difficulty ()
+    public function subject ()
     {
-        return $this->belongsTo('App\Models\Difficulty', 'difficulty_id', 'id');
+        return $this->belongsTo('App\Models\Subject', 'subject_id', 'id');
     }
 
-    public function createdBy ()
+    public function grade ()
     {
-        return $this->belongsTo('App\Models\User', 'created_by', 'id');
-    }
-
-    public function updatedBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'updated_by', 'id');
-    }
-
-    public function deletedBy ()
-    {
-        return $this->belongsTo('App\Models\User', 'deleted_by', 'id');
+        return $this->belongsTo('App\Models\Grade', 'grade_id', 'id');
     }
 
     public function choices ()

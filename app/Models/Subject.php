@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Subject extends Model 
 {
 
-    protected $table = 'subjects';
+    protected $table = 'subject';
     public $timestamps = false;
     protected $guarded = array('id');
-    protected $fillable = array('name', 'description', 'grade_id');
+    protected $fillable = array('name', 'description');
 
-    public function grade ()
+    public function questions ()
     {
-        return $this->belongsTo('App\Models\Grade', 'grade_id', 'id');
+        return $this->hasMany('App\Models\Question', 'grade_id', 'id');
     }
 
-    public function chapters ()
+    public function tests ()
     {
-        return $this->hasMany('App\Models\Chapter', 'subject_id', 'id');
+        return $this->hasMany('App\Models\Test', 'grade_id', 'id');
     }
 }

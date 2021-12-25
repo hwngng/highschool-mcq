@@ -2,7 +2,7 @@
 
 @section('title',$test->name )
 
-@section('header')
+@push('header')
 
 <link rel="stylesheet" href="{{ asset('css/exam.css') }}">
 <script type="text/x-mathjax-config">
@@ -20,7 +20,7 @@
         font-weight: normal;
     }
 </style>
-@endsection
+@endpush
 
 @section('content')
 
@@ -103,11 +103,10 @@
         </div>
     </div>
 </div>
-
-
-
 @endsection
-@section('end')
+
+
+@push('end')
 <script src="{{ asset('js/doing-test.js') }}"></script>
 <script>
     @if($test->remain == 0 )
@@ -226,4 +225,4 @@
 
 </script>
 
-@endsection
+@endpush

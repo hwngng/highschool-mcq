@@ -6,15 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkHistory extends Model 
 {
-
-    protected $table = 'work_histories';
+    protected $table = 'work_history';
     public $timestamps = false;
     protected $guarded = array('id', 'started_at', 'ended_at', 'submitted_at');
-    protected $fillable = array('user_id', 'test_id', 'no_of_correct', 'note');
+    protected $fillable = array('user_id', 'test_id', 'test_code', 'no_of_correct', 'note');
 
-    public function test ()
+    public function scopeTest ($query)
     {
-        return $this->belongsTo('App\Models\Test', 'test_id', 'id');
+        return $query->join('test', function ($join)
+        {
+            $join->on('test.id', '=', 'work_history.test_id');
+            $join->on('test.code', '=', 'work_history.test_code');
+        });
     }
 
     public function user ()
@@ -25,6 +28,6 @@ class WorkHistory extends Model
     public function questions ()
     {
         return $this->belongsToMany('App\Models\Question', 'work_history_detail', 'work_history_id', 'question_id')
-                    ->withPivot('choice_ids', 'last_updated');
+                    ->withPivot('choice_ids', 'updated_at');
     }
 }

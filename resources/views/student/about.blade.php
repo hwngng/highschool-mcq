@@ -6,7 +6,7 @@
 
 @endsection
 
-@section('header')
+@push('header')
 
 <link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
 
@@ -15,7 +15,7 @@
     font-size: 1.4rem;
 }
 </style>
-@endsection
+@endpush
 
 @section('content')
 <div class="container">
@@ -168,7 +168,7 @@
 
 
 
-@section('end')
+@push('end')
 <script src="{{ asset('js/avatar-upload.js') }}"></script>
 
 <script>
@@ -188,4 +188,4 @@
 
 
 </script>
-@endsection
+@endpush
