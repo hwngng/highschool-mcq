@@ -25,7 +25,6 @@ php artisan tinker
 ```
 để tương tác với project trên terminal, ae có thể new UserBus()->getAll() để check chẳng hạn, rất tiện
 - Check /storage/logs/laravel.log để bắt lỗi
-- Sử dụng Laravel debugbar, là 1 công cụ rất tiện lợi, ae cài theo hướng dẫn trong readme của git: https://github.com/barryvdh/laravel-debugbar
 - Sử dụng xdebug để debug, hiện tại t ko dùng. ae có thể tham khảo ở đây hoặc trang nào ae muốn: https://viblo.asia/p/debug-request-laravel-voi-xdebug-va-vscode-naQZRWgqlvx
 - Sử dụng vscode ae có thể cài đặt extension pack này do t package: https://drive.google.com/file/d/1bf7xUNebqrpe5518Bj8zTiQjIMv-7Etf/view?usp=sharing
 (Cài bằng cách trong VSCode ấn Ctrl + Shift + P rồi search install extension from vsix)
