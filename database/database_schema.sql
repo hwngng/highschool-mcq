@@ -5,7 +5,7 @@ use `mcq_dev`;
 -- !! grade id is varchar(4)
 drop table if exists `grade`;
 create table `grade` (
-	`id` varchar(4) not null,
+	`id` char(4) not null,
     `description` text,
     constraint `pk_grade_id` primary key (`id`)
 );
@@ -15,7 +15,6 @@ create table `subject` (
 	`id` int not null auto_increment,
     `name` varchar(50) not null,
     `description` text,
-    `grade_id` varchar(4),
     constraint `pk_subject_id` primary key (`id`)
 );
 
@@ -25,6 +24,15 @@ create table `role` (
     `name` varchar(50),
     `description` text,
     constraint `pk_role_id` primary key (`id`)
+);
+
+drop table if exists `school`;
+create table `school` (
+	`id` int not null auto_increment,
+    `name` varchar(50) not null,
+    `description` text,
+    `address` varchar(300),
+    constraint `pk_school_id` primary key (`id`)
 );
 
 drop table if exists `user`;
@@ -41,9 +49,9 @@ create table `user` (
     `birthdate` date,
     `mobile_phone` varchar(20),
     `telephone` varchar(20),
-    `grade_id` varchar(4),
+    `grade_id` char(4),
+    `school_id` int,
     `address` varchar(100),
-    `role_id` int not null,
     `description` text,
     `email_verified_at` datetime,
     `created_at` datetime,
@@ -54,12 +62,19 @@ create table `user` (
     constraint `pk_user_id` primary key (`id`)
 );
 
+drop table if exists `user_role`;
+create table `user_role` (
+	`user_id` int not null,
+    `role_id` int not null,
+	constraint `pk_user_role_user_id_role_id` primary key (`user_id`, `role_id`)
+);
 
 drop table if exists `question`;
 create table `question` (
 	`id` int not null auto_increment,
     `content` varchar(6000),
     `subject_id` int not null,
+    `grade_id` char(4),
     `solution` text,
     `created_at` datetime,
     `created_by` int,
@@ -90,12 +105,13 @@ drop table if exists `test`;
 create table `test` (
 	`id` int not null auto_increment,
     `test_code` int not null default 0,
-	`test_matrix_id` int,
-    `grade_id` varchar(4),
+    `grade_id` char(4),
+    `subject_id` int,
     `name` varchar(200) not null,
-    `description` text,
+    `duration` smallint,
     `no_of_questions` smallint,
     `test_type_id` int,
+    `description` text,
     `created_at` datetime,
     `created_by` int,
     `updated_at` datetime,
@@ -122,7 +138,8 @@ create table `class` (
 	`id` int not null auto_increment,
     `name` varchar(50),
     `description` text,
-    `grade_id` varchar(4),
+    `grade_id` char(4),
+    `school_id` int,
     `created_at` datetime,
     `created_by` int,
 	`is_deleted` tinyint,
@@ -144,6 +161,7 @@ drop table if exists `class_test`;
 create table `class_test` (
     `class_id` int not null,
 	`test_id` int not null,
+	`start_at` datetime,
     `created_at` datetime,
     `created_by` int,
     constraint `pk_class_test_class_id_test_id` primary key (`class_id`, `test_id`)
@@ -174,24 +192,29 @@ create table `work_history_detail` (
 );
 
 
-alter table `subject`
-add constraint `fk_subject_grade`
-foreign key (`grade_id`) references `grade` (`id`)
-on update cascade
-on delete restrict;
-
-
 alter table `user`
 add constraint `fk_user_grade`
 foreign key (`grade_id`) references `grade` (`id`)
 on update cascade
 on delete restrict;
 
-alter table `user`
-add constraint `fk_user_role`
+alter table `user_role`
+add constraint `fk_user_role_user`
+foreign key (`user_id`) references `user` (`id`)
+on update cascade
+on delete restrict;
+
+alter table `user_role`
+add constraint `fk_user_role_role`
 foreign key (`role_id`) references `role` (`id`)
 on update cascade
 on delete restrict;
+
+-- alter table `user`
+-- add constraint `fk_user_role`
+-- foreign key (`role_id`) references `role` (`id`)
+-- on update cascade
+-- on delete restrict;
 
 -- alter table `user`
 -- add constraint `fk_user_user_created`
@@ -229,6 +252,18 @@ on delete restrict;
 -- on update cascade
 -- on delete restrict;
 
+alter table `user`
+add constraint `fk_user_school`
+foreign key (`school_id`) references `school` (`id`)
+on update cascade
+on delete restrict;
+
+alter table `class`
+add constraint `fk_class_school`
+foreign key (`school_id`) references `school` (`id`)
+on update cascade
+on delete restrict;
+
 alter table `choice`
 add constraint `fk_choice_question`
 foreign key (`question_id`) references `question` (`id`)
@@ -243,6 +278,24 @@ on delete restrict;
 
 alter table `test`
 add constraint `fk_test_grade`
+foreign key (`grade_id`) references `grade` (`id`)
+on update cascade
+on delete restrict;
+
+alter table `test`
+add constraint `fk_test_subject`
+foreign key (`subject_id`) references `subject` (`id`)
+on update cascade
+on delete restrict;
+
+alter table `question`
+add constraint `fk_question_subject`
+foreign key (`subject_id`) references `subject` (`id`)
+on update cascade
+on delete restrict;
+
+alter table `question`
+add constraint `fk_question_grade`
 foreign key (`grade_id`) references `grade` (`id`)
 on update cascade
 on delete restrict;
