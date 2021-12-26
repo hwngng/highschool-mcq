@@ -11,6 +11,7 @@ Mục đích là để:
 - DAL -> chỉ có nhiệm vụ tương tác dữ liệu với db, ko xử lý logic gì thêm
 
 # Convention
+- Branch master chứa code chạy trên production, staging chứa code đang phát triển. Tester test done sẽ có 1 người chịu trách nhiệm đẩy code từ staging vào master. Còn dev sẽ tạo merge request vào staging để tester check
 - Quy tắc đặt tên branch: làm issue nào thì lấy ID của issue đấy đặt tên branch là issue/MCQ-&lt;ID&gt;
   Ví dụ t làm issue #35 thì sẽ tách 1 branch issue/MCQ-35 TỪ master, sau đó làm xong t sẽ tạo pull request từ issue/MCQ-35 tới branch staging 
 - Khi try catch thì lúc catch phải Log::error
