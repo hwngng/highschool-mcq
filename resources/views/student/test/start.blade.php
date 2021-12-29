@@ -125,9 +125,6 @@
     const second = 1000;
 
 
-
-
-
     let countDown = new Date('{{ $test->remain }}').getTime();
 
     window.onload = function () {

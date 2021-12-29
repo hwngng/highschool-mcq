@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ClassMemberController extends Controller 
+class ClassMemberController extends Controller
 {
 
   /**
@@ -14,7 +14,19 @@ class ClassMemberController extends Controller
    */
   public function index()
   {
-    
+    return view('teacher.class.detail');
+
+  }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @return Response
+   */
+  public function waitingList()
+  {
+    return view('teacher.class.waiting-list');
+
   }
 
   /**
@@ -24,7 +36,7 @@ class ClassMemberController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -34,7 +46,7 @@ class ClassMemberController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +57,7 @@ class ClassMemberController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +68,7 @@ class ClassMemberController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +79,7 @@ class ClassMemberController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +90,7 @@ class ClassMemberController extends Controller
    */
   public function destroy($id)
   {
-    
-  }
-  
-}
 
-?>
+  }
+
+}

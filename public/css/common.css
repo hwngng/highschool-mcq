@@ -1,0 +1,129 @@
+html,
+body {
+    font-family: Montserrat;
+}
+
+a {
+    text-decoration: none;
+}
+
+.sub-nav {
+    background-color: #6246EA;
+    position: fixed;
+    top: 75px;
+    right: 0;
+    left: 0;
+    height: 50px;
+    z-index: 1;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.sub-nav-item {
+    color: #fff;
+}
+
+.sub-nav-item>a:hover {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.sub-nav-item>a {
+    color: #fff;
+    text-decoration: none;
+    font-style: normal;
+    font-weight: bold;
+    padding: 3px;
+}
+
+footer {
+    position: fixed;
+    height: 20px;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    background-color: #6246EA;
+    font-size: 12px;
+    color: #fff;
+
+}
+
+footer>div>a>i::before {
+    color: #fff;
+}
+
+.primary-button,
+a.primary-button {
+    color: #fff;
+    font-style: normal;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #6246EA;
+    width: fit-content;
+    width: -moz-fit-content;
+}
+
+.primary-button:hover,
+.primary-button:active,
+a.primary-button:hover,
+a.primary-button:active {
+    color: #fff;
+    outline: none;
+    box-shadow: rgba(99, 99, 99, 0.411) 0px 2px 5px 2px;
+
+}
+
+.secondary-button {
+    color: #6246EA;
+    font-style: normal;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+}
+
+.secondary-button:hover,
+.secondary-button:active,
+a.secondary-button:hover,
+a.secondary-button:active {
+    color: #6246EA;
+    border-bottom: 2px solid #6246EA;
+}
+
+
+.header-text {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.category-header {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+
+.card {
+    background-color: #D1D1E9;
+    margin: 10px;
+}
+
+
+.instruction-text {
+    font-size: 14px;
+    color: rgba(43, 44, 52, 0.5);
+}
+
+.card-body {
+    padding: 1rem 10px;
+}
+
+.card-title {
+    font-size: 15px;
+}
