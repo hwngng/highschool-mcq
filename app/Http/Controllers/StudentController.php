@@ -66,14 +66,6 @@ class StudentController extends Controller
         return $this->getAllAvailableTests($request);
     }
 
-    public function classList(TestRequest $request)
-    {
-        return view('student.class.index');
-    }
-    public function classDetail(TestRequest $request)
-    {
-        return view('student.class.detail');
-    }
     public function getAllAvailableTests(TestRequest $request)
     {
         $apiResult = $this->getTestBus()->getAll();

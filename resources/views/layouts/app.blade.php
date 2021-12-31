@@ -15,6 +15,7 @@
     <link href="{{ asset('css/common.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
 
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.js') }}"></script>
@@ -65,6 +66,9 @@
                                     Giáo Viên
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-giaovien">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('teacher.class.list') }}">Quản Lý Lớp</a>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Quản Lý Đề Thi</a>
                                     </li>
@@ -129,7 +133,7 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block">
+    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px - 1rem);">
         <div class="container">
 
             <ul class="navbar-nav w-100" style="justify-content: space-between">

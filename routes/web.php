@@ -52,8 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('store')->post('/store', 'ClassController@store')->middleware('authorize:teacher');
                 Route::name('edit')->get('/edit', 'ClassController@edit')->middleware('authorize:teacher');
                 Route::name('update')->post('/update', 'ClassController@update')->middleware('authorize:teacher');
-                Route::name('detail')->get('/detail', 'ClassMemberController@index')->middleware('authorize:teacher');
-                Route::name('waiting-list')->get('/waiting-list', 'ClassMemberController@waitingList')->middleware('authorize:teacher');
+                Route::name('detail')->get('/detail/{id}', 'ClassController@detail')->middleware('authorize:teacher');
             });
             Route::name('result.')->prefix('result')->group(function () {
                 Route::name('list')->get('/', 'WorkHistoryController@showAllTestResult')->middleware('authorize:teacher');
@@ -89,8 +88,8 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('finish')->post('/finish', 'WorkHistoryController@completeTest')->middleware('authorize:student');
             });
             Route::name('class.')->prefix('class')->group(function () {
-                Route::name('list')->get('/', 'StudentController@classList');
-                Route::name('detail')->get('/detail', 'StudentController@classDetail');
+                Route::name('list')->get('/', 'ClassController@index');
+                Route::name('detail')->get('/detail/{id}', 'ClassController@classDetail');
             });
             Route::name('result.')->prefix('result')->group(function () {
                 Route::name('detail')->get('/{userId}/{testId}', 'WorkHistoryController@getResultByTestIdAnduserId')->middleware('authorize:student');
