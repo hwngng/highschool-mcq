@@ -5,7 +5,7 @@
 
 
 @push('header')
-<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+<link rel="stylesheet" href="{{ asset('css/pages/login.css') }}">
 @endpush
 
 @section('content')

@@ -64,13 +64,7 @@ class WorkHistoryController extends Controller
     {
         $apiResult = $this->getTestBus()->getTestForStudent($testId);
         $historyBus = $this->getWorkHistoryBus();
-
-
-
-
         $currentHistory = $historyBus->getWorkHistoryByTestIdAndUserId(Auth::id(), $testId)->workHistory;
-
-
 
         if (is_null($currentHistory) || is_null($currentHistory->started_at)) {
             $apiHistoryResult = $historyBus->startHistory($testId, Auth::id(), now());

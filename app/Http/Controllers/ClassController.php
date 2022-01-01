@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ClassController extends Controller 
+class ClassController extends Controller
 {
 
   /**
@@ -14,7 +14,8 @@ class ClassController extends Controller
    */
   public function index()
   {
-    
+    return view('teacher.class.index');
+
   }
 
   /**
@@ -24,7 +25,8 @@ class ClassController extends Controller
    */
   public function create()
   {
-    
+    return view('teacher.class.create');
+
   }
 
   /**
@@ -34,7 +36,7 @@ class ClassController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +47,7 @@ class ClassController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -54,9 +56,10 @@ class ClassController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function edit($id)
+  public function edit()
   {
-    
+    return view('teacher.class.edit');
+
   }
 
   /**
@@ -67,7 +70,7 @@ class ClassController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +81,9 @@ class ClassController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
 }
 
 ?>
