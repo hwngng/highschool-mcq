@@ -22,6 +22,28 @@ input[type=checkbox] {
 
 <form method="POST" action="{{ $action == 'create' ? route('teacher.question.store', [], false) : route('teacher.question.update', [], false) }}" id="form" class="row">
     @csrf
+
+	<div class="d-flex justify-content-between">
+		<div class="form-group my-3">
+			<label for="grade_id" class="fw-bold" style="margin-top: 20px; margin-right: 20px">Grade <span style="color: red;">*</span></label>
+			<select name="grade_id" id="grade" style="border: 1px solid #D1D1E9; border-radius: 8px; outline: none; padding: 5px 10px; background-color: white;">
+				@foreach ($grades as $grade)
+					<option value="{{ $grade->id }}" {{ isset($question) && $question->grade_id == $grade->id ? 'selected' : '' }}>{{ $grade->id }}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group my-3">
+			<label for="subject_id" class="fw-bold" style="margin-top: 20px; margin-right: 20px">Subject <span style="color: red;">*</span></label>
+			<select name="subject_id" id="subject_id" style="border: 1px solid #D1D1E9; border-radius: 8px; outline: none; padding: 5px 10px; background-color: white;">
+				<option value="1">Math</option>
+				<option value="2">Physics</option>
+				<option value="3">Chemistry</option>
+				<option value="4">Biology</option>
+				<option value="5">English</option>
+			</select>
+		</div>
+	</div>
+
 	<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
 	<div class="form-group my-3">
 		<!-- <label for="content" class="font-weight-bold">Nội dung câu hỏi:</label>
@@ -33,14 +55,7 @@ input[type=checkbox] {
 		</textarea>
 	</div>
 
-	<div class="form-group my-3">
-		<label for="grade_id" class="fw-bold" style="margin-top: 20px; margin-right: 20px">Grade <span style="color: red;">*</span></label>
-		<select name="grade_id" id="grade" style="border: 1px solid #D1D1E9; border-radius: 8px; outline: none; padding: 5px 10px; background-color: white;">
-			@foreach ($grades as $grade)
-				<option value="{{ $grade->id }}" {{ isset($question) && $question->grade_id == $grade->id ? 'selected' : '' }}>{{ $grade->id }}</option>
-			@endforeach
-		</select>
-	</div>
+	
 	
 	<div class="form-group my-3 container">
 		<div class="choices">

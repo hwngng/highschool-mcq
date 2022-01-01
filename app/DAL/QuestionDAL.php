@@ -55,8 +55,8 @@ class QuestionDAL extends BaseDAL
 			$questionORM->content = Helper::IssetTake($questionORM->content, $question, 'content');
 			$questionORM->solution = Helper::IssetTake($questionORM->solution, $question, 'solution');
 			$questionORM->grade_id = Helper::IssetTake($questionORM->grade_id, $question, 'grade_id');
-			// $questionORM->subject_id = Helper::IssetTake($questionORM->subject_id, $question, 'subject_id');
-			$questionORM->subject_id = 4;
+			$questionORM->subject_id = Helper::IssetTake($questionORM->subject_id, $question, 'subject_id');
+			// $questionORM->subject_id = 4;
 			$questionORM->created_by = Auth::id();
 
 			$result = $questionORM->save();

@@ -52,11 +52,12 @@
     <div class="align-content-center">
         
 
-        <table class="table">
+        <table class="table ">
             <thead style="background: #D1D1E9;">
                 <tr>
                     <th class="order-header">No</th>
                     <th class="question-header">Question</th>
+                    <th class="subject-header">Subject</th>
                     <th class="grade-header">Grade</th>
                     <th class="action-header">Operation</th>
                 </tr>
@@ -88,6 +89,19 @@
                             </div>
                         @endfor
                         </ul>
+                    </td>
+                    <td>
+                        @if($question->subject_id == 1)
+                            Math
+                        @elseif($question->subject_id == 2)
+                            Physics
+                        @elseif($question->subject_id == 3)
+                            Chemistry
+                        @elseif($question->subject_id == 4)
+                            Biology
+                        @else
+                            English
+                        @endif
                     </td>
                     <td>{{ $question->grade_id }}</td>
                     <td>
