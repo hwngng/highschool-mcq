@@ -27,7 +27,7 @@ class QuestionController extends Controller
         }
         return $this->gradeBus;
     }
-
+ 
     public function index ()
     {
         $apiResult = $this->getQuestionBus()->getAll();
@@ -84,6 +84,7 @@ class QuestionController extends Controller
     public function destroy ($questionId)
     {
         $apiResult = $this->getQuestionBus()->destroy($questionId);
+        // return redirect('/teacher/question');
         return response()->json($apiResult->report());
     }
 }

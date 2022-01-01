@@ -3,7 +3,7 @@
 -- Host: 127.0.0.1    Database: mcq_dev
 -- ------------------------------------------------------
 -- Server version	10.3.32-MariaDB-0ubuntu0.20.04.1
-
+use mcq_dev;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
