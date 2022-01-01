@@ -46,25 +46,30 @@
 
 @section('content')
 	<div class="container">
-		<div class="align-content-center">
-			<div>
-				<a class="btn btn-success float-right mb-1" href="{{  route('teacher.test.create') }}" target="_blank">
-					Thêm Đề thi <i class="fas fa-plus"></i>
+		<div class="mt-4 mb-3 row">
+			<div class="col">
+				<a class="float-end" style="background-color: #2FD43F; border-radius: 6px; color: #2B2C34; font-weight: bold; padding: 18px 30px;" href="{{  route('teacher.test.create') }}" target="_blank">
+					Add new test <i class="fas fa-plus"></i>
 				</a>
 			</div>
+		</div>
+		<div class="align-content-center">
+			
 			<div class="">
-				<table class="table table-bordered">
-				    <thead>
+				<table class="table table-bordered w-auto" style="font-size: 15px;">
+					
+				    <thead style="background: #D1D1E9;">
 				        <tr class="">
-				            <th class="order-header">STT</th>
-				            <th class="title-header">Tiêu đề</th>
-				            <th class="grade-header">Lớp</th>
-				            <th class="no-question-header">Số câu hỏi</th>
-				            <th class="duration-header">Thời gian làm bài</th>
-				            <th class="created-by-header">Người ra đề</th>
-				            <th class="created-at-header">Tạo lúc</th>
-				            <th class="description-header">Ghi chú</th>
-				            <th class="action-header">Thao tác</th>
+				            <th class="order-header">No</th>
+				            <th class="title-header">Title</th>
+							<th class="title-header">Subject</th>
+				            <th class="grade-header">Grade</th>
+				            <th class="no-question-header"># questions</th>
+				            <th class="duration-header">Duration</th>
+				            <th class="created-by-header">Author</th>
+				            <th class="created-at-header">Created at</th>
+				            <th class="description-header">Description</th>
+				            <th class="action-header">Operation</th>
 				        </tr>
 				    </thead>
 				    <tbody>
@@ -76,6 +81,19 @@
 				        <tr id="{{ $test->id }}" class="">
 				            <td class="order">{{ $i++ }}</td>
 				            <td>{{ $test->name }}</td>
+							<td>
+								@if($test->subject_id == 1)
+									Math
+								@elseif($test->subject_id == 2)
+									Physics
+								@esleif($test->subject_id == 3)
+									Chemistry
+								@elseif($test->subject_id == 4)
+									Biology
+								@else 
+									English
+								@endif
+							</td>
 				            <td>{{ $test->grade_id }}</td>
 				            <td>{{ $test->no_of_questions }}</td>
 				            <td>{{ $test->duration }}</td>
@@ -83,8 +101,12 @@
 				            <td>{{ $test->created_at_diff }}</td>
 				            <td>{{ $test->description }}</td>
 				            <td>
-				                <a class="btn btn-primary btn-sm" href="{{ route('teacher.test.edit', $test->id) }}" target="_blank"><i class="fas fa-edit"></i></a>
-				                <a class="btn btn-danger btn-sm" href="#"><i class="fas fa-trash"></i></a>
+				                <a  href="{{ route('teacher.test.edit', $test->id) }}" target="_blank" style="margin-right: 10px;">
+									<img src="{{ asset('images/edit.svg') }}" alt="edit">
+								</a>
+				                <a  href="#" style="cursor: pointer;">
+									<img src="{{ asset('images/cancel.svg') }}" alt="delete">
+								</a>
 				            </td>
 				        </tr>
 				        @endforeach

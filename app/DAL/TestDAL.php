@@ -136,12 +136,14 @@ class TestDAL extends BaseDAL
             $testORM->no_of_questions = Helper::IssetTake($testORM->no_of_questions, $test, 'no_of_questions');
             $testORM->created_at = $testORM->freshTimestamp();
             $testORM->created_by = Auth::id();
+            app('debugbar')->info($testORM);
 
             $result = $testORM->save();
 
             if ($result) {
                 $ret->fill('0', 'Success');
                 $ret->testId = $testORM->id;
+            
             } else
                 $ret->fill('1', 'Cannot insert, database error.');
         } catch (\Exception $e) {
