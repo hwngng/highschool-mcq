@@ -47,7 +47,7 @@
                         @endif
                     @else
                         @can('be-admin')
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown mx-3">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="menu-admin"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Admin
@@ -59,21 +59,20 @@
                             @yield('dropdown-admin')
                         @endcan
                         @can('be-teacher')
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown mx-3">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="menu-giaovien"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Giáo Viên
+                                    Teacher
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-giaovien">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Quản Lý Đề Thi</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Tests management</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Quản Lý Câu
-                                            Hỏi</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Questions management</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Kết quả</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Results</a>
                                     </li>
                                     @yield('dropdown-teacher')
                                 </ul>
@@ -81,32 +80,29 @@
                         @endcan
 
                         @can('be-student')
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown mx-3">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Học sinh
+                                    Student
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
+                                        <a class="dropdown-item" href="{{ route('student.index') }}">Test list</a>
 
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            href="{{ route('student.result.list', Auth::user()->id) }}">Bảng
-                                            điểm</a>
+                                            href="{{ route('student.result.list', Auth::user()->id) }}">Scores</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('student.about', Auth::user()->id) }}">Hồ sơ
-                                            cá
-                                            nhân</a>
+                                        <a class="dropdown-item" href="{{ route('student.about', Auth::user()->id) }}">Student profile</a>
                                     </li>
                                     @yield('dropdown-student')
                                 </ul>
                             </li>
                         @endcan
 
-                        <li class="nav-item dropdown" style="padding-left: 10px">
+                        <li class="nav-item dropdown mx-3" style="padding-left: 10px">
                             <button class="btn primary-button dropdown-toggle" type="button" id="dropdownMenuButton2"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ Auth::user()->first_name }} <span class="caret"></span>
@@ -115,7 +111,7 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('register') }}"
                                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        Đăng xuất
+                                        Log out
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                         style="display: none;">
@@ -129,7 +125,8 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block">
+    
+    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px - 1rem);">
         <div class="container">
 
             <ul class="navbar-nav w-100" style="justify-content: space-between">
@@ -157,7 +154,7 @@
             </ul>
         </div>
     </nav>
-
+    
     <main class="py-5">
         @yield('content')
     </main>
