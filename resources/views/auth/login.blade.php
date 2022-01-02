@@ -2,30 +2,24 @@
 
 @section('title', '- Đăng nhập')
 
-
-
 @push('header')
 <link rel="stylesheet" href="{{ asset('css/pages/login.css') }}">
+<link href='https://fonts.googleapis.com/css?family=Finger Paint' rel='stylesheet'>
 @endpush
 
 @section('content')
 <div class="container">
-    <div class="row login-card">
-        <div class="col-md-8 text-center">
-            <div class="login-frame medi">
-                <h3 class="h3 py-3">
-                    Trắc nghiệm online toán
-                </h3>
-                <p>các lớp từ 6 đến 12</p>
-            </div>
+        <div class="col-md-8 ms-auto text-center">
+            <img src="{{ asset('images/sample.png') }}" />
         </div>
-
+        
         <div class="col-md-8">
             <div class="login-frame medi p-5">
+                <div class="col-md-5"><div class = "happystudy" style="font-family: 'Finger Paint'">HappyStudy</div></div>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group row">
-                        <label for="username" class="col-md-4 col-form-label text-md-right">Tên đăng nhập</label>
+                        <label for="username" class="col-md-4 col-form-label text-md-right">Username <span style="color: red;">*</span></label>
 
                         <div class="col-md-6">
                             <input id="username" type="username"
@@ -41,7 +35,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">Mật khẩu</label>
+                        <label for="password" class="col-md-4 col-form-label text-md-right">Password <span style="color: red;">*</span></label>
 
                         <div class="col-md-6">
                             <input id="password" type="password"
@@ -55,24 +49,27 @@
                             @enderror
                         </div>
                     </div>
-
+                    <a class="textarea" href="javascript:void(0)">Forgot Password?</a>
+                    {{-- @if (Route::has('registerExpert')) --}}
                     <div class="form-group row">
-                        <div class="col-md-6 offset-md-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                    {{ old('remember') ? 'checked' : '' }}>
-
-                                <label class="form-check-label" for="remember">
-                                    Lưu đăng nhập
-                                </label>
-                            </div>
-                        </div>
+                        <div class = "sentence-register" style="
+                        position: relative;
+                        height: 23px;
+                        left: 6.25%;
+                        right: 18.54%;
+                        top: calc(55% - 23px/2 + 100px);
+                        font-family: 'Mulish';
+                        font-style: normal;
+                        font-weight: normal;
+                        font-size: 18px;
+                        line-height: 23px;
+                        ">Don't have any account yet?<a class="textarea register" href="{{ route('register') }}">Register now!</a></div>
                     </div>
-
+                    {{-- @endif --}}
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                Đăng nhập
+                                Log in
                             </button>
 
                             @if (Route::has('password.request'))
@@ -83,20 +80,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-        <blockquote class="my-3 blockquote">hoặc đăng nhập với</blockquote>
-        <div class="col-md-8 p-mini">
-            <div class="login-frame mini">
-                <a href="#" class="network">
-                    <i class="fab fa-facebook-f" style="color: #3b5998;"></i>
-                </a>
-                <a href="#" class="network">
-                    <i class="fab fa-twitter" style="color: #00acee;"></i>
-                </a>
-                <a href="#" class="network">
-                    <i class="far fa-envelope" style="color: #e72626;"></i>
-                </a>
             </div>
         </div>
     </div>
