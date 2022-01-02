@@ -7,7 +7,7 @@
 ### Step 1:
 Run following commands:
 ```
-git clone https://github.com/PdaOgu/OnlineMathExaminingDBLab.git
+git clone https://github.com/hwngng/highschool-mcq.git
 cd highschool_mcq
 composer install
 cp .env.example .env
@@ -39,5 +39,7 @@ mysql -u <username> -p<password> < database/data/mock_data.sql
 
 Point local web server to `public/` or simply `php artisan serve` to run the web app.
 Default account with full priviledges is: hung/123456
+
+#### Every team members should read this [Note](https://github.com/hwngng/highschool-mcq/blob/master/Note.md).
 
 

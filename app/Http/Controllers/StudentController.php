@@ -80,8 +80,6 @@ class StudentController extends Controller
 
 
 
-
-
     public function about($userId)
     {
         $user = $this->getUserBus()->getById($userId)->user;
