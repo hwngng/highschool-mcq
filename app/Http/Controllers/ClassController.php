@@ -13,6 +13,7 @@ class ClassController extends Controller
     private $userBus;
     private $classBus;
     private $workHistoryBus;
+    private $schoolBus;
     private function getSchoolBus ()
     {
         if ($this->schoolBus == null)
@@ -54,7 +55,7 @@ class ClassController extends Controller
       }
 
       $viewData = [
-          'classes' => $apiResult->questions
+          'classes' => $apiResult->classes
       ];
 
       return view('class.index', $viewData);

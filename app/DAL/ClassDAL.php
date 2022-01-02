@@ -21,8 +21,6 @@ class ClassDAL extends BaseDAL
 		} catch (\Exception $e) {
 			Log::error($e->__toString());
 		}
-        app('debugbar')->info(Lop::all());
-        app('debugbar')->info($ret);
 		return $ret;
 	}
 

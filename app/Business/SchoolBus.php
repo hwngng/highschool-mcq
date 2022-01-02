@@ -10,7 +10,7 @@ class SchoolBus extends BaseBus
 
     private function getSchoolDAL()
     {
-        if (!$this->schoolDal) {
+        if (!$this->schoolDAL) {
             $this->schoolDAL = new SchoolDAL();
         }
         return $this->schoolDAL;
