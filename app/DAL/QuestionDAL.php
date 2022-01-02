@@ -79,7 +79,7 @@ class QuestionDAL extends BaseDAL
 		$ret = new ApiResult();
 		try
 		{
-			if (!isset($question['id']))
+			if (!isset($question['id'])) 
 			{
 				$ret->fill('1', 'Question not found');
 				return $ret;
@@ -92,7 +92,7 @@ class QuestionDAL extends BaseDAL
 			$questionORM->subject_id = Helper::IssetTake($questionORM->subject_id, $question, 'subject_id');
 
 			$result = $questionORM->save();
-
+ 
 			$ret->fill('0', 'Success');
 			$ret->affectedRows = $result;
 		}

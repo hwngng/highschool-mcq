@@ -127,7 +127,8 @@ class TestDAL extends BaseDAL
         $ret = new ApiResult();
         try {
             $testORM = new Test();
-            $testORM->test_code = Helper::IssetTake($testORM->test_code, $test, 'test_code');
+            // $testORM->test_code = Helper::IssetTake($testORM->test_code, $test, 'test_code');
+            $testORM->test_code = 0;
             $testORM->name = Helper::IssetTake($testORM->name, $test, 'name');
             $testORM->grade_id = Helper::IssetTake($testORM->grade_id, $test, 'grade_id');
             $testORM->subject_id = Helper::IssetTake($testORM->subject_id, $test, 'subject_id');
@@ -136,12 +137,14 @@ class TestDAL extends BaseDAL
             $testORM->no_of_questions = Helper::IssetTake($testORM->no_of_questions, $test, 'no_of_questions');
             $testORM->created_at = $testORM->freshTimestamp();
             $testORM->created_by = Auth::id();
+            app('debugbar')->info($testORM);
 
             $result = $testORM->save();
 
             if ($result) {
                 $ret->fill('0', 'Success');
                 $ret->testId = $testORM->id;
+            
             } else
                 $ret->fill('1', 'Cannot insert, database error.');
         } catch (\Exception $e) {
@@ -153,4 +156,33 @@ class TestDAL extends BaseDAL
     public function start($test)
     {
     }
+
+    public function destroy ($id) 
+	{
+        app('debugbar')->info($id);
+		$ret = new ApiResult();
+		try
+		{
+			$test = Test::find($id);
+			if ($test == null) {
+                $ret->fill('1', 'Test not found');
+                return $ret;
+            }
+			$test->deleted_by = Auth::id();
+			$test->deleted_at = $test->freshTimestamp();
+			$result = $test->save();
+
+			if ($result) {
+				$ret->fill('0', 'Success');
+			}
+			else {
+				$ret->fill('1', 'Cannot delete, database error');
+			}
+		}
+		catch (\Exception $e)
+		{
+			Log::error($e->__toString());
+		}
+		return $ret;
+	}
 }

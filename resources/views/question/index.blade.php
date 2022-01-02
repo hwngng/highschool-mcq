@@ -70,6 +70,7 @@
                 @foreach ($questions as $question)
                 <tr id="q-{{ $question->id }}">
                     <td class="order" >{{ $i++ }}</td>
+
                     <td class="scrollable">
                         Q: {!! htmlspecialchars_decode($question->content) !!}
                         <ul>
@@ -104,6 +105,7 @@
                         @endif
                     </td>
                     <td>{{ $question->grade_id }}</td>
+
                     <td>
                         <a class="" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank" style="margin-right: 10px;">
                             <img src="{{ asset('images/edit.svg') }}" alt="">
