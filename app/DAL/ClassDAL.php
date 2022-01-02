@@ -13,6 +13,37 @@ use Illuminate\Support\Facades\Log;
 
 class ClassDAL extends BaseDAL
 {
+    public function getAll ()
+	{
+		$ret = new ApiResult();
+		try {
+			$ret->classes = Lop::all();
+		} catch (\Exception $e) {
+			Log::error($e->__toString());
+		}
+        app('debugbar')->info(Lop::all());
+        app('debugbar')->info($ret);
+		return $ret;
+	}
+
+	public function getById ($id)
+	{
+		$ret = new ApiResult();
+		try {
+			$ret->question = Lop::select('id',
+										'content',
+										'subject_id',
+										'grade_id',
+										'solution')
+								->where('id', $id)
+								->with('choices:id,question_id,content,is_solution')
+								->first();
+		} catch (\Exception $e) {
+			Log::error($e->__toString());
+		}
+		return $ret;
+    }
+
     public function getUsersByClassId($id)
     {
         $apiResult = new ApiResult();

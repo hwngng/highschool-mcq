@@ -17,6 +17,7 @@ class ClassBus extends BaseBus
         }
         return $this->classDAL;
     }
+
     private function getUserDAL()
     {
         if (!$this->userDAL) {
@@ -24,6 +25,10 @@ class ClassBus extends BaseBus
         }
         return $this->userDAL;
     }
+    public function getAll ()
+	{
+		return $this->getClassDAL()->getAll();
+	}
     public function getUserById($id)
     {
         return $this->getClassDAL()->getUsersByClassId($id);
@@ -36,4 +41,5 @@ class ClassBus extends BaseBus
         }
         return $tests;
     }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Business\SchoolBus;
 use App\Business\ClassBus;
 use App\Business\UserBus;
 use App\Business\WorkHistoryBus;
@@ -13,7 +13,14 @@ class ClassController extends Controller
     private $userBus;
     private $classBus;
     private $workHistoryBus;
-
+    private function getSchoolBus ()
+    {
+        if ($this->schoolBus == null)
+        {
+            $this->schoolBus = new schoolBus();
+        }
+        return $this->schoolBus;
+    }
 
     private function getUserBus()
     {
@@ -37,15 +44,20 @@ class ClassController extends Controller
         return $this->workHistoryBus;
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
-        return view('class.index');
+      $apiResult = $this->getClassBus()->getAll();
+      foreach ($apiResult->classes as $class)
+      {
+          $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
+          $class->members = $this->getClassBus()->getUserById($class->id)->members;
+      }
+
+      $viewData = [
+          'classes' => $apiResult->questions
+      ];
+
+      return view('class.index', $viewData);
     }
 
     /**
