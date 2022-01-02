@@ -10,9 +10,35 @@
 
 @section('content')
     <div class="container my-2">
-        <div class="d-flex" style="justify-content: space-between;align-items: baseline;">
-            <h3 class="category-header pb-4">{{$apiResult->class->name}}</h3>
-            <a class="btn btn-danger" href="{{ route('login') }}">Leave class</a>
+        <div class="d-flex" style="align-items: baseline;">
+            <h3 class="category-header pb-4">{{ $apiResult->class->name }}</h3>
+
+            @can('be-teacher')
+                <div class="ms-auto dropdown ">
+                    <button class="btn dropdown-toggle class_action-btn" type="button" id="menu-class-gv"
+                        data-bs-toggle="dropdown" aria-expanded="false" style="padding: 10px;">
+                        Class action
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="menu-class-gv">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('teacher.class.list') }}">Edit</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('teacher.test.list') }}" style="color: #2FD43F;
+                                                                    ">Assign new exam</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('teacher.question.list') }}" style="color: #DD3444;
+                                                                    ">Delete class</a>
+                        </li>
+                        @yield('dropdown-teacher')
+                    </ul>
+                </div>
+            @endcan
+            @can('be-student')
+                <a class="btn btn-danger ms-auto" href="{{ route('login') }}">Leave class</a>
+            @endcan
+
         </div>
         <ul class="nav nav-tabs" id="classTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -28,8 +54,8 @@
         </ul>
         <div class="tab-content" id="classTabContent">
             <div class="tab-pane fade show active" id="student_list" role="tabpanel" aria-labelledby="student_list-tab">
-                <table class="table table-hover table-responsive-md mt-2">
-                    <thead class="thead-dark">
+                <table class="table table-hover table-responsive-md pt-2">
+                    <thead class="thead-custom">
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Username</th>
@@ -47,24 +73,16 @@
                             @foreach ($apiResult->members as $member)
 
                                 <tr>
-                                    <th scope="row">{{ $loop->index +1}}</th>
-                                    <td>{{$member->username}}</td>
-                                    <td>{{$apiResult->class->grade_id}}</td>
-                                    <td>{{$member->last_name}} {{$member->first_name}}</td>
-                                    <td>{{$member->email}}</td>
-                                    <td>{{$member->join_at}}</td>
+                                    <th scope="row">{{ $loop->index + 1 }}</th>
+                                    <td>{{ $member->username }}</td>
+                                    <td>{{ $apiResult->class->grade_id }}</td>
+                                    <td>{{ $member->last_name }} {{ $member->first_name }}</td>
+                                    <td>{{ $member->email }}</td>
+                                    <td>{{ $member->join_at }}</td>
                                     @can('be-teacher')
                                         <td scope="col">
-                                            <a href="">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <g id="cancel_24px">
-                                                        <path id="icon/navigation/cancel_24px" fill-rule="evenodd"
-                                                            clip-rule="evenodd"
-                                                            d="M12 2C6.47 2 2 6.47 2 12C2 17.53 6.47 22 12 22C17.53 22 22 17.53 22 12C22 6.47 17.53 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 10.59L15.59 7L17 8.41L13.41 12L17 15.59L15.59 17L12 13.41L8.41 17L7 15.59L10.59 12L7 8.41L8.41 7L12 10.59Z"
-                                                            fill="#DD3444" />
-                                                    </g>
-                                                </svg>
+                                            <a href="" style="color: #DD3444;font-size: 18px">
+                                                <i class="far fa-times-circle"></i>
                                             </a>
                                         </td>
                                     @endcan
@@ -75,19 +93,17 @@
                 </table>
             </div>
             <div class="tab-pane fade" id="exam_list" role="tabpanel" aria-labelledby="exam_list-tab">
-                <table class="table table-hover table-responsive-md mt-2">
-                    <thead class="thead-dark">
+                <table class="table table-hover table-responsive-md pt-2">
+                    <thead class="thead-custom">
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Title</th>
                             <th scope="col">Author</th>
                             <th scope="col">Started at</th>
                             @can('be-student')
-                            <th scope="col">Score</th>
+                                <th scope="col">Score</th>
                             @endcan
-                            @can('be-teacher')
-                                <th scope="col">Action</th>
-                            @endcan
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,26 +111,33 @@
                             @foreach ($apiResult->tests as $test)
 
                                 <tr>
-                                    <th scope="row">{{ $loop->index +1}}</th>
-                                    <td>{{$test->name}}</td>
-                                    <td>{{$test->p_created_by->last_name}} {{$test->p_created_by->first_name}}</td>
-                                    <td>{{$test->p_start_at}}</td>
-                                    <td>{{$test->score}}</td>
-                                    @can('be-teacher')
-                                        <td scope="col">
-                                            <a href="">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <g id="cancel_24px">
-                                                        <path id="icon/navigation/cancel_24px" fill-rule="evenodd"
-                                                            clip-rule="evenodd"
-                                                            d="M12 2C6.47 2 2 6.47 2 12C2 17.53 6.47 22 12 22C17.53 22 22 17.53 22 12C22 6.47 17.53 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 10.59L15.59 7L17 8.41L13.41 12L17 15.59L15.59 17L12 13.41L8.41 17L7 15.59L10.59 12L7 8.41L8.41 7L12 10.59Z"
-                                                            fill="#DD3444" />
-                                                    </g>
-                                                </svg>
+                                    <th scope="row">{{ $loop->index + 1 }}</th>
+                                    <td>{{ $test->name }}</td>
+                                    <td>{{ $test->p_created_by->last_name }} {{ $test->p_created_by->first_name }}
+                                    </td>
+                                    <td>{{ $test->p_start_at }}</td>
+                                    @can('be-student')
+                                        <td>{{ $test->score }}</td>
+                                        <td scope="col" style="">
+                                            <a href="" class="px-2" style="color:
+                                                    #2FD43F;font-size: 18px">
+                                                <i class="fas fa-sign-in-alt"></i>
                                             </a>
                                         </td>
                                     @endcan
+
+                                    @can('be-teacher')
+                                        <td scope="col" style="">
+                                            <a href="" class="px-2" style="color: #DD3444;font-size: 18px">
+                                                <i class="far fa-times-circle"></i>
+                                            </a>
+                                            <a href="" class="px-2" style="color: 18px;font-size: 18px">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    @endcan
+
+
                                 </tr>
                             @endforeach
                         @endif

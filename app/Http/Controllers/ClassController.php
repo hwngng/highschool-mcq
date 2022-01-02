@@ -120,7 +120,7 @@ class ClassController extends Controller
         $apiResult->tests = $this->getClassBus()->getTestsById($id);
         foreach ($apiResult->tests as $test) {
             $workHistory = $this->getWorkHistoryBus()->getWorkHistoryByTestIdAndUserId(Auth::id(), $test->id)->workHistory;
-            $test->score = $workHistory->no_of_correct ? $workHistory->no_of_correct / $test->no_of_questions : 0;
+            $test->score = $workHistory->no_of_correct ? ($workHistory->no_of_correct *10 / $test->no_of_questions) : 0;
         }
 
         return view('class.detail', compact('apiResult'));
