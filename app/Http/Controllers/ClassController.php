@@ -1,20 +1,50 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Common\ApiResult;
+use App\Business\ClassBus;
+use App\Business\SchoolBus;
+use App\Http\Requests\QuestionRequest;
 
-class ClassController extends Controller 
+class ClassController extends Controller
 {
-
+  private $classBus;
+  private $schoolBus;
   /**
    * Display a listing of the resource.
    *
    * @return Response
    */
+
+
+  private function getClassBus ()
+    {
+        if ($this->classBus == null)
+        {
+            $this->classBus = new ClassBus();
+        }
+        return $this->classBus;
+    }
+
+  private function getSchoolBus ()
+    {
+        if ($this->schoolBus == null)
+        {
+            $this->schoolBus = new schoolBus();
+        }
+        return $this->schoolBus;
+    }
+
   public function index()
   {
-    
+    $apiResult = $this->getClassBus()->getAll();
+    $viewData = [
+        'classes' => $apiResult->questions
+    ];
+
+    return view('class.index', $viewData);
   }
 
   /**
@@ -24,7 +54,7 @@ class ClassController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -34,7 +64,7 @@ class ClassController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +75,7 @@ class ClassController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +86,7 @@ class ClassController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +97,7 @@ class ClassController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +108,9 @@ class ClassController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
 }
 
 ?>
