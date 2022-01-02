@@ -35,26 +35,31 @@
     strong {
         font-weight: normal;
     }
+    
 
 </style>
 @endsection
 
 @section('content')
 <div class="container">
-    <div class="align-content-center">
-        <div>
-            <a class="btn btn-success float-right mb-1" href="{{  route('teacher.question.create') }}" target="_blank">
-                Thêm Câu hỏi <i class="fas fa-plus"></i>
+    <div class="mt-4 mb-3 row">
+        <div class="col">
+            <a class="float-end" style="background-color: #2FD43F; border-radius: 6px; color: #2B2C34; font-weight: bold; padding: 18px 30px;" href="{{  route('teacher.question.create') }}" target="_blank">
+                <i class="fas fa-plus"></i> Add question 
             </a>
         </div>
+    </div>
+    <div class="align-content-center">
+        
 
-        <table class="table">
-            <thead>
+        <table class="table ">
+            <thead style="background: #D1D1E9;">
                 <tr>
-                    <th class="order-header">STT</th>
-                    <th class="question-header">Câu hỏi</th>
-                    <th class="grade-header">Lớp</th>
-                    <th class="action-header">Thao tác</th>
+                    <th class="order-header">No</th>
+                    <th class="question-header">Question</th>
+                    <th class="subject-header">Subject</th>
+                    <th class="grade-header">Grade</th>
+                    <th class="action-header">Operation</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,11 +70,47 @@
                 @foreach ($questions as $question)
                 <tr id="q-{{ $question->id }}">
                     <td class="order" >{{ $i++ }}</td>
-                    <td class="scrollable">{!! htmlspecialchars_decode($question->content) !!}</td>
+                    <td class="scrollable">
+                        Q: {!! htmlspecialchars_decode($question->content) !!}
+                        <ul>
+                        @php
+                            $noOfChoices = count($question->choices);
+					    @endphp
+                        @for ($i = 0; $i < $noOfChoices; $i++)
+                            @php
+                                $choice = $question->choices->find($i);
+                            @endphp
+                            <div style="display: flex;">
+                                <p style="height: 100%; margin-bottom: 0px;">{{ chr(ord('A')+$i) . '.' }} {{ isset($choice) ? htmlspecialchars_decode($choice->content) : '' }}</p>
+
+                            @if (isset($choice) && $choice->is_solution == 1)
+                                <img src="{{ asset('images/check.svg') }}" style="margin-left: 10px;" alt="">
+                            @endif
+                            </div>
+                        @endfor
+                        </ul>
+                    </td>
+                    <td>
+                        @if($question->subject_id == 1)
+                            Math
+                        @elseif($question->subject_id == 2)
+                            Physics
+                        @elseif($question->subject_id == 3)
+                            Chemistry
+                        @elseif($question->subject_id == 4)
+                            Biology
+                        @else
+                            English
+                        @endif
+                    </td>
                     <td>{{ $question->grade_id }}</td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="deleteQuestion(event, {{ $question->id }})"><i class="fas fa-trash"></i></a>
+                        <a class="" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank" style="margin-right: 10px;">
+                            <img src="{{ asset('images/edit.svg') }}" alt="">
+                        </a>
+                        <a class="" onclick="deleteQuestion(event, {{ $question->id }})" style="cursor: pointer;">
+                            <img src="{{ asset('images/cancel.svg') }}" alt="">
+                        </a>
                     </td>
                 </tr>
                 @endforeach
@@ -80,7 +121,7 @@
 </div>
 @endsection
 
-@section('end')
+@push('end')
     <script>
         function deleteQuestion (e, questionId) {
             e.preventDefault();
@@ -100,10 +141,10 @@
                             }
                         });
                     } else {
-                        alert("Có lỗi xảy ra, vui lòng ấn Ctrl + F5");
+                        alert("Something wrong, please press Ctrl + F5");
                     }
                 }
             });
         }
     </script>
-@endsection
+@endpush
