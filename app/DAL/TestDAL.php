@@ -127,7 +127,8 @@ class TestDAL extends BaseDAL
         $ret = new ApiResult();
         try {
             $testORM = new Test();
-            $testORM->test_code = Helper::IssetTake($testORM->test_code, $test, 'test_code');
+            // $testORM->test_code = Helper::IssetTake($testORM->test_code, $test, 'test_code');
+            $testORM->test_code = 0;
             $testORM->name = Helper::IssetTake($testORM->name, $test, 'name');
             $testORM->grade_id = Helper::IssetTake($testORM->grade_id, $test, 'grade_id');
             $testORM->subject_id = Helper::IssetTake($testORM->subject_id, $test, 'subject_id');

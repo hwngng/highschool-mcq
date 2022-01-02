@@ -50,7 +50,7 @@
                             <li class="nav-item dropdown">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="menu-admin"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Quản trị viên
+                                    Admin
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-admin">
                                     @yield('dropdown-admin')

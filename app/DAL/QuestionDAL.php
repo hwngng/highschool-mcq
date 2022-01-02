@@ -77,7 +77,7 @@ class QuestionDAL extends BaseDAL
 		$ret = new ApiResult();
 		try
 		{
-			if (!isset($question['id']))
+			if (!isset($question['id'])) 
 			{
 				$ret->fill('1', 'Question not found');
 				return $ret;

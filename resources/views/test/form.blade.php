@@ -71,10 +71,10 @@
 	  <h5 class="fw-bold">Title</h5>
 	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia..." value="{{ isset($test) ? $test->name : '' }}">
 	</div>
-	<div class="form-group my-4">
+	<!-- <div class="form-group my-4">
 	  <h5 class="fw-bold">Test code</h5>
 	  <input type="text" name="test_code" id="test_code" class="form-control" placeholder="Mã đề thi" value="{{ isset($test) ? $test->name : '' }}">
-	</div>
+	</div> -->
 	<div class="form-group my-4">
 	  <h5 class="fw-bold">Description</h5>
 	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An...">{{ isset($test) ? $test->description : '' }}</textarea>
@@ -302,10 +302,7 @@
 				qpicker.modal('show');
 			});
 
-			// testForm.find('.info').on('click', function (e) {
-			// 	e.preventDefault();
-			// 	qdetail.modal('show');
-			// });
+			
 
 			testForm.find('.clear').on('click', function (e) {
 				e.preventDefault();
@@ -403,9 +400,7 @@
 			qpicker.modal('hide');
 		});
 
-		closeDetailModalButton.on('click', function(e) {
-			qdetail.modal('hide');
-		});
+		
 
 
 	});

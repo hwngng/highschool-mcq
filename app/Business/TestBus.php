@@ -61,4 +61,8 @@ class TestBus extends BaseBus
         }
         return $apiResult;
     }
+
+    public function update($test) {
+        
+    }
 }

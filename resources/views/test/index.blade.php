@@ -62,14 +62,14 @@
 				        <tr class="">
 				            <th class="order-header">No</th>
 				            <th class="title-header">Title</th>
-							<th class="title-header">Subject</th>
+							<th class="title-header" style="width: 15px;">Subject</th>
 				            <th class="grade-header">Grade</th>
 				            <th class="no-question-header"># questions</th>
-				            <th class="duration-header">Duration</th>
+				            <th class="duration-header" style="width: 10px;">Duration</th>
 				            <th class="created-by-header">Author</th>
 				            <th class="created-at-header">Created at</th>
 				            <th class="description-header">Description</th>
-				            <th class="action-header">Operation</th>
+				            <th class="action-header" style="width: 15px;">Operation</th>
 				        </tr>
 				    </thead>
 				    <tbody>
@@ -78,33 +78,37 @@
 				        @endphp
 				        @isset($tests)
 				        @foreach ($tests as $test)
+						
+
 				        <tr id="{{ $test->id }}" class="">
 				            <td class="order">{{ $i++ }}</td>
 				            <td>{{ $test->name }}</td>
 							<td>
 								@if($test->subject_id == 1)
-									Math
+									{{ 'Math' }}
 								@elseif($test->subject_id == 2)
-									Physics
-								@esleif($test->subject_id == 3)
-									Chemistry
-								@elseif($test->subject_id == 4)
-									Biology
+									
+									{{ 'Physics' }}
+
+								@elseif($test->subject_id == 3)
+									{{ 'Chemistry' }}
+								@elseif($test->subject_id == 4)		
+									{{ 'Biology' }}
 								@else 
-									English
+									{{ 'English' }}
 								@endif
 							</td>
 				            <td>{{ $test->grade_id }}</td>
 				            <td>{{ $test->no_of_questions }}</td>
 				            <td>{{ $test->duration }}</td>
 				            <td>{{ $test->createdBy->username }}</td>
-				            <td>{{ $test->created_at_diff }}</td>
+				            <td>{{ $test->created_at }}</td>
 				            <td>{{ $test->description }}</td>
 				            <td>
 				                <a  href="{{ route('teacher.test.edit', $test->id) }}" target="_blank" style="margin-right: 10px;">
 									<img src="{{ asset('images/edit.svg') }}" alt="edit">
 								</a>
-				                <a  href="#" style="cursor: pointer;">
+				                <a style="cursor: pointer;" onclick="deleteTest(event, {{ $test->id }})">
 									<img src="{{ asset('images/cancel.svg') }}" alt="delete">
 								</a>
 				            </td>
@@ -116,4 +120,32 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('end')
+<script>
+        function deleteTest (e, testId) {
+            e.preventDefault();
+            $.ajax({
+                type: "get",
+                url: "{{ route('teacher.test.destroy', '') }}" + '/' + questionId,
+                success: function (response) {
+                    if (response['return_code'] == 0) {
+                        $('#q-' + questionId).animate("fast").animate({
+                            opacity : "hide"
+                        }, "slow", function () {
+                            let nextRows = $(this).nextAll();
+                            let order = parseInt($(this).children('td.order').text());
+                            for (let i = 0; i < nextRows.length; ++i) {
+                                $(nextRows[i]).children('td.order').text(order);
+                                ++order;
+                            }
+                        });
+                    } else {
+                        alert("Something wrong, please press Ctrl + F5");
+                    }
+                }
+            });
+        }
+</script>
 @endsection

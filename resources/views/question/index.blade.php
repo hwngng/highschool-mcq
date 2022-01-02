@@ -66,7 +66,7 @@
                 <tr id="q-{{ $question->id }}">
                     <td class="order" >{{ $i++ }}</td>
                     <td class="scrollable">{!! htmlspecialchars_decode($question->content) !!}</td>
-                    <td>{{ $question->grade_id }}</td>
+                    <td>{{ $question->grade_id }}</td> 
                     <td>
                         <a class="btn btn-primary btn-sm" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank"><i class="fas fa-edit"></i></a>
                         <a class="btn btn-danger btn-sm" href="javascript:void(0)" onclick="deleteQuestion(event, {{ $question->id }})"><i class="fas fa-trash"></i></a>
@@ -100,7 +100,7 @@
                             }
                         });
                     } else {
-                        alert("Có lỗi xảy ra, vui lòng ấn Ctrl + F5");
+                        alert("Something wrong, please press Ctrl + F5");
                     }
                 }
             });

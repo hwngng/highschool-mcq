@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('store')->post('/store', 'TestController@store')->middleware('authorize:teacher');
                 Route::name('edit')->get('/edit/{id}', 'TestController@edit')->middleware('authorize:teacher');
                 Route::name('update')->post('/update', 'TestController@update')->middleware('authorize:teacher');
+                Route::name('destroy')->get('/destroy/{id}', 'TestController@destroy')->middleware('authorize:teacher');
             });
             Route::name('class.')->prefix('class')->group(function () {
                 Route::name('list')->get('/', 'ClassController@index');
