@@ -129,7 +129,7 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block">
+    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px -1rem)">
         <div class="container">
 
             <ul class="navbar-nav w-100" style="justify-content: space-between">
