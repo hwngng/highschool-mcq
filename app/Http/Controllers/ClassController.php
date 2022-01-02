@@ -47,6 +47,12 @@ class ClassController extends Controller
     public function index()
     {
       $apiResult = $this->getClassBus()->getAll();
+      foreach ($apiResult->classes as $class)
+      {
+          $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
+          $class->members = $this->getClassBus()->getUserById($class->id)->members;
+      }
+
       $viewData = [
           'classes' => $apiResult->questions
       ];

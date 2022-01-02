@@ -17,16 +17,12 @@ class ClassDAL extends BaseDAL
 	{
 		$ret = new ApiResult();
 		try {
-			$ret->classes = Lop::select('id',
-										'content',
-										'grade_id',
-										'subject_id')
-								->with('subject:id,name')
-								->get();
+			$ret->classes = Lop::all();
 		} catch (\Exception $e) {
 			Log::error($e->__toString());
 		}
-
+        app('debugbar')->info(Lop::all());
+        app('debugbar')->info($ret);
 		return $ret;
 	}
 
