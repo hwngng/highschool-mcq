@@ -90,7 +90,7 @@ class QuestionDAL extends BaseDAL
 			$questionORM->subject_id = Helper::IssetTake($questionORM->subject_id, $question, 'subject_id');
 
 			$result = $questionORM->save();
-
+ 
 			$ret->fill('0', 'Success');
 			$ret->affectedRows = $result;
 		}

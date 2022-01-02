@@ -99,7 +99,7 @@ class TestController extends Controller
     }
 
     public function destroy($testId) {
-        $apiResult = $this->getQuestionBus()->destroy($testId);
+        $apiResult = $this->getTestBus()->destroy($testId);
         return response()->json($apiResult->report());
     }
 }

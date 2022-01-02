@@ -156,4 +156,33 @@ class TestDAL extends BaseDAL
     public function start($test)
     {
     }
+
+    public function destroy ($id) 
+	{
+        app('debugbar')->info($id);
+		$ret = new ApiResult();
+		try
+		{
+			$test = Test::find($id);
+			if ($test == null) {
+                $ret->fill('1', 'Test not found');
+                return $ret;
+            }
+			$test->deleted_by = Auth::id();
+			$test->deleted_at = $test->freshTimestamp();
+			$result = $test->save();
+
+			if ($result) {
+				$ret->fill('0', 'Success');
+			}
+			else {
+				$ret->fill('1', 'Cannot delete, database error');
+			}
+		}
+		catch (\Exception $e)
+		{
+			Log::error($e->__toString());
+		}
+		return $ret;
+	}
 }

@@ -65,4 +65,8 @@ class TestBus extends BaseBus
     public function update($test) {
         
     }
+
+    public function destroy($testId) {
+        return $this->getTestDAL()->destroy($testId);
+    }
 }

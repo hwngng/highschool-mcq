@@ -80,7 +80,7 @@
 				        @foreach ($tests as $test)
 						
 
-				        <tr id="{{ $test->id }}" class="">
+				        <tr id="t-{{ $test->id }}" class="">
 				            <td class="order">{{ $i++ }}</td>
 				            <td>{{ $test->name }}</td>
 							<td>
@@ -122,16 +122,16 @@
 	</div>
 @endsection
 
-@section('end')
+@push('end')
 <script>
         function deleteTest (e, testId) {
             e.preventDefault();
             $.ajax({
                 type: "get",
-                url: "{{ route('teacher.test.destroy', '') }}" + '/' + questionId,
+                url: "{{ route('teacher.test.destroy', '') }}" + '/' + testId,
                 success: function (response) {
                     if (response['return_code'] == 0) {
-                        $('#q-' + questionId).animate("fast").animate({
+                        $('#t-' + testId).animate("fast").animate({
                             opacity : "hide"
                         }, "slow", function () {
                             let nextRows = $(this).nextAll();
@@ -143,9 +143,10 @@
                         });
                     } else {
                         alert("Something wrong, please press Ctrl + F5");
+						console.log(response['return_code']);
                     }
                 }
             });
         }
 </script>
-@endsection
+@endpush
