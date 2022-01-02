@@ -52,10 +52,14 @@ class ClassController extends Controller
       {
           $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
           $class->members = $this->getClassBus()->getUserById($class->id)->members;
+          $class->numOfMembers = $class->members->count();
+          $class->exams = $this->getClassBus()->getTestsById($class->id);
+          $class->numOfExams = $class->exams->count();
       }
 
       $viewData = [
           'classes' => $apiResult->classes
+
       ];
 
       return view('class.index', $viewData);
