@@ -2,12 +2,13 @@
 
 namespace App\Business;
 
+use App\Business\TestBus;
+use App\Business\UserBus;
 use App\Common\ApiResult;
 use App\DAL\WorkHistoryDAL;
-use App\Business\QuestionBus;
-use App\Business\UserBus;
-use App\Business\TestBus;
 use App\Models\WorkHistory;
+use App\Business\QuestionBus;
+use Illuminate\Support\Facades\Log;
 
 class WorkHistoryBus extends BaseBus
 {
@@ -27,6 +28,8 @@ class WorkHistoryBus extends BaseBus
         $count = 0;
         $historyDetails = array();
         for ($i = 0; $i < $resultForm['length']; $i++) {
+            if (!isset($resultForm['question_id'][$i]))
+                continue;
             $qid = $resultForm['question_id'][$i];
             $cids = ['choice_ids' => $resultForm['choice_ids'][$i]];
             $count += $this->isRightQuestions($qid, $cids['choice_ids']);
@@ -43,6 +46,7 @@ class WorkHistoryBus extends BaseBus
 
     public function insertAnAnswer($resultForm, $testId)
     {
+        Log::info($resultForm);
         $apiResult = new ApiResult();
         $apiResult =  $this->getWorkHistoryDAL()->insertAnAnswer($resultForm, $testId);
         return $apiResult;
