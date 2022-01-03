@@ -141,7 +141,7 @@ class TestDAL extends BaseDAL
 
             $result = $testORM->save();
 
-            if ($result) {
+            if ($result) { 
                 $ret->fill('0', 'Success');
                 $ret->testId = $testORM->id;
             
@@ -155,6 +155,37 @@ class TestDAL extends BaseDAL
 
     public function start($test)
     {
+    }
+
+    public function update($test) {
+        $ret = new ApiResult();
+		try
+		{
+			if (!isset($test['id']))
+			{
+				$ret->fill('1', 'Question not found');
+				return $ret;
+			}
+			$testORM = Test::find($test['id']);
+
+			$testORM->name = Helper::IssetTake($testORM->name, $test, 'name');
+			$testORM->description = Helper::IssetTake($testORM->description, $test, 'description');
+			$testORM->grade_id = Helper::IssetTake($testORM->grade_id, $test, 'grade_id');
+			$testORM->duration = Helper::IssetTake($testORM->duration, $test, 'duration');
+			$testORM->no_of_questions = Helper::IssetTake($testORM->no_of_questions, $test, 'no_of_questions');
+			$testORM->subject_id = Helper::IssetTake($testORM->subject_id, $test, 'subject_id');
+			$testORM->updated_at = $testORM->freshTimestamp();
+            $testORM->updated_by = Auth::id();
+			$result = $testORM->save();
+ 
+			$ret->fill('0', 'Success');
+			$ret->affectedRows = $result;
+		}
+		catch (\Exception $e)
+		{
+			Log::error($e->__toString());
+		}
+		return $ret;
     }
 
     public function destroy ($id) 

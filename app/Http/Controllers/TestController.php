@@ -95,7 +95,9 @@ class TestController extends Controller
 
     public function update(TestRequest $testRequest)
     {
-        
+        app('debugbar')->info($testRequest);
+        $apiResult = $this->getTestBus()->update($testRequest);
+        return response()->json($apiResult->report());
     }
 
     public function destroy($testId) {

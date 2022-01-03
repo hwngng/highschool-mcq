@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/experts', 'TeacherController@list')->name('experts');
 
     Route::name('teacher.')
-        ->prefix('teacher')
+        ->prefix('teacher') 
         ->middleware('authorize:teacher')
         ->group(function () {
             Route::name('index')->get('/', 'TeacherController@index');
