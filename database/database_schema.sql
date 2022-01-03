@@ -60,7 +60,7 @@ create table `user` (
     `deleted_at` datetime,
     `deleted_by` int,
     constraint `pk_user_id` primary key (`id`)
-);
+) CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;;
 
 drop table if exists `user_role`;
 create table `user_role` (
