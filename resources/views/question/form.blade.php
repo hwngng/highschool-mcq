@@ -73,7 +73,7 @@ input[type=checkbox] {
 					@endphp
 					<div class="d-inline-flex align-items-center col-10">
 						<label for="A" class="fw-bold me-3">{{ chr(ord('A')+$i) . '.' }} </label>
-						<textarea name="choices[{{ $i }}][content]" id="{{ chr(ord('A')+$i) }}" class="form-control">{{ isset($choice) ? htmlspecialchars_decode($choice->content) : '' }}</textarea>
+						<textarea name="choices[{{ $i }}][content]" id="{{ chr(ord('A')+$i) }}" class="form-control" required>{{ isset($choice) ? htmlspecialchars_decode($choice->content) : '' }}</textarea>
 					</div>
 					
 					<!-- <label class="form-check-label solution col-2"> -->
@@ -160,35 +160,61 @@ input[type=checkbox] {
 
 			let form_url = $(this).attr("action");
 			let form_method = $(this).attr("method");
-
+			let error = [];
+			
 			for (var i in CKEDITOR.instances) {
 				CKEDITOR.instances[i].updateElement();
+				
+				if (i != 'content' && i != 'solution') {
+					console.log();
+					if(!$(`#${CKEDITOR.instances[i].container.$.id} iframe`).contents().find("body").text()) {
+					error.push('Answer can\'t be empty');
+				}
+			}
 			};
 			var form_data = $(this).serialize();
-			$.ajax({
-				type: form_method,
-				url: form_url,
-				data: form_data,
-				success: function (response) {
-					if (response['return_code'] == '0') {
-						@if ($action == 'create')
-							if (!confirm("Thêm câu hỏi thành công!\nBạn có muốn tiếp tục tạo câu hỏi?")) {
-								close();
-							} else {
-								window.location.reload();
-							}
-						@else
-							close();
-						@endif
-					} else {
-						@if ($action == 'create')
-							alert("Thêm câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.");
-						@else
-							alert("Cập nhật câu hỏi thất bại.\nVui lòng thử lại hoặc ấn Ctrl + F5 rồi tạo lại câu hỏi.");
-						@endif
+			if(!$("#cke_solution iframe").contents().find("body").text()) {
+				error.push('Explaination can\'t be empty');
+			}
+			if(!$("#cke_content iframe").contents().find("body").text()) {
+				error.push('Question detail can\'t be empty');
+			}
+			if($("input[type=checkbox]:checked").length == 0) {
+				error.push('Please choose at least one answer as a correct answer');
+			}
+			
+			
+			
+			if (error != '') {
+				alert(error);
+				error.length = 0;
+			} else {
+				$.ajax({
+					type: form_method,
+					url: form_url,
+					data: form_data,
+					success: function (response) {
+						if (response['return_code'] == '0') {
+							@if ($action == 'create')
+								// if (!confirm("Successfully add new question!\nWould you like to create more questions?")) {
+								// 	close();
+								// } else {
+								// 	window.location.reload();
+								// }
+								// console.log('ok');
+							@else
+								// close();
+							@endif
+						} else {
+							@if ($action == 'create')
+								alert("Failed to add new question\nPlease press Ctrl + F5 to add again");
+							@else
+								alert("Failed to update question\nPlease press Ctrl + F5 to edit again");
+							@endif
+						}
 					}
-				}
-			});
+				});
+			}
 		})
     });
 </script>

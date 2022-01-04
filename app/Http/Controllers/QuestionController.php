@@ -77,7 +77,6 @@ class QuestionController extends Controller
     public function update (QuestionRequest $questionRequest)
     {
         $apiResult = $this->getQuestionBus()->update($questionRequest);
-
         return response()->json($apiResult->report());
     }
 

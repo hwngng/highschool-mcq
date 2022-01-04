@@ -82,6 +82,7 @@ class TestController extends Controller
 
     public function store (TestRequest $testRequest)
     {
+        app('debugbar')->info($testRequest);
         $apiResult = $this->getTestBus()->insert($testRequest);
 
         return response()->json($apiResult->report());

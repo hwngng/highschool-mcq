@@ -42,4 +42,10 @@ class TestContentBus extends BaseBus
 		$apiResult = $this->insertMany($testId, '0' ,$testContent);
 		return $apiResult;
 	}
+
+
+	public function removeQuestion($questionId) {
+		$apiResult = $this->getTestContentDAL()->removeQuestion($questionId);
+		return $apiResult;
+	}
 }
