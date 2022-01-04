@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('edit')->get('/edit', 'ClassController@edit')->middleware('authorize:teacher');
                 Route::name('update')->post('/update', 'ClassController@update')->middleware('authorize:teacher');
                 Route::name('detail')->get('/detail/{id}', 'ClassController@detail')->middleware('authorize:teacher');
+                Route::name('removeMember')->get('/kick/{id}/{memberId?}', 'ClassController@removeMember');
             });
             Route::name('result.')->prefix('result')->group(function () {
                 Route::name('list')->get('/', 'WorkHistoryController@showAllTestResult')->middleware('authorize:teacher');
@@ -90,6 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::name('class.')->prefix('class')->group(function () {
                 Route::name('list')->get('/', 'ClassController@index');
                 Route::name('detail')->get('/detail/{id}', 'ClassController@detail');
+                Route::name('leave')->get('/leave/{id}', 'ClassController@removeMember');
             });
             Route::name('result.')->prefix('result')->group(function () {
                 Route::name('detail')->get('/{userId}/{testId}', 'WorkHistoryController@getResultByTestIdAnduserId')->middleware('authorize:student');

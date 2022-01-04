@@ -81,7 +81,7 @@
                                     <td>{{ $member->join_at }}</td>
                                     @can('be-teacher')
                                         <td scope="col">
-                                            <a href="" style="color: #DD3444;font-size: 18px">
+											<a href="{{route('teacher.class.kick',$member->id)}}" style="color: #DD3444;font-size: 18px">
                                                 <i class="far fa-times-circle"></i>
                                             </a>
                                         </td>

@@ -41,5 +41,8 @@ class ClassBus extends BaseBus
         }
         return $tests;
     }
+	public function removeMember($id,$memberId) {
+		return $this->getClassDAL->removeMember($id,$memberId);
+	}
 
 }

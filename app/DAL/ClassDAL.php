@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class ClassDAL extends BaseDAL
 {
-    public function getAll ()
+	public function getAll ()
 	{
 		$ret = new ApiResult();
 		try {
@@ -29,47 +29,62 @@ class ClassDAL extends BaseDAL
 		$ret = new ApiResult();
 		try {
 			$ret->question = Lop::select('id',
-										'content',
-										'subject_id',
-										'grade_id',
-										'solution')
-								->where('id', $id)
-								->with('choices:id,question_id,content,is_solution')
-								->first();
+				'content',
+				'subject_id',
+				'grade_id',
+				'solution')
+	   ->where('id', $id)
+	   ->with('choices:id,question_id,content,is_solution')
+	   ->first();
 		} catch (\Exception $e) {
 			Log::error($e->__toString());
 		}
 		return $ret;
-    }
+	}
 
-    public function getUsersByClassId($id)
-    {
-        $apiResult = new ApiResult();
-        try {
-            $apiResult->class  = Lop::find($id);
-            $apiResult->members  = $apiResult->class->members;
-            foreach ($apiResult->members as $member) {
-                $member->join_at = Carbon::parse($member->pivot->created_at)->diffForHumans();
-            }
-        } catch (\Exception $e) {
-            Log::error($e->__toString());
-        }
-        return $apiResult;
-    }
-    public function getTestsByClassId($id)
-    {
-        $apiResult = new ApiResult();
-        try {
-            $apiResult->class  = Lop::find($id);
-            $apiResult->tests  = $apiResult->class->tests;
-            foreach ($apiResult->tests as $test) {
-                $test->p_created_at = $test->pivot->created_at->diffForHumans();
-                $test->p_start_at = Carbon::parse($test->pivot->start_at)->diffForHumans();
-                $test->p_created_by = $test->pivot->created_by;
-            }
-        } catch (\Exception $e) {
-            Log::error($e->__toString());
-        }
-        return $apiResult;
-    }
+	public function getUsersByClassId($id)
+	{
+		$apiResult = new ApiResult();
+		try {
+			$apiResult->class  = Lop::find($id);
+			$apiResult->members  = $apiResult->class->members;
+			foreach ($apiResult->members as $member) {
+				$member->join_at = Carbon::parse($member->pivot->created_at)->diffForHumans();
+			}
+		} catch (\Exception $e) {
+			Log::error($e->__toString());
+		}
+		return $apiResult;
+	}
+	public function getTestsByClassId($id)
+	{
+		$apiResult = new ApiResult();
+		try {
+			$apiResult->class  = Lop::find($id);
+			$apiResult->tests  = $apiResult->class->tests;
+			foreach ($apiResult->tests as $test) {
+				$test->p_created_at = $test->pivot->created_at->diffForHumans();
+				$test->p_start_at = Carbon::parse($test->pivot->start_at)->diffForHumans();
+				$test->p_created_by = $test->pivot->created_by;
+			}
+		} catch (\Exception $e) {
+			Log::error($e->__toString());
+		}
+		return $apiResult;
+	}
+
+	public function removeMember($id,$memberId) {
+		$ret = new ApiResult();
+		try {
+			$result = Lop::where('id', $id);
+			$result->members->detach($memberId);
+
+			$ret->fill('0', 'Success.');
+		}
+		catch (\Exception $e) {
+			$ret->fill('1', 'Failure.');
+			Log::error($e->__toString());
+		}
+		return $ret;
+	}
 }
