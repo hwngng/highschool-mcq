@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container jumbotron fixed modal-dialog modal-xl modal-dialog-centered">
+<div class="container jumbotron fixed modal-xl modal-dialog-centered">
 
     <div class="card w-100 h-100">
         <div class="card-header">
