@@ -70,6 +70,7 @@ class WorkHistoryDAL extends BaseDAL
                 ['test_id', '=', $testId],
                 ['user_id', '=', $userId],
             ])
+            ->with('questions')
             ->first();
         $ret->workHistory = $workHistory;
 
