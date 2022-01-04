@@ -9,8 +9,8 @@ class Choice extends Model
 
     protected $table = 'choice';
     public $timestamps = false;
-    protected $guarded = array('id');
-    protected $fillable = array('question_id', 'content', 'is_solution');
+    // protected $guarded = array('id');
+    protected $fillable = array('id', 'question_id', 'content', 'is_solution');
 
     public function question ()
     {

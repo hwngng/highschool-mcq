@@ -49,7 +49,7 @@
                         <td>{{ $test->created_at_diff }}</td>
                         <td>{{ $test->description }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm" href=" {{ route('student.test.start',$test->id) }}"><i
+                            <a class="btn btn-primary btn-sm" href=" {{ route('student.test.ready',$test->id) }}"><i
                                     class="fas fa-arrow-right"></i></a>
                         </td>
                     </tr>

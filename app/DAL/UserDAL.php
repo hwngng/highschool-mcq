@@ -136,7 +136,8 @@ class UserDAL extends BaseDAL
             $userORM->birthdate = Helper::IssetTake($userORM->birthdate, $user, 'birthdate');
             $userORM->telephone = Helper::IssetTake($userORM->telephone, $user, 'telephone');
             $userORM->mobile_phone = Helper::IssetTake($userORM->mobile_phone, $user, 'mobile_phone');
-            $userORM->roles()->sync($user['roles']);
+            $userORM->school_id = Helper::IssetTake($userORM->school_id, $user, 'school_id');
+            // $userORM->roles()->sync($user['roles']);
             $result = $userORM->save();
 
             $ret->fill('0', 'Success.');

@@ -18,14 +18,14 @@ class TestBus extends BaseBus
     }
 
     public function insert($testForm)
-    {
+    { 
         $apiResult = new ApiResult();
         if ((int) $testForm['no_of_questions'] == count($testForm['question_ids'])) {
             $apiResult = $this->getTestDAL()->insert($testForm);
             $testContentBus = new TestContentBus();
             $apiResult->insertTestContent = $testContentBus->insertMany($apiResult->testId, 0, $testForm['question_ids']);
         } else {
-            $apiResult->fill(1, 'Chưa nhập đủ số câu hỏi');
+            $apiResult->fill(1, 'Not enough question');
         }
         return $apiResult;
     }
@@ -60,5 +60,25 @@ class TestBus extends BaseBus
             }
         }
         return $apiResult;
+    }
+
+    public function update($test) {
+        
+
+        $test['name'] = htmlspecialchars($test['name']);
+        $test['description'] = htmlspecialchars($test['description']);
+		$test['grade_id'] = htmlspecialchars($test['grade_id']);
+        $test['duration'] = htmlspecialchars($test['duration']);
+        $test['no_of_questions'] = htmlspecialchars($test['no_of_questions']);
+        $test['subject_id'] = htmlspecialchars($test['subject_id']);
+		$apiResult = $this->getTestDAL()->update($test);
+		$testContentBus = new TestContentBus(); 
+		$apiResult->updateQuestion = $testContentBus->updateForTest($test['id'], $test['question_ids']);
+
+		return $apiResult;
+    }
+
+    public function destroy($testId) {
+        return $this->getTestDAL()->destroy($testId);
     }
 }

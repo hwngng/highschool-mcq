@@ -11,6 +11,14 @@ class QuestionBus extends BaseBus
 {
 	private $questionDAL;
 	private $choiceBus;
+	private $testContentBus;
+
+	private function getTestContentBus() {
+		if (!$this->testContentBus) {
+			$this->testContentBus = new TestContentBus();
+		}
+		return $this->testContentBus;
+	}
 
 	private function getQuestionDAL ()
 	{
@@ -52,6 +60,7 @@ class QuestionBus extends BaseBus
 
 	public function update ($question)
 	{
+		
 		$question['content'] = htmlspecialchars($question['content']);
 		$question['solution'] = htmlspecialchars($question['solution']);
 		$apiResult = $this->getQuestionDAL()->update($question);
@@ -63,7 +72,8 @@ class QuestionBus extends BaseBus
 
 	public function destroy ($questionId)
 	{
-		return $this->getQuestionDAL()->destroy($questionId);
+		$this->getTestContentBus()->removeQuestion($questionId);
+		return $this->getQuestionDAL()->destroy($questionId); 
 	}
 
 	public function restore ($questionId)

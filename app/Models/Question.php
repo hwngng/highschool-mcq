@@ -41,7 +41,7 @@ class Question extends Model
         return $this->hasMany('App\Models\Choice', 'question_id', 'id');
     }
 
-    public function tests ()
+    public function tests () 
     {
         return $this->belongsToMany('App\Models\Test', 'test_content', 'question_id', 'test_id')
                     ->withPivot('question_order', 'answer_order');
