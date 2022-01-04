@@ -127,8 +127,8 @@ class WorkHistoryBus extends BaseBus
         $apiResult = $this->getWorkHistoryDAL()->getByTestIdAndUserId($userId, $testId);
         $testBus = new TestBus();
         $userBus = new UserBus();
-        $apiResult->test = $testBus->getInfoOnly(+$testId)->test;
-        $apiResult->user = $userBus->getById(+$userId)->user;
+        $apiResult->test = $testBus->getInfoOnly($testId)->test;
+        $apiResult->user = $userBus->getById($userId)->user;
 
         return $apiResult;
     }

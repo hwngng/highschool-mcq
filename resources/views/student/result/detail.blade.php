@@ -37,7 +37,7 @@
 
             </li>
             <li class="list-group-item">
-                <a href="{{ route('student.index') }}" class="card-link">
+                <a href="{{ route('home') }}" class="card-link">
                     Trang chủ
                 </a>
             </li>

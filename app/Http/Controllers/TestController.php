@@ -62,7 +62,7 @@ class TestController extends Controller
             'test' => $apiResult->test
         ];
 
-        return view('test.ready', $viewData);
+        return view('student.test.ready', $viewData);
     }
 
     public function create ()
