@@ -196,14 +196,14 @@ input[type=checkbox] {
 					success: function (response) {
 						if (response['return_code'] == '0') {
 							@if ($action == 'create')
-								// if (!confirm("Successfully add new question!\nWould you like to create more questions?")) {
-								// 	close();
-								// } else {
-								// 	window.location.reload();
-								// }
-								// console.log('ok');
+								if (!confirm("Successfully add new question!\nWould you like to create more questions?")) {
+									close();
+								} else {
+									window.location.reload();
+								}
+								console.log('ok');
 							@else
-								// close();
+								close();
 							@endif
 						} else {
 							@if ($action == 'create')
