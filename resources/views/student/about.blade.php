@@ -14,8 +14,11 @@
 <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
 <style>
     main {
-    font-size: 1.4rem;
-}
+      font-size: 1.4rem;
+    }
+    .input-group-text {
+      height: 100%;
+    }
 </style>
 @endpush
 
@@ -95,22 +98,18 @@
               <label for="school" class="col-md-4 col-form-label text-md-right">School</label>
               <div class=" input-group">
                   <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fa fa-school"></i></span>
+                      <span class="input-group-text" ><i class="fa fa-school"></i></span>
     
                   </div>
-                  <input class=" form-control" id="school" name="school" required type=" text"
-                      list="schools" @foreach ($schools as $school) @if ($school->id ==
-                  $user->school_id)
-                  value="{{ $school->name }}"
-                  @endif
-                  @endforeach
-    
-                  />
-                  <datalist id="schools">
+                  <select id="school_id" name="school_id" class=" form-control">
                       @foreach ($schools as $school)
-                      <option data-schoolid="{{ $school->id }}">{{ $school->name }}</option>
+                      @if ($school->id == $user->school_id)
+                      <option data-schoolid="{{ $school->id }}" value="{{ $school->id }}" selected>{!! $school->name !!}</option>
+                      @else
+                      <option data-schoolid="{{ $school->id }}" value="{{ $school->id }}">{!! $school->name !!}</option>
+                      @endif
                       @endforeach
-                  </datalist>
+                  </select>
             </div>
           </div>
           <div class="row form-group">
@@ -121,7 +120,7 @@
                       <span class="input-group-text"><i class="fa fa-snowflake" aria-hidden="true"></i></span>
     
                   </div>
-                  <input class=" form-control" id="grade" name="school" required type=" text" list="grades"
+                  <input class=" form-control" id="grade_id" name="grade_id" required type=" text" list="grades"
                       value="{{ $user->grade_id }}" autocomplete="off" />
                   <datalist id="grades">
                       @foreach ($grades as $grade)

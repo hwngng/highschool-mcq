@@ -58,9 +58,8 @@
                         left: 6.25%;
                         right: 18.54%;
                         top: calc(55% - 23px/2 + 100px);
-                        font-family: 'Mulish';
                         font-style: normal;
-                        font-weight: normal;
+                        font-weight: bold;
                         font-size: 18px;
                         line-height: 23px;
                         ">Don't have any account yet?<a class="textarea register" href="{{ route('register') }}">Register now!</a></div>
