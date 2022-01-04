@@ -43,7 +43,7 @@ input[type=checkbox] {
 			</select>
 		</div>
 	</div>
-
+ 
 	<input type="hidden" name="id" value="{{ $question->id ?? ''}}">
 	<div class="form-group my-3">
 		<!-- <label for="content" class="font-weight-bold">Nội dung câu hỏi:</label>

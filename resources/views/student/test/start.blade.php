@@ -28,22 +28,22 @@
 <!-- perimeter = 2 * PI * radius -->
 <!-- perimeter = 2 * PI * 190 = 1193.80 -->
 
-<button class="timer btn btn-primary disabled" id="time">{{ $test->remain }}</button></div>
+<button class="timer btn btn-primary disabled" style="position: fixed;" id="time">{{ $test->remain }}</button></div>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar shadow-sm">
-            <ul class="nav nav-sidebar flex-column">
+            <ul class="nav nav-sidebar flex-column" style="position: fixed; margin-top: 10px">
                 @php
                 $i = 1
                 @endphp
                 @foreach($test->questions as $q)
-                <li class="nav-item px-3 ">
+                <li class="nav-item px-3">
                     <div class="row align-content-between full-height">
                         <a href="#quest-{{ $i-1 }}" class="col-7">
                             Câu {{ $i++ }}
                         </a>
-                        <div class="col-1 mr-2 question-status" id="tick-{{ $q->id }}"></div>
+                        <div class="col-1 mr-2 question-status @if(isset($submittedQuestions[$q->id])) {{ 'tick' }} @endif" id="tick-{{ $q->id }}"></div>
                         <div class=" col-2">
                             <i class="fa fa-flag"></i>
                         </div>
@@ -51,7 +51,7 @@
                     <hr>
                 </li>
                 @endforeach
-                <button type="submit" class="btn btn-success flex-end" id="test-submit">Hoàn Thành</button>
+                <button type="submit" class="btn btn-success flex-end" id="test-submit" style="margin: 5px">Finish</button>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -85,7 +85,8 @@
                         </div>
                         <div class="col-md-11 custom-control custom-radio">
                             <input id="choice-{{ $j }}-{{ $i }}" name="choice-{{ $q->id }}" type="radio"
-                                class="custom-control-input" value="{{ $c->id }}" required>
+                                class="custom-control-input" value="{{ $c->id }}" required
+                                @if(isset($submittedQuestions[$q->id]) && $submittedQuestions[$q->id] == $c->id) {{ 'checked' }} @endif>
                             <label class="custom-control-label" for="choice-{{ $j++ }}-{{ $i }}">
                                 {!! htmlspecialchars_decode($c->content) !!}
                             </label>
@@ -110,7 +111,7 @@
 <script src="{{ asset('js/doing-test.js') }}"></script>
 <script>
     @if($test->remain == 0 )
-    window.location.assign('{{ route('student.result.detail', Auth:: user() -> id) }}');
+    window.location.assign('{{ route('student.result.detail', Auth::user()->id) }}');
     @endif
 
     const notify = (msg, type) => {
@@ -171,11 +172,13 @@
             let choice_ids = -1;
             for (let j = 65; j < 65+4; j++) {
                 answerDOM = $(`input[id="choice-${j}-${i}"]`);
+                if (!answerDOM.length) continue;
                 if(answerDOM.is(':checked')) {
                     choice_ids = answerDOM.val();
                 }
                 [_, question_id] = answerDOM.attr('name').split('-');
             }
+            if (typeof question_id === 'undefined') continue;
             data['question_id'].push(question_id);
             data['choice_ids'].push(choice_ids);
         }
@@ -210,7 +213,7 @@
             data: data,
             success: function () {
                 $(`#tick-${question_id}`).addClass('tick');
-                notify('Answered !!', 'success');
+                notify('Answered !', 'success');
             }
         });
     })

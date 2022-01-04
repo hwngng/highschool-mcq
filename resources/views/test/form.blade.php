@@ -67,14 +67,14 @@
 
 <form method="post" action="{{ $action == 'create' ? route('teacher.test.store', [], false) : route('teacher.test.update', [], false) }}" id="test">
 	@csrf
+	@if ($action == 'edit')
+		<input type="hidden" name='id' value="{{ $test->id }}">
+	@endif
 	<div class="form-group my-4">
 	  <h5 class="fw-bold">Title</h5>
 	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia..." value="{{ isset($test) ? $test->name : '' }}">
 	</div>
-	<!-- <div class="form-group my-4">
-	  <h5 class="fw-bold">Test code</h5>
-	  <input type="text" name="test_code" id="test_code" class="form-control" placeholder="Mã đề thi" value="{{ isset($test) ? $test->name : '' }}">
-	</div> -->
+	
 	<div class="form-group my-4">
 	  <h5 class="fw-bold">Description</h5>
 	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An...">{{ isset($test) ? $test->description : '' }}</textarea>
@@ -139,11 +139,11 @@
 					<tr>
 						<td class="order">{{ $i+1 }}</td>
 						<td>
-							<a class="picker text-success" href="javascript:void(0)" data-toggle="tooltip" title="Choose question"><i class="fas fa-crosshairs"></i></a>
+							<a class="btn-picker picker text-success" href="javascript:void(0)" data-toggle="tooltip" title="Choose question"><i class="fas fa-crosshairs"></i></a>
 							<a class="clear text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Remove question"><i class="fas fa-times-circle ml-1"></i></a>
 						</td>
 						<td>
-							<input type="hidden" name="question_ids[${i}]" class="question-id" value="{{ $question->id }}">
+							<input type="hidden" name="question_ids[{{$i}}]" class="question-id" value="{{ $question->id }}">
 							<div class="content scrollable">
 								{!! htmlspecialchars_decode($question->content) !!}
 							</div>
@@ -159,7 +159,7 @@
 				@endif
 			</tbody>
 		</table>
-	</div>
+	</div> 
 
 	<div class="form-group my-3 d-flex justify-content-around">
 
@@ -265,8 +265,29 @@
 		let testForm = $('#test');
 		// let qdetail = $('#question-detail');
 
+
 		let closeQpickerModalButton = $('#close-qpicker-modal');
-		// let closeDetailModalButton = $('#close-detail-modal');
+		
+		testForm.find('.picker').on('click', function (e) {
+				e.preventDefault();
+
+				let row = $(this).parent().parent();
+				let rowOrder = row.find('.order').text();
+				qpicker.find('#selected-row').val(rowOrder);
+				qpicker.find('input[name="question_id"]:checked').prop('checked', false);
+
+				qpicker.modal('show');
+				console.log('asdlfjlsadfj');
+			});
+
+		testForm.find('.clear').on('click', function (e) {
+			e.preventDefault();
+
+			let row = $(this).parent().parent();
+			row.find('.content').html('');
+			row.find('.grade').html('');
+		});
+
 		quantity.on('change', function (e) {
 			let qty = parseInt($(this).val());
 
@@ -275,7 +296,7 @@
 				questions += `<tr>
 									<td class="order">${i+1}</td>
 									<td>
-										<a class="picker text-success" href="javascript:void(0)" data-toggle="tooltip" title="Pick question"><i class="fas fa-crosshairs"></i></a>
+										<a class="btn-picker picker text-success" href="javascript:void(0)" data-toggle="tooltip" title="Pick question"><i class="fas fa-crosshairs"></i></a>
 										<a class="clear text-danger" href="javascript:void(0)" data-toggle="tooltip" title="Remove question"><i class="fas fa-times-circle ml-1"></i></a>
 									</td>
 									<td>
@@ -291,7 +312,11 @@
 
 			$("#questions>tbody").html(questions);
 
-			testForm.find('.picker').on('click', function (e) {
+			
+
+			let pickQuestionButton = $('.btn-picker');
+
+			pickQuestionButton.on('click', function(e) {
 				e.preventDefault();
 
 				let row = $(this).parent().parent();
@@ -300,48 +325,9 @@
 				qpicker.find('input[name="question_id"]:checked').prop('checked', false);
 
 				qpicker.modal('show');
+				console.log('asdlfjlsadfj');
 			});
-
 			
-
-			testForm.find('.clear').on('click', function (e) {
-				e.preventDefault();
-
-				let row = $(this).parent().parent();
-				row.find('.content').html('');
-				row.find('.grade').html('');
-			});
-
-			testForm.find('.info').on('click', function (e) { 
-				e.preventDefault();
-
-				let row = $(this).parent().parent();
-
-				let question_id = row.find('.question-id').val();
-				if (question_id) {
-					$.ajax({
-						type: "get",
-						url: "{{ route('teacher.question.get', '', false) }}" + '/' + question_id,
-						dataType: "json",
-						success: function (response) {
-							console.log(response);
-							if (response['return_code']) {
-								let jqcontent = qdetail.find('.modal-body');
-								jqcontent.find('.content').html(response['question']['content']);
-								let strChoices = '';
-								response['question']['choices'].forEach(choice => {
-									strChoices += `<li class="list-group-item">${choice['content']}</li>\n`;
-								});
-								jqcontent.find('.choices>ul').html(strChoices);
-								jqcontent.find('.solution').html(response['question']['solution']);
-
-								qdetail.modal('show');
-							}
-						}
-					});
-				}
-				
-			});
 		});
 
 		@if ($action == 'create')
@@ -369,10 +355,15 @@
 							window.location.reload();
 						}
 						@else
-							console.log('ok');
+							
+							if (!confirm("Successfully update the test!\nWould you like to update it again?")) {
+								close();
+							} else {
+								window.location.reload();
+							}
 						@endif
 					} else {
-						alert("Failed to create new test\nPlease press Ctrl + F5 to create test again");
+						alert("Failed\nPlease press Ctrl + F5 to create test again");
 					}
 				}
 			});
@@ -399,9 +390,6 @@
 		closeQpickerModalButton.on('click', function(e) {
 			qpicker.modal('hide');
 		});
-
-		
-
 
 	});
 

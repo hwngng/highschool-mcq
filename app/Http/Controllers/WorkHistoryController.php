@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Business\WorkHistoryBus;
 use Facade\FlareClient\Time\Time;
 use App\Http\Requests\TestRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\WorkHistoryRequest;
 
@@ -88,9 +89,18 @@ class WorkHistoryController extends Controller
             $apiResult->test->remain = $remainingTime;
         }
 
+        $submittedQuestions = [];
+        if ($currentHistory && $currentHistory->questions->count() > 0) {
+            foreach ($currentHistory->questions as $submittedQuestion) {
+                $submittedQuestions[$submittedQuestion->pivot->question_id] = $submittedQuestion->pivot->choice_ids;
+            }
+        }
+
         $viewData = [
-            'test' => $apiResult->test
+            'test' => $apiResult->test,
+            'submittedQuestions' => $submittedQuestions
         ];
+        Log::info($submittedQuestions);
         return view('student.test.start', $viewData);
     }
 

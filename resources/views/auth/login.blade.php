@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="container">
-        <div class="col-md-8 ms-auto text-center">
+        <div class="main-image">
             <img src="{{ asset('images/sample.png') }}" />
         </div>
         

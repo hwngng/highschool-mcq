@@ -63,7 +63,7 @@ class QuestionBus extends BaseBus
 
 	public function destroy ($questionId)
 	{
-		return $this->getQuestionDAL()->destroy($questionId);
+		return $this->getQuestionDAL()->destroy($questionId); 
 	}
 
 	public function restore ($questionId)

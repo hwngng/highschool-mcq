@@ -69,10 +69,10 @@ class QuestionController extends Controller
         $viewData = [
             'question' => $apiResultQuestion->question,
             'grades' => $apiResultGrade->grades
-        ];
+        ]; 
 
         return view('question.edit', $viewData);
-    }
+    } 
 
     public function update (QuestionRequest $questionRequest)
     {

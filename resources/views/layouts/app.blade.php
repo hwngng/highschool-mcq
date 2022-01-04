@@ -74,6 +74,9 @@
                                     <li>
                                         <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Results</a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('teacher.about', Auth::user()->id) }}">Teacher profile</a>
+                                    </li>
                                     @yield('dropdown-teacher')
                                 </ul>
                             </li>
