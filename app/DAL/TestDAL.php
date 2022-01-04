@@ -115,8 +115,10 @@ class TestDAL extends BaseDAL
             'description',
             'no_of_questions',
             'created_at',
-            'created_by'
+            'created_by',
+            'test_type_id'
         )->where('id', $id)
+            ->with('testType:id,name')
             ->first();
         $ret->test = $test;
         return $ret;

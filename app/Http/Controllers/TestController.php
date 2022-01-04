@@ -55,6 +55,17 @@ class TestController extends Controller
         return view('test.index', $viewData);
     }
 
+    public function ready ($testId)
+    {
+        $apiResult = $this->getTestBus()->getInfoOnly($testId);
+
+        $viewData = [
+            'test' => $apiResult->test
+        ];
+
+        return view('student.test.ready', $viewData);
+    }
+
     public function create ()
     {
         $apiResultGradeBus = $this->getGradeBus()->getAllId();

@@ -2,7 +2,7 @@
 
 @section('title', 'Học Sinh')
 
-@section('dropdown-student')
+@section('dropdown-teacher')
 
 @endsection
 
@@ -30,7 +30,7 @@
         font-size: 24px;
         line-height: 30px;
         
-        color: #6246EA;">Student</span>
+        color: #6246EA;">Expert</span>
       </div>
     </div>
     <div class="form-group row">
@@ -40,7 +40,7 @@
             <input class="file-upload" type="file" accept="image/*"/>
         </div>
     </div>
-      <form class="needs-validation row" novalidate action="{{ route('student.user.update')}}" id="newUserForm" method="POST" onsubmit="setTimeout(function(){window.location.reload();},10);">
+      <form class="needs-validation row" novalidate action="{{ route('teacher.user.update')}}" id="newUserForm" method="POST" onsubmit="setTimeout(function(){window.location.reload();},10);">
         @csrf
         <input type="hidden" class="form-control" id="id" name="id"
                       value="{{ $user->id }}">
@@ -87,48 +87,6 @@
                       value="{{ $user->address }}">
                   <div class="invalid-feedback">Please enter your address.
                   </div>
-              </div>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col-md-6 mb-3">
-              <label for="school" class="col-md-4 col-form-label text-md-right">School</label>
-              <div class=" input-group">
-                  <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fa fa-school"></i></span>
-    
-                  </div>
-                  <input class=" form-control" id="school" name="school" required type=" text"
-                      list="schools" @foreach ($schools as $school) @if ($school->id ==
-                  $user->school_id)
-                  value="{{ $school->name }}"
-                  @endif
-                  @endforeach
-    
-                  />
-                  <datalist id="schools">
-                      @foreach ($schools as $school)
-                      <option data-schoolid="{{ $school->id }}">{{ $school->name }}</option>
-                      @endforeach
-                  </datalist>
-            </div>
-          </div>
-          <div class="row form-group">
-            <div class="col-md-6 mb-3">
-              <label for="grade" class="col-md-4 col-form-label text-md-right">Grade</label>
-              <div class=" input-group">
-                  <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fa fa-snowflake" aria-hidden="true"></i></span>
-    
-                  </div>
-                  <input class=" form-control" id="grade" name="school" required type=" text" list="grades"
-                      value="{{ $user->grade_id }}" autocomplete="off" />
-                  <datalist id="grades">
-                      @foreach ($grades as $grade)
-                      <option>{{ $grade->id }}</option>
-                      @endforeach
-                  </datalist>
-                  </select>
               </div>
             </div>
           </div>

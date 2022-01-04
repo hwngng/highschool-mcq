@@ -52,6 +52,7 @@ footer>div>a>i::before {
 }
 
 .primary-button,
+.btn-primary,
 a.primary-button {
     color: #fff;
     font-style: normal;
