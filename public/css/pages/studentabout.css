@@ -1,0 +1,50 @@
+.main-image {
+  position: absolute;
+  width: 424px;
+  height: 342px;
+  left: 1200px;
+  top: 230px;
+}
+
+.avatar {
+  position: absolute;
+  left: 5%;
+  margin: 1%;
+}
+
+.happystudy {
+  position: absolute;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 53px;
+  color: #2B2C34;
+  margin: 1%;
+  left: 23%;
+  /* top: 2.3% */
+}
+
+.info {
+  margin: -11% 3%;
+}
+
+.btn-primary {
+  background-color: #6246EA;
+  border-color: #6246EA;
+  border-radius: 6px;
+  width: 182px;
+  height: 42.7px;
+  margin: 15% 19%
+}
+.btn-primary:hover {
+  background-color: #6246EA;
+  border-color: #6246EA;
+}
+
+.col-md-4.col-form-label.text-md-right {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  color: #2B2C34;
+}
