@@ -67,55 +67,55 @@
                 $i = 1
                 @endphp
                 @isset($questions)
-                @foreach ($questions as $question)
-                <tr id="q-{{ $question->id }}">
-                    <td class="order" >{{ $i++ }}</td>
+                    @foreach ($questions as $question)
+                    <tr id="q-{{ $question->id }}">
+                        <td class="order" >{{ $i++ }}</td> 
 
-                    <td class="scrollable">
-                        Q: {!! htmlspecialchars_decode($question->content) !!}
-                        <ul>
-                        @php
-                            $noOfChoices = count($question->choices);
-					    @endphp
-                        @for ($i = 0; $i < $noOfChoices; $i++)
+                        <td class="scrollable">
+                            Q: {!! htmlspecialchars_decode($question->content) !!}
+                            <ul>
                             @php
-                                $choice = $question->choices->find($i);
+                                $noOfChoices = count($question->choices);
                             @endphp
-                            <div style="display: flex;">
-                                <p style="height: 100%; margin-bottom: 0px;">{{ chr(ord('A')+$i) . '.' }} {{ isset($choice) ? htmlspecialchars_decode($choice->content) : '' }}</p>
+                            @for ($k = 0; $k < $noOfChoices; $k++)
+                                @php
+                                    $choice = $question->choices->find($k);
+                                @endphp
+                                <div style="display: flex;">
+                                    <p style="height: 100%; margin-bottom: 0px;">{{ chr(ord('A')+$k) . '.' }} {{ isset($choice) ? htmlspecialchars_decode($choice->content) : '' }}</p>
 
-                            @if (isset($choice) && $choice->is_solution == 1)
-                                <img src="{{ asset('images/check.svg') }}" style="margin-left: 10px;" alt="">
+                                @if (isset($choice) && $choice->is_solution == 1)
+                                    <img src="{{ asset('images/check.svg') }}" style="margin-left: 10px;" alt="">
+                                @endif
+                                </div>
+                            @endfor
+                            </ul>
+                        </td>
+                        <td>
+                            @if($question->subject_id == 1)
+                                Math
+                            @elseif($question->subject_id == 2)
+                                Physics
+                            @elseif($question->subject_id == 3)
+                                Chemistry
+                            @elseif($question->subject_id == 4)
+                                Biology
+                            @else
+                                English
                             @endif
-                            </div>
-                        @endfor
-                        </ul>
-                    </td>
-                    <td>
-                        @if($question->subject_id == 1)
-                            Math
-                        @elseif($question->subject_id == 2)
-                            Physics
-                        @elseif($question->subject_id == 3)
-                            Chemistry
-                        @elseif($question->subject_id == 4)
-                            Biology
-                        @else
-                            English
-                        @endif
-                    </td>
-                    <td>{{ $question->grade_id }}</td>
+                        </td>
+                        <td>{{ $question->grade_id }}</td>
 
-                    <td>
-                        <a class="" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank" style="margin-right: 10px;">
-                            <img src="{{ asset('images/edit.svg') }}" alt="">
-                        </a>
-                        <a class="" onclick="deleteQuestion(event, {{ $question->id }})" style="cursor: pointer;">
-                            <img src="{{ asset('images/cancel.svg') }}" alt="">
-                        </a>
-                    </td>
-                </tr>
-                @endforeach
+                        <td>
+                            <a class="" href="{{ route('teacher.question.edit', $question->id) }}" target="_blank" style="margin-right: 10px;">
+                                <img src="{{ asset('images/edit.svg') }}" alt="">
+                            </a>
+                            <a class="" onclick="deleteQuestion(event, {{ $question->id }})" style="cursor: pointer;">
+                                <img src="{{ asset('images/cancel.svg') }}" alt="">
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
                 @endisset
             </tbody>
         </table>

@@ -45,4 +45,22 @@ class TestContentDAL extends BaseDAL
 		}
 		return $ret;
 	}
+
+	public function removeQuestion($questionId) {
+		$ret = new ApiResult();
+		try
+		{
+			$result = TestContent::where('question_id', $questionId)->delete();
+
+			if ($result)
+				$ret->fill('0', 'Success.');
+			else
+				$ret->fill('1', 'Cannot insert, database error.');
+		}
+		catch (\Exception $e)
+		{
+			Log::error($e->__toString());
+		}
+		return $ret;
+	}
 }

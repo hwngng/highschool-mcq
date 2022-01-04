@@ -71,12 +71,12 @@
 		<input type="hidden" name='id' value="{{ $test->id }}">
 	@endif
 	<div class="form-group my-4">
-	  <h5 class="fw-bold">Title</h5>
+	  <h5 class="fw-bold">Title <span style="color: red;">*</span></h5>
 	  <input type="text" name="name" id="name" class="form-control" placeholder="Đề thi THPT Quốc gia..." value="{{ isset($test) ? $test->name : '' }}">
 	</div>
 	
 	<div class="form-group my-4">
-	  <h5 class="fw-bold">Description</h5>
+	  <h5 class="fw-bold">Description <span style="color: red;">*</span></h5>
 	  <textarea name="description" id="description" class="form-control" placeholder="Đề thi thử THPT Quốc gia cho khối 12 trường THPT Chu Văn An...">{{ isset($test) ? $test->description : '' }}</textarea>
 	</div>
 	<div class="d-flex justify-content-between my-4">
@@ -144,9 +144,9 @@
 						</td>
 						<td>
 							<input type="hidden" name="question_ids[{{$i}}]" class="question-id" value="{{ $question->id }}">
-							<div class="content scrollable">
+							<p class="content scrollable picked-question">
 								{!! htmlspecialchars_decode($question->content) !!}
-							</div>
+							</p>
 						</td>
 						<td class="grade">
 							{{ $question->grade_id }}
@@ -301,8 +301,8 @@
 									</td>
 									<td>
 										<input type="hidden" name="question_ids[${i}]" class="question-id" value="">
-										<div class="content scrollable">
-										</div>
+										<p class="content scrollable picked-question">
+										</p>
 									</td>
 									<td class="grade">
 									</td>
@@ -311,7 +311,13 @@
 			}
 
 			$("#questions>tbody").html(questions);
+			testForm.find('.clear').on('click', function (e) {
+			e.preventDefault();
 
+			let row = $(this).parent().parent();
+			row.find('.content').html('');
+			row.find('.grade').html('');
+			});
 			
 
 			let pickQuestionButton = $('.btn-picker');
@@ -325,7 +331,6 @@
 				qpicker.find('input[name="question_id"]:checked').prop('checked', false);
 
 				qpicker.modal('show');
-				console.log('asdlfjlsadfj');
 			});
 			
 		});
@@ -341,32 +346,70 @@
 			let form_url = $(this).attr("action");
 			let form_method = $(this).attr("method");
 			var form_data = $(this).serialize();
+			let error = [];
+			let id = [];
+			let isMissingQuestionTest = 0;
 
-			$.ajax({
-				type: form_method,
-				url: form_url,
-				data: form_data,
-				success: function (response) {
-					if (response['return_code'] == '0') {
-						@if ($action == 'create')
-						if (!confirm("Successfully add new test!\nWould you like to continue to create new test?")) {
-							close();
-						} else {
-							window.location.reload();
-						}
-						@else
-							
-							if (!confirm("Successfully update the test!\nWould you like to update it again?")) {
+			if(!$.trim($('#test input[type=text]').val())) {
+				error.push('Title can\'t be empty');
+			}
+
+			if(!$.trim($("#description").val())) {
+				error.push('Description can\'t be empty');
+			}
+
+			
+			
+			let listOfQuestion = document.getElementsByClassName('question-id');
+			for(let i = 0; i < listOfQuestion.length; i++) {
+				if(listOfQuestion[i].value.length == 0) {
+					isMissingQuestionTest = 1;
+				}		
+				id.push(listOfQuestion[i].value);
+			}
+			if(isMissingQuestionTest == 1) {
+				error.push('You have to fill in enough question');
+			}
+			if(!id.every(item => item == 0)) {
+				if((new Set(id)).size !== id.length) {
+					error.push('You have duplicate question in the test');
+				}
+			}
+			
+
+
+			if(error != '') {
+				alert(error);
+				error.length = 0;
+				isMissingQuestionTest = 0;
+			} else {
+				$.ajax({
+					type: form_method,
+					url: form_url,
+					data: form_data,
+					success: function (response) {
+						if (response['return_code'] == '0') {
+							@if ($action == 'create')
+							if (!confirm("Successfully add new test!\nWould you like to continue to create new test?")) {
 								close();
 							} else {
 								window.location.reload();
 							}
-						@endif
-					} else {
-						alert("Failed\nPlease press Ctrl + F5 to create test again");
+							@else
+								
+								if (!confirm("Successfully update the test!\nWould you like to update it again?")) {
+									close();
+								} else {
+									window.location.reload();
+								}
+								console.log('ok');
+							@endif
+						} else {
+							alert("Failed\nPlease press Ctrl + F5 to try again");
+						}
 					}
-				}
-			});
+				});
+			}
 		});
 
 		qpicker.find('#choose').on('click', function (e) {
