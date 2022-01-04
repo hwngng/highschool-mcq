@@ -19,7 +19,7 @@ body {
 /* Remove extra left and right margins, due to padding */
 
 .row {
-    margin: 0 -5px;
+    margin: 10px -5px;
 }
 
 
@@ -42,12 +42,68 @@ body {
     }
 }
 
-
+z
 /* Style the counter cards */
 
 .card {
+    height: 125px;
+    width: 219px;
+    left: 172px;
+    top: 381px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    padding: 16px;
+    padding: 8px;
     text-align: center;
-    background-color: #f1f1f1;
+    position: relative;
+    left: 11.94%;
+    right: 72.85%;
+    top: 37.21%;
+    bottom: 50.59%;
+    background: #D1D1E9;
+    border-radius: 6px;
+}
+
+.create-class-btn {
+    margin-left: 70%;
+    float: right;
+    /* margin-right: 50px; */
+    background: #2FD53F;
+    border-radius: 6px;
+}
+
+#shool-name {
+    padding: 5px 5px 5px 5px;
+    left: 11.94%;
+    right: 70.62%;
+    top: 20.51%;
+    bottom: 73.93%;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.015em;
+    color: #2B2C34;
+}
+
+div.quantity {
+    padding: 5px 5px 5px 5px;
+    line-height: 10px;
+    left: 12.22%;
+    right: 74.86%;
+    top: 41.8%;
+    bottom: 50.78%;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    align-items: center;
+    letter-spacing: -0.015em;
+    color: rgba(43, 44, 52, 0.5);
+}
+
+.row-1 {
+    display: flex;
 }
