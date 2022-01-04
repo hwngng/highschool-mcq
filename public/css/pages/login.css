@@ -150,9 +150,8 @@
 }
 
 .textarea {
-    font-family: 'Mulish';
     font-style: normal;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 14px;
     line-height: 18px;
     /* identical to box height */
