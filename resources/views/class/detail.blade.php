@@ -21,22 +21,24 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="menu-class-gv">
                         <li>
-                            <a class="dropdown-item" href="{{ route('teacher.class.list') }}">Edit</a>
+                            <a class="dropdown-item" href="{{ route('teacher.class.edit') }}">Edit</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ route('teacher.test.list') }}" style="color: #2FD43F;
-                                                                    ">Assign new exam</a>
+                            <a class="dropdown-item" href="{{ route('teacher.test.create') }}" style="color: #2FD43F;">Assign
+                                new
+                                exam</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ route('teacher.question.list') }}" style="color: #DD3444;
-                                                                    ">Delete class</a>
+                            <a class="dropdown-item" href="{{ route('teacher.class.create') }}" style="color: #DD3444;">Delete
+                                class</a>
                         </li>
                         @yield('dropdown-teacher')
                     </ul>
                 </div>
             @endcan
             @can('be-student')
-                <a class="btn btn-danger ms-auto" href="{{ route('login') }}">Leave class</a>
+                <a class="btn btn-danger ms-auto" href="{{ route('student.class.leave', $apiResult->class->id) }}">Leave
+                    class</a>
             @endcan
 
         </div>
@@ -70,23 +72,28 @@
                     </thead>
                     <tbody>
                         @if (count($apiResult->members))
+                            @php
+                                $count = 1;
+                            @endphp
                             @foreach ($apiResult->members as $member)
-
-                                <tr>
-                                    <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>{{ $member->username }}</td>
-                                    <td>{{ $apiResult->class->grade_id }}</td>
-                                    <td>{{ $member->last_name }} {{ $member->first_name }}</td>
-                                    <td>{{ $member->email }}</td>
-                                    <td>{{ $member->join_at }}</td>
-                                    @can('be-teacher')
-                                        <td scope="col">
-											<a href="{{route('teacher.class.kick',$member->id)}}" style="color: #DD3444;font-size: 18px">
-                                                <i class="far fa-times-circle"></i>
-                                            </a>
-                                        </td>
-                                    @endcan
-                                </tr>
+                                @if (Gate::check('be-student') || $member->id != Auth::id())
+                                    <tr id="m-{{ $member->id }}">
+                                        <td scope="row">{{ $count++ }}</td>
+                                        <td>{{ $member->username }}</td>
+                                        <td>{{ $apiResult->class->grade_id }}</td>
+                                        <td>{{ $member->last_name }} {{ $member->first_name }}</td>
+                                        <td>{{ $member->email }}</td>
+                                        <td>{{ $member->join_at }}</td>
+                                        @can('be-teacher')
+                                            <td scope="col">
+                                                <a style="color: #DD3444;font-size: 18px"
+                                                    onclick="kickMember(event,{{ $apiResult->class->id }},{{ $member->id }})">
+                                                    <i class="far fa-times-circle"></i>
+                                                </a>
+                                            </td>
+                                        @endcan
+                                    </tr>
+                                @endif
                             @endforeach
                         @endif
                     </tbody>
@@ -109,9 +116,8 @@
                     <tbody>
                         @if (count($apiResult->tests))
                             @foreach ($apiResult->tests as $test)
-
-                                <tr>
-                                    <th scope="row">{{ $loop->index + 1 }}</th>
+                                <tr id="t-{{ $test->id }}">
+                                    <td scope="row">{{ $loop->index + 1 }}</td>
                                     <td>{{ $test->name }}</td>
                                     <td>{{ $test->p_created_by->last_name }} {{ $test->p_created_by->first_name }}
                                     </td>
@@ -119,25 +125,22 @@
                                     @can('be-student')
                                         <td>{{ $test->score }}</td>
                                         <td scope="col" style="">
-                                            <a href="" class="px-2" style="color:
-                                                    #2FD43F;font-size: 18px">
+                                            <a d="" class="px-2"
+                                                style="color:#2FD43F;font-size: 18px">
                                                 <i class="fas fa-sign-in-alt"></i>
                                             </a>
                                         </td>
                                     @endcan
-
                                     @can('be-teacher')
                                         <td scope="col" style="">
                                             <a href="" class="px-2" style="color: #DD3444;font-size: 18px">
-                                                <i class="far fa-times-circle"></i>
+                                                <i class="far fa-times-circle" onclick="deleteTest(event, {{ $test->id }})"></i>
                                             </a>
-                                            <a href="" class="px-2" style="color: 18px;font-size: 18px">
+                                            <a href="{{ route('teacher.test.edit', $test->id) }}" class="px-2" style="color: 18px;font-size: 18px">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </td>
                                     @endcan
-
-
                                 </tr>
                             @endforeach
                         @endif
@@ -149,7 +152,42 @@
 
 @endsection
 
-@section('end')
+@push('end')
     <script>
+        let kickMember = function(event, id, memberId) {
+            $.ajax({
+                type: "get",
+                url: "{{ route('teacher.class.kick', '') }}" + '/' + id + '/' + memberId,
+                success: function(response) {
+                    console.log('ok');
+                    $('#m-' + memberId).remove();
+                }
+            });
+        }
+
+        function deleteTest (e, testId) {
+            e.preventDefault();
+            $.ajax({
+                type: "get",
+                url: "{{ route('teacher.test.destroy', '') }}" + '/' + testId,
+                success: function (response) {
+                    if (response['return_code'] == 0) {
+                        $('#t-' + testId).animate("fast").animate({
+                            opacity : "hide"
+                        }, "slow", function () {
+                            let nextRows = $(this).nextAll();
+                            let order = parseInt($(this).children('td.order').text());
+                            for (let i = 0; i < nextRows.length; ++i) {
+                                $(nextRows[i]).children('td.order').text(order);
+                                ++order;
+                            }
+                        });
+                    } else {
+                        alert("Something wrong, please press Ctrl + F5");
+						console.log(response['return_code']);
+                    }
+                }
+            });
+        }
     </script>
-@endsection
+@endpush

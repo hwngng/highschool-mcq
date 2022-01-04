@@ -35,9 +35,12 @@ class HomeController extends Controller
         // {
         //     return redirect(route('student.index'));
         // }
-        else
-        {
+        else {
             return view('home');
         }
+    }
+    public function aboutUs()
+    {
+        return view('about_us');
     }
 }

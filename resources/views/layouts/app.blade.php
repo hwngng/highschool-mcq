@@ -136,7 +136,6 @@
             </div>
         </div>
     </nav>
-    <<<<<<< HEAD=======>>>>>>> efccbfe5f3b6d5cb281ac8fc47180cc9ef037f65
         <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px - 1rem);">
             <div class="container">
 
@@ -144,23 +143,29 @@
                     <li class="nav-item sub-nav-item">
                         <a class=" active" aria-current="page" href="{{ url('/') }}">Home</a>
                     </li>
+                    {{-- TODO: add links --}}
                     <li class="nav-item sub-nav-item">
                         <a class=" " aria-current="page" href="{{ url('/') }}">Exams</a>
                     </li>
                     <li class="nav-item sub-nav-item">
-                        <a class="" aria-current="page" href="{{ url('/') }}">Grades</a>
+                        <a class="" aria-current="page" href="#">Grades</a>
                     </li>
                     <li class="nav-item sub-nav-item">
-                        <a class="" aria-current="page" href="{{ url('/') }}">Subjects</a>
+                        <a class="" aria-current="page" href="#">Subjects</a>
                     </li>
                     <li class="nav-item sub-nav-item">
-                        <a class="" aria-current="page" href="{{ url('/') }}">Classes</a>
+                        @can('be-teacher')
+                        <a class="" aria-current="page" href="{{ route('teacher.class.list') }}">Classes</a>
+                        @endcan
+                        @can('be-student')
+                        <a class="" aria-current="page" href="{{ route('student.class.list') }}">Classes</a>
+                        @endcan
                     </li>
                     <li class="nav-item sub-nav-item">
-                        <a class="" aria-current="page" href="{{ url('/') }}">Experts</a>
+                        <a class="" aria-current="page" href="{{ route('experts')}}">Experts</a>
                     </li>
                     <li class="nav-item sub-nav-item">
-                        <a class="" aria-current="page" href="{{ url('/') }}">About us</a>
+                        <a class="" aria-current="page" href="{{ route('about_us') }}">About us</a>
                     </li>
                 </ul>
             </div>
