@@ -143,9 +143,13 @@
                     <li class="nav-item sub-nav-item">
                         <a class=" active" aria-current="page" href="{{ url('/') }}">Home</a>
                     </li>
-                    {{-- TODO: add links --}}
                     <li class="nav-item sub-nav-item">
-                        <a class=" " aria-current="page" href="{{ url('/') }}">Exams</a>
+                        @can('be-teacher')
+                        <a class="" aria-current="page" href="{{ route('teacher.test.list') }}">Exams</a>
+                        @endcan
+                        @can('be-student')
+                        <a class="" aria-current="page" href="{{ route('student.test.list') }}">Exams</a>
+                        @endcan
                     </li>
                     <li class="nav-item sub-nav-item">
                         <a class="" aria-current="page" href="#">Grades</a>

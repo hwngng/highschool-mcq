@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Business\SchoolBus;
 use App\Business\ClassBus;
+use App\Business\TestBus;
 use App\Business\UserBus;
 use App\Business\WorkHistoryBus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use phpDocumentor\Reflection\Types\Null_;
 
 class ClassController extends Controller
 {
@@ -16,6 +16,8 @@ class ClassController extends Controller
     private $classBus;
     private $workHistoryBus;
     private $schoolBus;
+    private $testBus;
+
     private function getSchoolBus()
     {
         if ($this->schoolBus == null) {
@@ -38,6 +40,13 @@ class ClassController extends Controller
         }
         return $this->classBus;
     }
+    private function getTestBus()
+    {
+        if ($this->testBus == null) {
+            $this->testBus = new TestBus();
+        }
+        return $this->testBus;
+    }
     private function getWorkHistoryBus()
     {
         if ($this->workHistoryBus == null) {
@@ -52,7 +61,7 @@ class ClassController extends Controller
         foreach ($apiResult->classes as $class) {
             // $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
             $class->members = $this->getClassBus()->getUserById($class->id)->members;
-            $class->numOfMembers = $class->members->count()-1;
+            $class->numOfMembers = $class->members->count() - 1;
             $class->exams = $this->getClassBus()->getTestsById($class->id);
             $class->numOfExams = $class->exams->count();
         }
@@ -140,16 +149,22 @@ class ClassController extends Controller
      */
     public function detail($id)
     {
+        $exceptTests =[];
         $apiResult = $this->getClassBus()->getUserById($id);
-
         $apiResult->tests = $this->getClassBus()->getTestsById($id);
+
         foreach ($apiResult->tests as $test) {
             $workHistory = $this->getWorkHistoryBus()->getWorkHistoryByTestIdAndUserId(Auth::id(), $test->id)->workHistory;
-            $test->score = $workHistory->no_of_correct ? ($workHistory->no_of_correct * 10 / $test->no_of_questions) : 0;
+            $test->score = $workHistory ? ($workHistory->no_of_correct * 10 / $test->no_of_questions) : 0;
+            array_push($exceptTests,$test->id);
         }
-
+        $apiResult->testList = $this->getTestBus()->getAllExcept($exceptTests)->tests;
+        foreach ($apiResult->testList as $tl) {
+            $tl->p_created_by = $this->getUserBus()->getById($tl->created_by)->user;
+        }
         return view('class.detail', compact('apiResult'));
     }
+
     public function removeMember($id, $memberId = null)
     {
         $apiResult = null;

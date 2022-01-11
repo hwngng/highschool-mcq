@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('update')->post('/update', 'ClassController@update')->middleware('authorize:teacher');
                 Route::name('detail')->get('/detail/{id}', 'ClassController@detail')->middleware('authorize:teacher');
                 Route::name('kick')->get('/kick/{id}/{memberId?}', 'ClassController@removeMember')->middleware('authorize:teacher');
+                Route::name('addExams')->post('/addexams/{id}', 'ClassTestController@store')->middleware('authorize:teacher');
             });
             Route::name('result.')->prefix('result')->group(function () {
                 Route::name('list')->get('/', 'WorkHistoryController@showAllTestResult')->middleware('authorize:teacher');

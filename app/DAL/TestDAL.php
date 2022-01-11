@@ -32,7 +32,26 @@ class TestDAL extends BaseDAL
             )
                 ->with('createdBy:id,username,first_name,last_name')
                 ->with('subject:id,name')
-                ->orderBy('created_at','desc')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            Log::error($e->__toString());
+        }
+        return $ret;
+    }
+
+    public function getAllExcept($exceptTests)
+    {
+        $ret = new ApiResult();
+        try {
+            $ret->tests = Test::select(
+                'id',
+                'name',
+                'created_by'
+            )->whereNotIn('id', $exceptTests)
+                ->with('createdBy:id,username,first_name,last_name')
+                ->with('subject:id,name')
+                ->orderBy('created_at', 'desc')
                 ->get();
         } catch (\Exception $e) {
             Log::error($e->__toString());
@@ -45,32 +64,32 @@ class TestDAL extends BaseDAL
         $ret = new ApiResult();
         try {
             $test = Test::select(
-                            'id',
-                            'test_code',
-                            'name',
-                            'grade_id',
-                            'subject_id',
-                            'duration',
-                            'description',
-                            'no_of_questions',
-                            'created_at',
-                            'created_by'
-                        )
-                        ->where('id', $id)
-                        ->with('createdBy:id,username,first_name,last_name')
-                        ->with('subject:id,name')
-                        ->first();
+                'id',
+                'test_code',
+                'name',
+                'grade_id',
+                'subject_id',
+                'duration',
+                'description',
+                'no_of_questions',
+                'created_at',
+                'created_by'
+            )
+                ->where('id', $id)
+                ->with('createdBy:id,username,first_name,last_name')
+                ->with('subject:id,name')
+                ->first();
             $ret->test = $test;
 
             $testContents = TestContent::select(
-                                            'test_id',
-                                            'test_code',
-                                            'question_id'
-                                        )
-                                        ->where('test_id', $id)
-                                        ->where('test_code', $code)
-                                        ->with('question.choices')
-                                        ->get();
+                'test_id',
+                'test_code',
+                'question_id'
+            )
+                ->where('test_id', $id)
+                ->where('test_code', $code)
+                ->with('question.choices')
+                ->get();
             $questions = [];
             foreach ($testContents as $testContent) {
                 // append to list question
@@ -143,10 +162,9 @@ class TestDAL extends BaseDAL
 
             $result = $testORM->save();
 
-            if ($result) { 
+            if ($result) {
                 $ret->fill('0', 'Success');
                 $ret->testId = $testORM->id;
-            
             } else
                 $ret->fill('1', 'Cannot insert, database error.');
         } catch (\Exception $e) {
@@ -159,63 +177,56 @@ class TestDAL extends BaseDAL
     {
     }
 
-    public function update($test) {
+    public function update($test)
+    {
         $ret = new ApiResult();
-		try
-		{
-			if (!isset($test['id']))
-			{
-				$ret->fill('1', 'Question not found');
-				return $ret;
-			}
-			$testORM = Test::find($test['id']);
+        try {
+            if (!isset($test['id'])) {
+                $ret->fill('1', 'Question not found');
+                return $ret;
+            }
+            $testORM = Test::find($test['id']);
 
-			$testORM->name = Helper::IssetTake($testORM->name, $test, 'name');
-			$testORM->description = Helper::IssetTake($testORM->description, $test, 'description');
-			$testORM->grade_id = Helper::IssetTake($testORM->grade_id, $test, 'grade_id');
-			$testORM->duration = Helper::IssetTake($testORM->duration, $test, 'duration');
-			$testORM->no_of_questions = Helper::IssetTake($testORM->no_of_questions, $test, 'no_of_questions');
-			$testORM->subject_id = Helper::IssetTake($testORM->subject_id, $test, 'subject_id');
-			$testORM->updated_at = $testORM->freshTimestamp();
+            $testORM->name = Helper::IssetTake($testORM->name, $test, 'name');
+            $testORM->description = Helper::IssetTake($testORM->description, $test, 'description');
+            $testORM->grade_id = Helper::IssetTake($testORM->grade_id, $test, 'grade_id');
+            $testORM->duration = Helper::IssetTake($testORM->duration, $test, 'duration');
+            $testORM->no_of_questions = Helper::IssetTake($testORM->no_of_questions, $test, 'no_of_questions');
+            $testORM->subject_id = Helper::IssetTake($testORM->subject_id, $test, 'subject_id');
+            $testORM->updated_at = $testORM->freshTimestamp();
             $testORM->updated_by = Auth::id();
-			$result = $testORM->save();
- 
-			$ret->fill('0', 'Success');
-			$ret->affectedRows = $result;
-		}
-		catch (\Exception $e)
-		{
-			Log::error($e->__toString());
-		}
-		return $ret;
+            $result = $testORM->save();
+
+            $ret->fill('0', 'Success');
+            $ret->affectedRows = $result;
+        } catch (\Exception $e) {
+            Log::error($e->__toString());
+        }
+        return $ret;
     }
 
-    public function destroy ($id) 
-	{
+    public function destroy($id)
+    {
         app('debugbar')->info($id);
-		$ret = new ApiResult();
-		try
-		{
-			$test = Test::find($id);
-			if ($test == null) {
+        $ret = new ApiResult();
+        try {
+            $test = Test::find($id);
+            if ($test == null) {
                 $ret->fill('1', 'Test not found');
                 return $ret;
             }
-			$test->deleted_by = Auth::id();
-			$test->deleted_at = $test->freshTimestamp();
-			$result = $test->save();
+            $test->deleted_by = Auth::id();
+            $test->deleted_at = $test->freshTimestamp();
+            $result = $test->save();
 
-			if ($result) {
-				$ret->fill('0', 'Success');
-			}
-			else {
-				$ret->fill('1', 'Cannot delete, database error');
-			}
-		}
-		catch (\Exception $e)
-		{
-			Log::error($e->__toString());
-		}
-		return $ret;
-	}
+            if ($result) {
+                $ret->fill('0', 'Success');
+            } else {
+                $ret->fill('1', 'Cannot delete, database error');
+            }
+        } catch (\Exception $e) {
+            Log::error($e->__toString());
+        }
+        return $ret;
+    }
 }

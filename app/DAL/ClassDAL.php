@@ -62,10 +62,11 @@ class ClassDAL extends BaseDAL
 
         return $apiResult;
     }
-    public function getByAuthorId($id){
+    public function getByAuthorId($id)
+    {
         $ret = new ApiResult();
         try {
-            $ret->classes = Lop::where('created_by',$id)->get();
+            $ret->classes = Lop::where('created_by', $id)->get();
         } catch (\Exception $e) {
             Log::error($e->__toString());
         }
@@ -93,7 +94,7 @@ class ClassDAL extends BaseDAL
         $ret = new ApiResult();
         try {
             $result = Lop::find($id);
-            $result->members()->detach($memberId);
+            $result->members()->attach($memberId);
 
             $ret->fill('0', 'Success.');
         } catch (\Exception $e) {
@@ -102,35 +103,54 @@ class ClassDAL extends BaseDAL
         }
         return $ret;
     }
-    public function insert ($class)
-	{
-		app('debugbar')->info($class);
-		$ret = new ApiResult();
-		try {
-			$classORM = new Lop();
-			$classORM['name'] = Helper::IssetTake($classORM->name, $class, 'name');
-			$classORM['description'] = Helper::IssetTake($classORM->description, $class, 'description');
-			$classORM['grade_id'] = $class['grade_id'];
-			$classORM['code'] = Helper::IssetTake($classORM->code, $class, 'code');
+    public function insertTests($id, $testIds)
+    {
+        $ret = new ApiResult();
+        try {
+            $result = Lop::find($id);
 
-			$classORM['school_id'] = 8;
-			$classORM->created_by = Auth::id();
+            $sync_data = [];
+            if (count($testIds)) {
+                foreach ($testIds as $key=>$value) {
+                    $sync_data[$key] = ['start_at' => $value->started_at,'created_by'=> Auth::id()];
+                }
+            }
+            $result->tests()->attach($sync_data);
+            $ret->fill('0', 'Success.');
+        } catch (\Exception $e) {
+            $ret->fill('1', 'Failure.');
+            Log::error($e->__toString());
+        }
+        return $ret;
+    }
 
-			$result = $classORM->save();
+    public function insert($class)
+    {
+        app('debugbar')->info($class);
+        $ret = new ApiResult();
+        try {
+            $classORM = new Lop();
+            $classORM['name'] = Helper::IssetTake($classORM->name, $class, 'name');
+            $classORM['description'] = Helper::IssetTake($classORM->description, $class, 'description');
+            $classORM['grade_id'] = $class['grade_id'];
+            $classORM['code'] = Helper::IssetTake($classORM->code, $class, 'code');
+
+            $classORM['school_id'] = 8;
+            $classORM->created_by = Auth::id();
+
+            $result = $classORM->save();
 
 
-			if ($result)
-			{
+            if ($result) {
                 $classORM->members()->attach(Auth::id());
-				$ret->fill('0', 'Success');
-			}
-			else
-				$ret->fill('1', 'Cannot insert, database error');
-		} catch (\Exception $e) {
-			Log::error($e->__toString());
-		}
-		return $ret;
-	}
+                $ret->fill('0', 'Success');
+            } else
+                $ret->fill('1', 'Cannot insert, database error');
+        } catch (\Exception $e) {
+            Log::error($e->__toString());
+        }
+        return $ret;
+    }
     public function removeMember($id, $memberId)
     {
         $ret = new ApiResult();

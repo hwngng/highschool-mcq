@@ -6,6 +6,25 @@
     color: #2B2C34;
 }
 
+#overlay {
+    display: block;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s 0.3s;
+}
+
+#overlay>.list {
+    position: relative;
+    top: 50%;
+    left: 15%;
+    width: 70vw;
+}
+
 .dropdown-menu {
     background: #FFFFFF;
     border: 1px solid #D1D1E9;
