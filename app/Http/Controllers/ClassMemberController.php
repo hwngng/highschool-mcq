@@ -14,20 +14,8 @@ class ClassMemberController extends Controller
    */
   public function index()
   {
-    return view('teacher.class.detail');
-
   }
 
-  /**
-   * Display a listing of the resource.
-   *
-   * @return Response
-   */
-  public function waitingList()
-  {
-    return view('teacher.class.waiting-list');
-
-  }
 
   /**
    * Show the form for creating a new resource.

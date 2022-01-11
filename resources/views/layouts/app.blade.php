@@ -14,6 +14,7 @@
     <link href="{{ asset('css/common.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
 
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.js') }}"></script>
@@ -65,16 +66,23 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-giaovien">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Tests management</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.class.list') }}">Classes
+                                            management</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Questions management</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Tests
+                                            management</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Questions
+                                            management</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Results</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.about', Auth::user()->id) }}">Teacher profile</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('teacher.about', Auth::user()->id) }}">Teacher profile</a>
                                     </li>
                                     @yield('dropdown-teacher')
                                 </ul>
@@ -97,7 +105,8 @@
                                             href="{{ route('student.result.list', Auth::user()->id) }}">Scores</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('student.about', Auth::user()->id) }}">Student profile</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('student.about', Auth::user()->id) }}">Student profile</a>
                                     </li>
                                     @yield('dropdown-student')
                                 </ul>
@@ -127,55 +136,64 @@
             </div>
         </div>
     </nav>
-    
-    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px - 1rem);">
-        <div class="container">
+        <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px - 1rem);">
+            <div class="container">
 
-            <ul class="navbar-nav w-100" style="justify-content: space-between">
-                <li class="nav-item sub-nav-item">
-                    <a class=" active" aria-current="page" href="{{ url('/') }}">Home</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class=" " aria-current="page" href="{{ url('/') }}">Exams</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Grades</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Subjects</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Classes</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Experts</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">About us</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    
-    <main class="py-5">
-        @yield('content')
-    </main>
-    <footer>
-        <div class="container d-flex">
-            <p class="flex-grow-1">
-                Copyright © 2021 HappyStudy
-            </p>
-            <a class="px-2" href="#">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a class="px-2" href="#">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="px-2" href="#">
-                <i class="fab fa-twitter"></i>
-            </a>
-        </div>
-    </footer>
+                <ul class="navbar-nav w-100" style="justify-content: space-between">
+                    <li class="nav-item sub-nav-item">
+                        <a class=" active" aria-current="page" href="{{ url('/') }}">Home</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        @can('be-teacher')
+                        <a class="" aria-current="page" href="{{ route('teacher.test.list') }}">Exams</a>
+                        @endcan
+                        @can('be-student')
+                        <a class="" aria-current="page" href="{{ route('student.test.list') }}">Exams</a>
+                        @endcan
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="#">Grades</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="#">Subjects</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        @can('be-teacher')
+                        <a class="" aria-current="page" href="{{ route('teacher.class.list') }}">Classes</a>
+                        @endcan
+                        @can('be-student')
+                        <a class="" aria-current="page" href="{{ route('student.class.list') }}">Classes</a>
+                        @endcan
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="{{ route('experts')}}">Experts</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="{{ route('about_us') }}">About us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="py-5">
+            @yield('content')
+        </main>
+        <footer>
+            <div class="container d-flex">
+                <p class="flex-grow-1">
+                    Copyright © 2021 HappyStudy
+                </p>
+                <a class="px-2" href="#">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a class="px-2" href="#">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="px-2" href="#">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </footer>
 </body>
 @stack('end')
 

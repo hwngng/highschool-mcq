@@ -1,0 +1,104 @@
+* {
+    box-sizing: border-box;
+}
+
+
+/* Float four columns side by side */
+
+.column {
+    /* float: left; */
+    width: 25%;
+    padding: 0 10px;
+}
+
+
+/* Remove extra left and right margins, due to padding */
+
+.row {
+    display: flex;
+    margin: 0 -5px;
+    margin-left: 20px;
+    margin-top: 50px;
+}
+
+
+/* Clear floats after the columns */
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* Style the counter cards */
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    /* text-align: center; */
+    background-color: #f1f1f1;
+    margin-left: 20px;
+}
+
+.create-class-btn {
+    height: 10%;
+    float: right;
+    margin-left: 60%;
+    background: #f1f1f1;
+    border-radius: 6px;
+    margin-right: 50px;
+    padding: 10px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.015em;
+    color: #2B2C34;
+}
+
+#shool-name {
+    padding: 5px 5px 5px 5px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.015em;
+    color: #2B2C34;
+}
+
+.quantity {
+    padding: 5px 5px 5px 5px;
+    line-height: 10px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.015em;
+    align-items: left;
+    color: rgba(43, 44, 52, 0.5);
+}
+
+.content-name {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.015em;
+    color: #2B2C34;
+    margin-left: 5%;
+}
+
+.row-1 {
+    display: flex;
+}

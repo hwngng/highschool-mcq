@@ -7,6 +7,14 @@ a {
     text-decoration: none;
 }
 
+.btn {
+    font-style: normal;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
 .sub-nav {
     background-color: #6246EA;
     position: fixed;
@@ -55,11 +63,6 @@ footer>div>a>i::before {
 .btn-primary,
 a.primary-button {
     color: #fff;
-    font-style: normal;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    text-align: center;
     background-color: #6246EA;
     width: fit-content;
     width: -moz-fit-content;
@@ -77,11 +80,6 @@ a.primary-button:active {
 
 .secondary-button {
     color: #6246EA;
-    font-style: normal;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    text-align: center;
     background-color: #fff;
 }
 

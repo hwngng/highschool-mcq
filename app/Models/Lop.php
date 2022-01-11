@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Lop extends Model 
+class Lop extends Model
 {
 
     protected $table = 'class';
@@ -26,20 +26,20 @@ class Lop extends Model
         });
     }
 
-    public function grade ()
+    public function grade()
     {
         return $this->belongsTo('App\Models\Grade', 'grade_id', 'id');
     }
 
-    public function tests ()
+    public function tests()
     {
         return $this->belongsToMany('App\Models\Test', 'class_test', 'class_id', 'test_id')
-                    ->withPivot('created_at', 'created_by', 'start_at');
+            ->withPivot('created_at', 'created_by', 'start_at');
     }
 
-    public function members ()
+    public function members()
     {
         return $this->belongsToMany('App\Models\User', 'class_member', 'class_id', 'user_id')
-                    ->withPivot('created_at', 'created_by');
+            ->withPivot('created_at', 'created_by');
     }
 }

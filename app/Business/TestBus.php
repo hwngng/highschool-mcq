@@ -18,7 +18,7 @@ class TestBus extends BaseBus
     }
 
     public function insert($testForm)
-    { 
+    {
         $apiResult = new ApiResult();
         if ((int) $testForm['no_of_questions'] == count($testForm['question_ids'])) {
             $apiResult = $this->getTestDAL()->insert($testForm);
@@ -33,6 +33,10 @@ class TestBus extends BaseBus
     public function getAll()
     {
         return $this->getTestDAL()->getAll();
+    }
+    public function getAllExcept($exceptTests)
+    {
+        return $this->getTestDAL()->getAllExcept($exceptTests);
     }
 
     public function getById($testId)
@@ -62,23 +66,25 @@ class TestBus extends BaseBus
         return $apiResult;
     }
 
-    public function update($test) {
-        
+    public function update($test)
+    {
+
 
         $test['name'] = htmlspecialchars($test['name']);
         $test['description'] = htmlspecialchars($test['description']);
-		$test['grade_id'] = htmlspecialchars($test['grade_id']);
+        $test['grade_id'] = htmlspecialchars($test['grade_id']);
         $test['duration'] = htmlspecialchars($test['duration']);
         $test['no_of_questions'] = htmlspecialchars($test['no_of_questions']);
         $test['subject_id'] = htmlspecialchars($test['subject_id']);
-		$apiResult = $this->getTestDAL()->update($test);
-		$testContentBus = new TestContentBus(); 
-		$apiResult->updateQuestion = $testContentBus->updateForTest($test['id'], $test['question_ids']);
+        $apiResult = $this->getTestDAL()->update($test);
+        $testContentBus = new TestContentBus();
+        $apiResult->updateQuestion = $testContentBus->updateForTest($test['id'], $test['question_ids']);
 
-		return $apiResult;
+        return $apiResult;
     }
 
-    public function destroy($testId) {
+    public function destroy($testId)
+    {
         return $this->getTestDAL()->destroy($testId);
     }
 }

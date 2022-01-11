@@ -65,7 +65,8 @@ class UserBus extends BaseBus
         return $apiResult;
     }
 
-        
+
+
     /**
      * insert
      *
