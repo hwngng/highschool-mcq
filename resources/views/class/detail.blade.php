@@ -47,7 +47,7 @@
                                                         aria-label="Checkbox for Set start time input">
                                                 </div>
                                                 <input type="datetime" placeholder="Start time here"
-                                                    name="{{ $test->id }}_started_at" id="started_at" class="form-control"
+                                                    name="{{ $test->id }}_started_at" class="started_at_picker" class="form-control"
                                                     style="width:40px">
                                             </div>
                                         </td>
@@ -217,7 +217,7 @@
             }
         });
         $(document).ready(function() {
-            $("#started_at").flatpickr({
+            $(".started_at_picker").flatpickr({
                 enableTime: true,
                 dateFormat: "Y-m-d H:i",
             });
