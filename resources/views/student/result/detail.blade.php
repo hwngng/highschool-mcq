@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container jumbotron fixed modal-dialog modal-xl modal-dialog-centered">
+<div class="container jumbotron fixed modal-xl modal-dialog-centered">
 
     <div class="card w-100 h-100">
         <div class="card-header">
@@ -37,7 +37,7 @@
 
             </li>
             <li class="list-group-item">
-                <a href="{{ route('student.index') }}" class="card-link">
+                <a href="{{ route('home') }}" class="card-link">
                     Trang chủ
                 </a>
             </li>

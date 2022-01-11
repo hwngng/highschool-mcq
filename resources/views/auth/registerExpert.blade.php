@@ -15,7 +15,6 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                {{-- <div class="card-header">{{ __('Đăng ký') }}</div> --}}
                 <div class="card-header">                    
                     <div class="col-md-5">
                         <div class = "happystudy" style="font-family: 'Finger Paint'">
@@ -24,8 +23,7 @@
                             font-weight: bold;
                             font-size: 24px;
                             line-height: 30px;
-                            
-                            color: #6246EA;">Student</span>
+                            color: #6246EA;">Expert</span>
                         </div>
                     </div>
                 </div>
@@ -56,7 +54,7 @@
                             <div class="col-md-6">
                                 <input id="password" type="password"
                                     class="form-control @error('password') is-invalid @enderror" name="password"
-                                    value="{{ old('password') }}" required autocomplete="new-password">
+                                    required autocomplete="new-password">
 
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -127,15 +125,15 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="grade_id"
-                                class="col-md-4 col-form-label text-md-right">Grade <span style="color: red;">*</span></label>
+                            <label for="telephone"
+                                class="col-md-4 col-form-label text-md-right">Telephone</label>
 
                             <div class="col-md-6">
-                                <input id="grade_id" type="number" min="10" max="12" value="10"
-                                    class="form-control @error('grade_id') is-invalid @enderror" name="grade_id"
-                                    value="{{ old('grade_id') }}" required autocomplete="grade_id">
+                                <input id="telephone" type="text"
+                                    class="form-control @error('telephone') is-invalid @enderror" name="telephone"
+                                    value="{{ old('telephone') }}" required autocomplete="telephone">
 
-                                @error('grade_id')
+                                @error('telephone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -144,8 +142,42 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-6 offset-md-4 ">
-                                <button type="submit" class="btn btn-primary d-flex justify-content-center register">
+                            <label for="address"
+                                class="col-md-4 col-form-label text-md-right">Address</label>
+
+                            <div class="col-md-6">
+                                <input id="address" type="text"
+                                    class="form-control @error('address') is-invalid @enderror" name="address"
+                                    value="{{ old('address') }}" required autocomplete="address">
+
+                                @error('address')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="description"
+                                class="col-md-4 col-form-label text-md-right">Description</label>
+
+                            <div class="col-md-6">
+                                <input id="description" type="text"
+                                    class="form-control @error('description') is-invalid @enderror" name="description"
+                                    value="{{ old('description') }}" required autocomplete="description">
+
+                                @error('description')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
                                     Register
                                 </button>
                             </div>

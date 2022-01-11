@@ -32,7 +32,20 @@ class TestContentBus extends BaseBus
 
 			++$len;
 		}
+		app('debugbar')->info($testContents);
 
 		return $this->getTestContentDAL()->insertMany($testContents);
 	}	
+
+	public function updateForTest($testId, $testContent) {
+		$apiResult = $this->getTestContentDAL()->delete($testId);
+		$apiResult = $this->insertMany($testId, '0' ,$testContent);
+		return $apiResult;
+	}
+
+
+	public function removeQuestion($questionId) {
+		$apiResult = $this->getTestContentDAL()->removeQuestion($questionId);
+		return $apiResult;
+	}
 }

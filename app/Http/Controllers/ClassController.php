@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Business\SchoolBus;
 use App\Business\ClassBus;
 use App\Business\UserBus;
@@ -14,10 +15,9 @@ class ClassController extends Controller
     private $classBus;
     private $workHistoryBus;
     private $schoolBus;
-    private function getSchoolBus ()
+    private function getSchoolBus()
     {
-        if ($this->schoolBus == null)
-        {
+        if ($this->schoolBus == null) {
             $this->schoolBus = new schoolBus();
         }
         return $this->schoolBus;
@@ -62,7 +62,7 @@ class ClassController extends Controller
 
       ];
 
-      return view('class.index', $viewData);
+        return view('class.index', $viewData);
     }
 
     /**
@@ -137,9 +137,19 @@ class ClassController extends Controller
         $apiResult->tests = $this->getClassBus()->getTestsById($id);
         foreach ($apiResult->tests as $test) {
             $workHistory = $this->getWorkHistoryBus()->getWorkHistoryByTestIdAndUserId(Auth::id(), $test->id)->workHistory;
-            $test->score = $workHistory->no_of_correct ? ($workHistory->no_of_correct *10 / $test->no_of_questions) : 0;
+            $test->score = $workHistory->no_of_correct ? ($workHistory->no_of_correct * 10 / $test->no_of_questions) : 0;
         }
 
         return view('class.detail', compact('apiResult'));
+    }
+    public function removeMember($id, $memberId = null)
+    {
+        $apiResult = null;
+        if ($memberId) {
+            $apiResult =  $this->getClassBus()->removeMember($id, $memberId);
+        } else {
+            $apiResult = $this->getClassBus()->removeMember($id, Auth::id());
+        }
+        return compact('apiResult');
     }
 }

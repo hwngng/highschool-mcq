@@ -60,6 +60,7 @@ footer>div>a>i::before {
 }
 
 .primary-button,
+.btn-primary,
 a.primary-button {
     color: #fff;
     background-color: #6246EA;

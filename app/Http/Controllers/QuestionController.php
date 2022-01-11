@@ -27,7 +27,7 @@ class QuestionController extends Controller
         }
         return $this->gradeBus;
     }
-
+ 
     public function index ()
     {
         $apiResult = $this->getQuestionBus()->getAll();
@@ -69,15 +69,14 @@ class QuestionController extends Controller
         $viewData = [
             'question' => $apiResultQuestion->question,
             'grades' => $apiResultGrade->grades
-        ];
+        ]; 
 
         return view('question.edit', $viewData);
-    }
+    } 
 
     public function update (QuestionRequest $questionRequest)
     {
         $apiResult = $this->getQuestionBus()->update($questionRequest);
-
         return response()->json($apiResult->report());
     }
 

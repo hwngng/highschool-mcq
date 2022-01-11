@@ -48,6 +48,7 @@ class QuestionDAL extends BaseDAL
 
 	public function insert ($question)
 	{
+		app('debugbar')->info($question);
 		$ret = new ApiResult();
 		try {
 			$questionORM = new Question();
@@ -55,6 +56,7 @@ class QuestionDAL extends BaseDAL
 			$questionORM->solution = Helper::IssetTake($questionORM->solution, $question, 'solution');
 			$questionORM->grade_id = Helper::IssetTake($questionORM->grade_id, $question, 'grade_id');
 			$questionORM->subject_id = Helper::IssetTake($questionORM->subject_id, $question, 'subject_id');
+			// $questionORM->subject_id = 4;
 			$questionORM->created_by = Auth::id();
 
 			$result = $questionORM->save();
@@ -90,7 +92,7 @@ class QuestionDAL extends BaseDAL
 			$questionORM->subject_id = Helper::IssetTake($questionORM->subject_id, $question, 'subject_id');
 
 			$result = $questionORM->save();
-
+ 
 			$ret->fill('0', 'Success');
 			$ret->affectedRows = $result;
 		}
@@ -107,7 +109,7 @@ class QuestionDAL extends BaseDAL
 		try
 		{
 			$question = Question::find($id);
-			if ($question->isEmpty()) {
+			if (!$question) {
                 $ret->fill('1', 'Question not found');
                 return $ret;
             }
