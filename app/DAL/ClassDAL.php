@@ -4,6 +4,7 @@ namespace App\DAL;
 
 use ReturnMsg;
 use App\DAL\BaseDAL;
+use App\Common\Helper;
 use App\Models\Grade;
 use App\Common\ApiResult;
 use App\Models\Lop;
@@ -61,6 +62,15 @@ class ClassDAL extends BaseDAL
 
         return $apiResult;
     }
+    public function getByAuthorId($id){
+        $ret = new ApiResult();
+        try {
+            $ret->classes = Lop::where('created_by',$id)->get();
+        } catch (\Exception $e) {
+            Log::error($e->__toString());
+        }
+        return $ret;
+    }
     public function getTestsByClassId($id)
     {
         $apiResult = new ApiResult();
@@ -92,7 +102,35 @@ class ClassDAL extends BaseDAL
         }
         return $ret;
     }
+    public function insert ($class)
+	{
+		app('debugbar')->info($class);
+		$ret = new ApiResult();
+		try {
+			$classORM = new Lop();
+			$classORM['name'] = Helper::IssetTake($classORM->name, $class, 'name');
+			$classORM['description'] = Helper::IssetTake($classORM->description, $class, 'description');
+			$classORM['grade_id'] = $class['grade_id'];
+			$classORM['code'] = Helper::IssetTake($classORM->code, $class, 'code');
 
+			$classORM['school_id'] = 8;
+			$classORM->created_by = Auth::id();
+
+			$result = $classORM->save();
+
+
+			if ($result)
+			{
+                $classORM->members()->attach(Auth::id());
+				$ret->fill('0', 'Success');
+			}
+			else
+				$ret->fill('1', 'Cannot insert, database error');
+		} catch (\Exception $e) {
+			Log::error($e->__toString());
+		}
+		return $ret;
+	}
     public function removeMember($id, $memberId)
     {
         $ret = new ApiResult();

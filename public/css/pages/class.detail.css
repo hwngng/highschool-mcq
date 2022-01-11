@@ -13,13 +13,10 @@
     border-radius: 10px;
 }
 
-.dropdown-menu>li {
-
-}
+.dropdown-menu>li {}
 
 .dropdown-menu>li:not(:last-child) {
     border-bottom: 1px solid #D1D1E9;
-
 }
 
 table {

@@ -8,6 +8,7 @@ use App\Business\UserBus;
 use App\Business\WorkHistoryBus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\Null_;
 
 class ClassController extends Controller
 {
@@ -47,20 +48,19 @@ class ClassController extends Controller
 
     public function index()
     {
-      $apiResult = $this->getClassBus()->getAll();
-      foreach ($apiResult->classes as $class)
-      {
-          $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
-          $class->members = $this->getClassBus()->getUserById($class->id)->members;
-          $class->numOfMembers = $class->members->count();
-          $class->exams = $this->getClassBus()->getTestsById($class->id);
-          $class->numOfExams = $class->exams->count();
-      }
+        $apiResult = $this->getClassBus()->getByAuthorId(Auth::id());
+        foreach ($apiResult->classes as $class) {
+            // $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
+            $class->members = $this->getClassBus()->getUserById($class->id)->members;
+            $class->numOfMembers = $class->members->count()-1;
+            $class->exams = $this->getClassBus()->getTestsById($class->id);
+            $class->numOfExams = $class->exams->count();
+        }
 
-      $viewData = [
-          'classes' => $apiResult->classes
+        $viewData = [
+            'classes' => $apiResult->classes
 
-      ];
+        ];
 
         return view('class.index', $viewData);
     }
@@ -82,6 +82,14 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
+        $class = array();
+        $class['name'] = $request['class-name'];
+        $class['code'] = $request['password'];
+        $class['description'] = $request['class-info'];
+        $class['grade_id'] = $request['class-grade'];
+        $apiResult = $this->getClassBus()->insert($class);
+        if ($apiResult->getRetCode() == 0)
+            return redirect()->route('teacher.class.list');
     }
 
     /**

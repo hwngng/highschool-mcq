@@ -41,6 +41,15 @@ class ClassBus extends BaseBus
         }
         return $tests;
     }
+    public function insert($class)
+	{
+		$apiResult = $this->getClassDAL()->insert($class);
+
+		return $apiResult;
+	}
+    public function getByAuthorId($id){
+        return $this->getClassDAL()->getByAuthorId($id);
+    }
 	public function removeMember($id,$memberId) {
 		return $this->getClassDAL()->removeMember($id,$memberId);
 	}
