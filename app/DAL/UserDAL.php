@@ -16,18 +16,20 @@ class UserDAL extends BaseDAL
     {
         $apiResult = new ApiResult();
 
-        $apiResult->users = User::select('id',
-                                        'username',
-                                        'email',
-                                        'last_name',
-                                        'first_name',
-                                        'grade_id',
-                                        'school_id',
-                                        'mobile_phone',
-                                        'telephone')
-                                        ->with('roles:id,name')
-                                        ->orderBy('updated_at', 'desc')
-                                        ->get();
+        $apiResult->users = User::select(
+            'id',
+            'username',
+            'email',
+            'last_name',
+            'first_name',
+            'grade_id',
+            'school_id',
+            'mobile_phone',
+            'telephone'
+        )
+            ->with('roles:id,name')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return $apiResult;
     }
@@ -36,27 +38,51 @@ class UserDAL extends BaseDAL
     {
         $apiResult = new ApiResult();
         try {
-            $apiResult->user = User::select('id',
-                                            'username',
-                                            'avatar',
-                                            'email',
-                                            'last_name',
-                                            'first_name',
-                                            'birthdate',
-                                            'address',
-                                            'grade_id',
-                                            'school_id',
-                                            'mobile_phone',
-                                            'telephone')
-                                            ->with('roles:id')
-                                            ->where('id', $id)
-                                            ->first();
+            $apiResult->user = User::select(
+                'id',
+                'username',
+                'avatar',
+                'email',
+                'last_name',
+                'first_name',
+                'birthdate',
+                'address',
+                'grade_id',
+                'school_id',
+                'mobile_phone',
+                'telephone'
+            )
+                ->with('roles:id')
+                ->where('id', $id)
+                ->first();
         } catch (\Exception $e) {
             Log::error($e->__toString());
         }
         return $apiResult;
     }
+    public function getByClassId($id)
+    {
+        $apiResult = new ApiResult();
+        try {
 
+
+
+            $apiResult->users = User::select(
+                'id',
+                'username',
+                'email',
+                'last_name',
+                'first_name',
+                'birthdate',
+                'address'
+            )
+                ->where('id', $id)
+                ->get();
+        } catch (\Exception $e) {
+            Log::error($e->__toString());
+        }
+        return $apiResult;
+    }
     public function insert($user)
     {
         $ret = new ApiResult();
@@ -96,8 +122,7 @@ class UserDAL extends BaseDAL
     {
         $ret = new ApiResult();
         try {
-            if (!isset($user['id'])) 
-            {
+            if (!isset($user['id'])) {
                 $ret->fill('1', 'Uninitialized user ID.');
                 return $ret;
             }
@@ -111,7 +136,8 @@ class UserDAL extends BaseDAL
             $userORM->birthdate = Helper::IssetTake($userORM->birthdate, $user, 'birthdate');
             $userORM->telephone = Helper::IssetTake($userORM->telephone, $user, 'telephone');
             $userORM->mobile_phone = Helper::IssetTake($userORM->mobile_phone, $user, 'mobile_phone');
-            $userORM->roles()->sync($user['roles']);
+            $userORM->school_id = Helper::IssetTake($userORM->school_id, $user, 'school_id');
+            // $userORM->roles()->sync($user['roles']);
             $result = $userORM->save();
 
             $ret->fill('0', 'Success.');

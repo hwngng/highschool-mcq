@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Business;
 
 use App\DAL\SchoolDAL;
@@ -20,5 +21,10 @@ class SchoolBus extends BaseBus
 		return $this->getSchoolDAL()->getAll();
 	}
 
+    public function getSchoolById($id)
+    {
+        $apiResult = $this->getSchoolDAL()->getById($id);
 
+		return $apiResult;
+    }
 }

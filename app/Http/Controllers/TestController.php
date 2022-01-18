@@ -45,6 +45,7 @@ class TestController extends Controller
 
         foreach ($apiResult->tests as $test) {
             $test->created_at_diff = Carbon::parse($test->created_at)->diffForHumans();
+            // $test->subject_name = 
         }
 
         $viewData = [
@@ -52,6 +53,17 @@ class TestController extends Controller
         ];
 
         return view('test.index', $viewData);
+    }
+
+    public function ready ($testId)
+    {
+        $apiResult = $this->getTestBus()->getInfoOnly($testId);
+
+        $viewData = [
+            'test' => $apiResult->test
+        ];
+
+        return view('student.test.ready', $viewData);
     }
 
     public function create ()
@@ -70,6 +82,7 @@ class TestController extends Controller
 
     public function store (TestRequest $testRequest)
     {
+        app('debugbar')->info($testRequest);
         $apiResult = $this->getTestBus()->insert($testRequest);
 
         return response()->json($apiResult->report());
@@ -92,8 +105,15 @@ class TestController extends Controller
         return view('test.edit', $viewData);
     }
 
-    public function update (TestRequest $testRequest)
+    public function update(TestRequest $testRequest)
     {
+        app('debugbar')->info($testRequest);
+        $apiResult = $this->getTestBus()->update($testRequest);
+        return response()->json($apiResult->report());
+    }
 
+    public function destroy($testId) {
+        $apiResult = $this->getTestBus()->destroy($testId);
+        return response()->json($apiResult->report());
     }
 }

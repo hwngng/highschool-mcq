@@ -1,0 +1,76 @@
+.header_title-text {
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    color: #2B2C34;
+}
+
+#overlay {
+    display: block;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: 0.3s 0.3s;
+}
+
+#overlay>.list {
+    position: relative;
+    top: 50%;
+    left: 15%;
+    width: 70vw;
+}
+#overlay>.form {
+    position: relative;
+    top: 50%;
+    left: 30%;
+    width: 40vw;
+    border-radius: 10px;
+}
+.dropdown-menu {
+    background: #FFFFFF;
+    border: 1px solid #D1D1E9;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.dropdown-menu>li {}
+
+.dropdown-menu>li:not(:last-child) {
+    border-bottom: 1px solid #D1D1E9;
+}
+
+table {
+    font-family: Mulish;
+    font-style: normal;
+    font-size: 14px;
+    color: #2B2C34;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+    background: #D1D1E9;
+    border: 1px solid #E7EFFD;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.thead-custom {
+    background: #D1D1E9;
+}
+
+tr {
+    line-height: 40px;
+    min-height: 40px;
+    height: 40px;
+}
+
+.class_action-btn {
+    border: 1px solid #D1D1E9;
+    box-sizing: border-box;
+    border-radius: 8px;
+    color: #2B2C34;
+}

@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>Trắc Nghiệm Toán @yield('title')</title>
 
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
@@ -15,6 +14,7 @@
     <link href="{{ asset('css/common.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
 
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.js') }}"></script>
@@ -47,33 +47,46 @@
                         @endif
                     @else
                         @can('be-admin')
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown mx-3">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="menu-admin"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Quản trị viên
+                                    Admin
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-admin">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.user.list') }}">Users
+                                            management</a>
+                                    </li>
                                     @yield('dropdown-admin')
                                 </ul>
                             </li>
                             @yield('dropdown-admin')
                         @endcan
                         @can('be-teacher')
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown mx-3">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="menu-giaovien"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Giáo Viên
+                                    Teacher
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-giaovien">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Quản Lý Đề Thi</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.class.list') }}">Classes
+                                            management</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Quản Lý Câu
-                                            Hỏi</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.test.list') }}">Tests
+                                            management</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Kết quả</a>
+                                        <a class="dropdown-item" href="{{ route('teacher.question.list') }}">Questions
+                                            management</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('teacher.result.list') }}">Results</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('teacher.about', Auth::user()->id) }}">Teacher profile</a>
                                     </li>
                                     @yield('dropdown-teacher')
                                 </ul>
@@ -81,32 +94,30 @@
                         @endcan
 
                         @can('be-student')
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown mx-3">
                                 <button class="btn secondary-button dropdown-toggle" type="button" id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Học sinh
+                                    Student
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('student.index') }}">Danh sách bài thi</a>
+                                        <a class="dropdown-item" href="{{ route('student.index') }}">Test list</a>
 
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            href="{{ route('student.result.list', Auth::user()->id) }}">Bảng
-                                            điểm</a>
+                                            href="{{ route('student.result.list', Auth::user()->id) }}">Scores</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('student.about', Auth::user()->id) }}">Hồ sơ
-                                            cá
-                                            nhân</a>
+                                        <a class="dropdown-item"
+                                            href="{{ route('student.about', Auth::user()->id) }}">Student profile</a>
                                     </li>
                                     @yield('dropdown-student')
                                 </ul>
                             </li>
                         @endcan
 
-                        <li class="nav-item dropdown" style="padding-left: 10px">
+                        <li class="nav-item dropdown mx-3" style="padding-left: 10px">
                             <button class="btn primary-button dropdown-toggle" type="button" id="dropdownMenuButton2"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ Auth::user()->first_name }} <span class="caret"></span>
@@ -115,7 +126,7 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('register') }}"
                                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        Đăng xuất
+                                        Log out
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                         style="display: none;">
@@ -129,54 +140,64 @@
             </div>
         </div>
     </nav>
-    <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block">
-        <div class="container">
+        <nav class="navbar navbar-expand-lg sub-nav d-none d-lg-block" style="line-height: calc(50px - 1rem);">
+            <div class="container">
 
-            <ul class="navbar-nav w-100" style="justify-content: space-between">
-                <li class="nav-item sub-nav-item">
-                    <a class=" active" aria-current="page" href="{{ url('/') }}">Home</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class=" " aria-current="page" href="{{ url('/') }}">Exams</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Grades</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Subjects</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Classes</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">Experts</a>
-                </li>
-                <li class="nav-item sub-nav-item">
-                    <a class="" aria-current="page" href="{{ url('/') }}">About us</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+                <ul class="navbar-nav w-100" style="justify-content: space-between">
+                    <li class="nav-item sub-nav-item">
+                        <a class=" active" aria-current="page" href="{{ url('/') }}">Home</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        @can('be-teacher')
+                        <a class="" aria-current="page" href="{{ route('teacher.test.list') }}">Exams</a>
+                        @endcan
+                        @can('be-student')
+                        <a class="" aria-current="page" href="{{ route('student.test.list') }}">Exams</a>
+                        @endcan
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="#">Grades</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="#">Subjects</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        @can('be-teacher')
+                        <a class="" aria-current="page" href="{{ route('teacher.class.list') }}">Classes</a>
+                        @endcan
+                        @can('be-student')
+                        <a class="" aria-current="page" href="{{ route('student.class.list') }}">Classes</a>
+                        @endcan
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="{{ route('experts')}}">Experts</a>
+                    </li>
+                    <li class="nav-item sub-nav-item">
+                        <a class="" aria-current="page" href="{{ route('about_us') }}">About us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-    <main class="py-5">
-        @yield('content')
-    </main>
-    <footer>
-        <div class="container d-flex">
-            <p class="flex-grow-1">
-                Copyright © 2021 HappyStudy
-            </p>
-            <a class="px-2" href="#">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a class="px-2" href="#">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a class="px-2" href="#">
-                <i class="fab fa-twitter"></i>
-            </a>
-        </div>
-    </footer>
+        <main class="py-5">
+            @yield('content')
+        </main>
+        <footer>
+            <div class="container d-flex">
+                <p class="flex-grow-1">
+                    Copyright © 2021 HappyStudy
+                </p>
+                <a class="px-2" href="#">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a class="px-2" href="#">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a class="px-2" href="#">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </footer>
 </body>
 @stack('end')
 
