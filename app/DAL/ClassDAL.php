@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Exceptions\NotInClass;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClassDAL extends BaseDAL
 {
@@ -38,7 +39,6 @@ class ClassDAL extends BaseDAL
                 'solution'
             )
                 ->where('id', $id)
-                ->with('choices:id,question_id,content,is_solution')
                 ->first();
         } catch (\Exception $e) {
             Log::error($e->__toString());
@@ -62,11 +62,13 @@ class ClassDAL extends BaseDAL
 
         return $apiResult;
     }
-    public function getByAuthorId($id)
+    public function getByCurrentUserId()
     {
         $ret = new ApiResult();
         try {
-            $ret->classes = Lop::where('created_by', $id)->get();
+            $ret->classes = Lop::whereHas('members', function (Builder $query) {
+                $query->where('id', '=', Auth::id());
+            })->get();
         } catch (\Exception $e) {
             Log::error($e->__toString());
         }
@@ -111,8 +113,8 @@ class ClassDAL extends BaseDAL
 
             $sync_data = [];
             if (count($testIds)) {
-                foreach ($testIds as $key=>$value) {
-                    $sync_data[$key] = ['start_at' => $value->started_at,'created_by'=> Auth::id()];
+                foreach ($testIds as $key => $value) {
+                    $sync_data[$key] = ['start_at' => $value->started_at, 'created_by' => Auth::id()];
                 }
             }
             $result->tests()->attach($sync_data);
@@ -123,7 +125,24 @@ class ClassDAL extends BaseDAL
         }
         return $ret;
     }
-
+    public function memberJoin($memberId, $id, $code)
+    {
+        $ret = new ApiResult();
+        try {
+            $result = Lop::where('id', $id)->where('code', $code)->first();
+            if ($result) {
+                $result->members()->attach($memberId);
+                $ret->fill('0', 'Success.');
+                $ret->classId = $result->id;
+            } else {
+                $ret->fill('1', 'Code or id is incorrect! Please check again');
+            }
+        } catch (\Exception $e) {
+            $ret->fill('1', 'You are in this class yet.');
+            Log::error($e->__toString());
+        }
+        return $ret;
+    }
     public function insert($class)
     {
         app('debugbar')->info($class);

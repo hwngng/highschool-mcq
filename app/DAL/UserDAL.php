@@ -28,7 +28,7 @@ class UserDAL extends BaseDAL
             'telephone'
         )
             ->with('roles:id,name')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return $apiResult;

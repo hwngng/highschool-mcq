@@ -53,6 +53,10 @@
                                     Admin
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="menu-admin">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.user.list') }}">Users
+                                            management</a>
+                                    </li>
                                     @yield('dropdown-admin')
                                 </ul>
                             </li>

@@ -8,6 +8,7 @@ use App\Business\TestBus;
 use App\Business\UserBus;
 use App\Business\WorkHistoryBus;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 
 class ClassController extends Controller
@@ -57,7 +58,7 @@ class ClassController extends Controller
 
     public function index()
     {
-        $apiResult = $this->getClassBus()->getByAuthorId(Auth::id());
+        $apiResult = $this->getClassBus()->getByCurrentUserId();
         foreach ($apiResult->classes as $class) {
             // $class->school = $this->getSchoolBus()->getSchoolById($class->school_id)->school;
             $class->members = $this->getClassBus()->getUserById($class->id)->members;
@@ -128,8 +129,13 @@ class ClassController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function memberJoin(Request $request)
     {
+        $apiResult = $this->getClassBus()->memberJoin($request->memberId,$request->id,$request->code);
+        if ($apiResult->getRetCode()==1){
+            return response()->json($apiResult);
+        }
+        return route('student.class.detail', [$request->id]);
     }
 
     /**
@@ -175,4 +181,7 @@ class ClassController extends Controller
         }
         return compact('apiResult');
     }
+
+
+
 }

@@ -157,7 +157,7 @@
                                 <h4 class="d-flex justify-content-center align-items-center mb-3">
                                     <span class="badge badge-secondary badge-pill">Ảnh đại diện</span>
                                 </h4>
-                
+
                                 <div class="avatar-wrapper">
                                     <img class="profile-pic" src="" />
                                     <div class="upload-button">
@@ -201,7 +201,7 @@
                                                 {{ $message }}
                                             </div>
                                             @enderror
-                
+
                                         </div>
                                     </div>
                                 </div>
@@ -288,7 +288,7 @@
                                                 {{ $message }}
                                             </div>
                                             @enderror
-                                    </div>      
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -315,7 +315,7 @@
                         <hr class="mb-4">
                         <button class="btn btn-primary btn-lg btn-block save-button" type="submit">Cập nhật tài khoản</button>
                     </form>
-                </div> 
+                </div>
             </div>
             <div class="modal-footer">
             </div>
@@ -418,7 +418,7 @@
                 }
             });
         });
-      
+
         $('#newUserForm').submit(function (e) {
             e.preventDefault();
 

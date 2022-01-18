@@ -24,7 +24,13 @@
     left: 15%;
     width: 70vw;
 }
-
+#overlay>.form {
+    position: relative;
+    top: 50%;
+    left: 30%;
+    width: 40vw;
+    border-radius: 10px;
+}
 .dropdown-menu {
     background: #FFFFFF;
     border: 1px solid #D1D1E9;

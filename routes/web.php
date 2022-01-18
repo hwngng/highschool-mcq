@@ -99,6 +99,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::name('list')->get('/', 'ClassController@index');
                 Route::name('detail')->get('/detail/{id}', 'ClassController@detail');
                 Route::name('leave')->get('/leave/{id}', 'ClassController@removeMember');
+                Route::name('join')->post('/join', 'ClassController@memberJoin');
             });
             Route::name('result.')->prefix('result')->group(function () {
                 Route::name('detail')->get('/{userId}/{testId}', 'WorkHistoryController@getResultByTestIdAnduserId')->middleware('authorize:student');
