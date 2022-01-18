@@ -97,7 +97,8 @@
                 url: "{{ route('student.class.join') }}",
                 data: $.param(data),
                 success: function(response) {
-                    if (response.return_code == 1) {
+                    console.log(response);
+                    if (response.return_code == 1 ||response.return_code == 2) {
                         alert(response.return_msg);
                     } else {
                         window.location.href = response;

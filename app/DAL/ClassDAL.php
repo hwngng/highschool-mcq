@@ -135,10 +135,10 @@ class ClassDAL extends BaseDAL
                 $ret->fill('0', 'Success.');
                 $ret->classId = $result->id;
             } else {
-                $ret->fill('1', 'Code or id is incorrect! Please check again');
+                $ret->fill('1', 'Failure');
             }
         } catch (\Exception $e) {
-            $ret->fill('1', 'You are in this class yet.');
+            $ret->fill('2', 'You are in this class yet.');
             Log::error($e->__toString());
         }
         return $ret;

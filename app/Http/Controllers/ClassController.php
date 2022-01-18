@@ -131,9 +131,17 @@ class ClassController extends Controller
      */
     public function memberJoin(Request $request)
     {
-        $apiResult = $this->getClassBus()->memberJoin($request->memberId,$request->id,$request->code);
-        if ($apiResult->getRetCode()==1){
-            return response()->json($apiResult);
+        $apiResult = $this->getClassBus()->memberJoin($request->memberId, $request->id, $request->code);
+        if ($apiResult->getRetCode() == 1) {
+            $ret = (object)null;
+            $ret->return_code = '1';
+            $ret->return_msg  = 'Code or id is incorrect! Please check again';
+            return response()->json($ret);
+        } else if ($apiResult->getRetCode() == 2) {
+            $ret = (object)null;
+            $ret->return_code = '2';
+            $ret->return_msg  = 'You are in this class yet.';
+            return response()->json($ret);
         }
         return route('student.class.detail', [$request->id]);
     }
@@ -155,14 +163,14 @@ class ClassController extends Controller
      */
     public function detail($id)
     {
-        $exceptTests =[];
+        $exceptTests = [];
         $apiResult = $this->getClassBus()->getUserById($id);
         $apiResult->tests = $this->getClassBus()->getTestsById($id);
 
         foreach ($apiResult->tests as $test) {
             $workHistory = $this->getWorkHistoryBus()->getWorkHistoryByTestIdAndUserId(Auth::id(), $test->id)->workHistory;
             $test->score = $workHistory ? ($workHistory->no_of_correct * 10 / $test->no_of_questions) : 0;
-            array_push($exceptTests,$test->id);
+            array_push($exceptTests, $test->id);
         }
         $apiResult->testList = $this->getTestBus()->getAllExcept($exceptTests)->tests;
         foreach ($apiResult->testList as $tl) {
@@ -181,7 +189,4 @@ class ClassController extends Controller
         }
         return compact('apiResult');
     }
-
-
-
 }
